@@ -289,10 +289,10 @@ $(document).ready(function() {
 	}, "El apellido debe tener mínimo 2 caracteres y contener solo caracteres alfabéticos");
 	//unisoft
 	jQuery.validator.addMethod("telefonos", function( value, element ) {
-		var result = this.optional(element) || value.length >= 7 && value.length < 9 && /\d/.test(value) && !/[a-z]/i.test(value) && !/[\!\@\#\$\%\^\&\*\(\)\_\+\-\=\`\~\[\]\{\}\;\'\:\"\.\/\<\>\?\*\-\+\\\|]/.test(value);
+		var result = this.optional(element) || value.length >= 7 && value.length < 9 && /\d/.test(value) && !/[a-z]/i.test(value) && ((value>=2000000 && value<5000000) || (value<80000000 && value>=60000000)) && !/[\!\@\#\$\%\^\&\*\(\)\_\+\-\=\`\~\[\]\{\}\;\'\:\"\.\/\<\>\?\*\-\+\\\|]/.test(value);
 
 		return result;
-	}, "El telefono debe tener entre 7 y 8 caracteres y contener solo números");
+	}, "El telefono debe tener entre 7 y 8 caracteres y contener solo números v&aacute;lidos en Bolivia");
 	//unisoft
     jQuery.validator.addMethod("pagos", function( value, element ) {
 		var result = this.optional(element) || value.length < 4 && /\d/.test(value) && !/[a-z]/i.test(value) && !/[\!\@\#\$\%\^\&\*\(\)\_\+\-\=\`\~\[\]\{\}\;\'\:\"\,\.\/\<\>\?\*\-\+\\\|\ ]/.test(value);

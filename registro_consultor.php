@@ -61,7 +61,7 @@ if(isset($_POST['enviar'])){
 		              $error=true;
 		      } 
 	     }
-	   $ext_permitidas = array('.pdf');
+	   $ext_permitidas = array('.pdf'||'.doc'||'.docx'||'.rar');
 	   if(!empty($_FILES['pdf']['name'])){
             $nombre_archivo = $_FILES['pdf']['name'];
             $nombre_tmp = $_FILES['pdf']['tmp_name'];
