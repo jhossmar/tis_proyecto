@@ -2,27 +2,27 @@
 #PARA MI CONSULTA A LA BASE DE DATOS
 host="localhost"
 
-usuario="tis"
-password="tis"
-database="tis"
+usuario="munisoft"
+password="WSVBtmXg"
+database="tis_munisoft"
 
 ayer=`date --date='1 days ago' +%Y-%m-%d`
 ayer=$ayer" 00:00:00"
 
 # Ruta y Archivo en la que se guarda el log de la operacion del backup.
 #CAMBIAR jimmy POR EL NOMBRE DE USUARIO DE TU COMPUTADOR
-logfile="/home/jimmy/backups/logs/log.txt"
+logfile="/home/jhon/log.txt"
 
 #CAMBIAR jimmy POR EL NOMBRE DE USUARIO DE TU COMPUTADOR
 # Ruta en la que guardar los backups
-backup_dir="/home/jimmy/backups/archivos"
+backup_dir="/home/jhon/"
 
 # Usuario y Password de la Base de Datos de la que queremos guardar una copia diaria
-username="tis"
-password="tis"
+username="munisoft"
+password="WSVBtmXg"
 
 # Nombre completo de la Base de Datos de la que queremos guardar una copia diaria
-BBDD="tis"
+BBDD="tis_munisoft"
 
 # NO ES NECESARIO MODIFICAR NADA A PARTIR DE AQUI
 
