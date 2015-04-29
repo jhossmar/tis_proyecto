@@ -191,6 +191,9 @@
                             <li class="dropdown">
                                 <a href="ayuda.php" id="link_ayuda">Ayuda </a>
                             </li>
+                             <li>
+                                <a href="contrasena.php" id="link_inicio">Recuperar contrasena</a>
+                            </li>
                         </ul>
                     </div>
                     <!--/.nav-collapse -->
