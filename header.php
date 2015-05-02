@@ -192,7 +192,7 @@
                                 <a href="ayuda.php" id="link_ayuda">Ayuda </a>
                             </li>
                              <li>
-                                <a href="contrasena.php" id="link_inicio">Recuperar contrasena</a>
+                                <a href="contrasena.php" id="link_pass">Recuperar contrasena</a>
                             </li>
                         </ul>
                     </div>
