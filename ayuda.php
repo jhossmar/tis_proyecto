@@ -3,7 +3,8 @@ $titulo="Ayuda del Sistema de Apoyo a la Empresa TIS";
 include("conexion/verificar_gestion.php");
 session_start();
 include('header.php');
- ?>
+
+?>
 			<div>
 				<ul class="breadcrumb">
 					<li>
@@ -17,8 +18,17 @@ include('header.php');
 			</div>
 			<center><h3>Ayuda del Sistema de Apoyo a la Empresa TIS</h3></center>
 			
-
-            <div class="row-fluid">
+			
+	      <?php
+	      
+	        echo("<div>"); 
+			   include('ver_pdf.php');
+		    echo("</div>"); 
+		   
+		   ?>
+				
+				
+        <div class="row-fluid">
 			<div class="box span12">
 					<div class="box-header well">
 						<h2><i class="icon-info-sign"></i> Ayuda</h2>
@@ -29,7 +39,7 @@ include('header.php');
 							<button type="button" class="close" data-dismiss="alert">×</button>
 							Si necesita ayuda, o tiene problemas con el uso del sistema puede contactarse con el <b>Administrador</b>, sus datos se encuentran a continuaci&oacute;n.
 						</div>
-										<?php
+					<?php
 						
 							$c = "SELECT nombre,apellido,telefono,email
 								FROM usuario
@@ -70,4 +80,6 @@ include('header.php');
 			</div><!-- fin row -->
 
 
-<?php include('footer.php'); ?>
+<?php
+   include('footer.php');
+ ?>
