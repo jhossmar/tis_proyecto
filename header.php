@@ -49,6 +49,7 @@
 	  .sidebar-nav {
 		padding: 9px 0;
 	  }
+	  
 	</style>
 
 	<style type="text/css">
@@ -85,7 +86,7 @@
 	<link href='css/style2.css' rel='stylesheet'>
 	<link rel="stylesheet" type="text/css" href="css/uploadify.css">
 	<link href='css/noticias.css' rel='stylesheet'>
-
+	<link href='css/ayuda_indice.css' rel='stylesheet'>
      <!-- calendario -->
 <link rel="stylesheet" type="text/css" href="css/frontierCalendar/jquery-frontier-cal-1.3.2.css" />
 <link rel="stylesheet" type="text/css" href="css/colorpicker/colorpicker.css" />
