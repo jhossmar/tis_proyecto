@@ -18,7 +18,7 @@
                 	$tipo="Consultor TIS";
                     break;
                 case (2) :
-                	$tipo="Jefe Consultor TIS";
+                	$tipo="Consultor TIS";
                     break;
                 case (1) :
                     $tipo ="Administrador";
@@ -165,9 +165,6 @@
                             <li class="dropdown">
                                 <a href="ayuda.php" id="link_ayuda">Ayuda </a>
                             </li>
-                             <li>
-                                <a href="contrasena.php" id="link_pass">Recuperar contrasena</a>
-                            </li>
                         </ul>
                     </div>
                     <!--/.nav-collapse -->
@@ -195,6 +192,7 @@
 								<li><a href="bitacoras_usuario.php"><i class="icon-eye-open"></i><span class="hidden-tablet"> Bit&aacute;coras de usuario</span></a></li>
 								<li><a href="backup.php"><i class="icon-hdd"></i><span class="hidden-tablet"> Respaldo y Restauraci&oacute;n de la Base de Datos</span></a></li>
 								<li><a href="administrar_mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Administrar espacio de Discuci&oacute;n</span></a></li>
+								<li><a href="Control_Grupo_Empresas.php"><i class="icon-edit"></i><span class="hidden-tablet"> Control de Grupo Empresas</span></a></li>
 							</ul>
 
 						</div><!--/.well -->
