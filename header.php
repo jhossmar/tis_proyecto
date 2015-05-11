@@ -1,5 +1,6 @@
 <?php
-	if(!isset($titulo)){
+	if(!isset($titulo))
+	{
 		header('Location: index.php');
 	}
 	if (isset($_SESSION['nombre_usuario'])){
@@ -17,7 +18,7 @@
                 	$tipo="Consultor TIS";
                     break;
                 case (2) :
-                	$tipo="Jefe Consultor TIS";
+                	$tipo="Consultor TIS";
                     break;
                 case (1) :
                     $tipo ="Administrador";
@@ -39,35 +40,8 @@
 
 	<!-- The styles -->
 	<link id="bs-css" href="css/bootstrap-cerulean.css" rel="stylesheet">
-	<style type="text/css">
-	  body {
-	  	font-family: Arial;
-	  	font-size: 12px;
-		padding-bottom: 30px;
-		min-width: 980px;
-	  }
-	  .sidebar-nav {
-		padding: 9px 0;
-	  }
-	  
-	</style>
-
-	<style type="text/css">
-		#commentForm { width: 500px; }
-		#commentForm label { width: 250px; }
-		#commentForm label.error, #commentForm input.submit { margin-left: 253px; }
-		#signupForm { width: 100%; text-align: left;}
-		#signupForm label.error {
-		color: #FF5105;
-		margin-left: 10px;
-		width: auto;
-		display: inline;
-		}
-
-		form.cmxform .gray * { color: gray; }
-	</style>
-
-	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/letras.css">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="css/charisma-app.css" rel="stylesheet">
 	<link href="css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
 	<link href='css/fullcalendar.css' rel='stylesheet'>
@@ -93,7 +67,6 @@
 <link href="css/jquery.alerts.css" rel="stylesheet" type="text/css">
 	<!-- calendario -->
 
-
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -111,19 +84,19 @@
 	<div class="navbar">
         <div class="row-fluid navegacion">
             	<div class="span2 logo" >
-	                <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                </a>
-                	<img class="logo" alt="Logo Sistema de Apoyo a la Empresa TIS" src="img/umssd.png" height="120px"/>
+	              <!--  <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">-->
+	               <!-- <span class="icon-bar"></span>-->
+	               <!-- <span class="icon-bar"></span>-->
+	               <!-- <span class="icon-bar"></span>-->
+	               <!-- </a>-->
+                    <img class="logo" alt="Logo Sistema de Apoyo a la Empresa TIS" src="img/umssd.png" height="120px"/>
                 </div>
                 <div class="span10">
                 	<div class="row-fluid contenido-navegacion">
                 		<div class="span10 title">
                 			<img src="img/titulo2.png" height="80px" width="100%" />
                 		</div>
-                		<?php if ($sesion_valida) {?>
+                		<?php if($sesion_valida){?>
                 			<div class="span2 usuarios">
                 			<!-- USUARIOS-->
 						                <div class="btn-group pull-right">
@@ -156,11 +129,11 @@
 						                        <li><a href="conexion/salir.php">Salir</a></li>
 						                    </ul>
 						                </div>
-    	           		</div><!-- FIN USUARIOS-->
+    	           		   </div><!-- FIN USUARIOS-->
     	           		<?php } ?>
                 	</div>
             <div class="row-fluid">
-            <div class="menu">
+                <div class="menu">
                         <ul class="nav">
                             <li class="hidden-tablet">
                                 <a href="index.php" id="link_inicio">Inicio</a>
@@ -192,13 +165,10 @@
                             <li class="dropdown">
                                 <a href="ayuda.php" id="link_ayuda">Ayuda </a>
                             </li>
-                             <li>
-                                <a href="contrasena.php" id="link_pass">Recuperar contrasena</a>
-                            </li>
                         </ul>
                     </div>
                     <!--/.nav-collapse -->
-        	</div><!--FIN FILA ROW-->
+            </div><!--FIN FILA ROW-->
         </div>
 	</div>
 	</div>
@@ -222,6 +192,7 @@
 								<li><a href="bitacoras_usuario.php"><i class="icon-eye-open"></i><span class="hidden-tablet"> Bit&aacute;coras de usuario</span></a></li>
 								<li><a href="backup.php"><i class="icon-hdd"></i><span class="hidden-tablet"> Respaldo y Restauraci&oacute;n de la Base de Datos</span></a></li>
 								<li><a href="administrar_mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Administrar espacio de Discuci&oacute;n</span></a></li>
+								<li><a href="Control_Grupo_Empresas.php"><i class="icon-edit"></i><span class="hidden-tablet"> Control de Grupo Empresas</span></a></li>
 							</ul>
 
 						</div><!--/.well -->

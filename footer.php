@@ -76,7 +76,7 @@ $(document).ready(function() {
 		rules: {
 			firstname: {
 				required: true,
-				minlength: 3,
+				minlength: 2,
 				maxlength : 32
 			},
 			lastname: {
@@ -91,7 +91,8 @@ $(document).ready(function() {
 			},
 			telf: {
 				required: true,
-				minlength: 7
+				minlength: 7,
+				maxlength: 8
 			},
 			password: {
 				required: true,
@@ -175,7 +176,7 @@ $(document).ready(function() {
 		messages: {
 			firstname:{
 				required: "Ingrese su nombre",
-				minlength: "El nombre debe consistir de 3 caracteres m&iacute;nimo",
+				minlength: "El nombre debe consistir de 2 caracteres m&iacute;nimo",
 				maxlength: "El nombre debe consistir de 32 caracteres m&aacute;ximo"
 			},
 			lastname: {
@@ -289,10 +290,10 @@ $(document).ready(function() {
 	}, "El apellido debe tener mínimo 2 caracteres y contener solo caracteres alfabéticos");
 	//unisoft
 	jQuery.validator.addMethod("telefonos", function( value, element ) {
-		var result = this.optional(element) || value.length >= 7 && value.length < 9 && /\d/.test(value) && !/[a-z]/i.test(value) && ((value>=2000000 && value<5000000) || (value<80000000 && value>=60000000)) && !/[\!\@\#\$\%\^\&\*\(\)\_\+\-\=\`\~\[\]\{\}\;\'\:\"\.\/\<\>\?\*\-\+\\\|]/.test(value);
+		var result = this.optional(element) || value.length >= 7 && value.length < 9 && ((value>=2000000&& value<5000000 ) || (value>=60000000 && value<80000000))&& /\d/.test(value) && !/[a-z]/i.test(value) && !/[\!\@\#\$\%\^\&\*\(\)\_\+\-\=\`\~\[\]\{\}\;\'\:\"\.\/\<\>\?\*\-\+\\\|]/.test(value);
 
 		return result;
-	}, "El telefono debe tener entre 7 y 8 caracteres y contener solo números v&aacute;lidos en Bolivia");
+	}, "El telefono debe tener entre 7 y 8 caracteres y contener solo números");
 	//unisoft
     jQuery.validator.addMethod("pagos", function( value, element ) {
 		var result = this.optional(element) || value.length < 4 && /\d/.test(value) && !/[a-z]/i.test(value) && !/[\!\@\#\$\%\^\&\*\(\)\_\+\-\=\`\~\[\]\{\}\;\'\:\"\,\.\/\<\>\?\*\-\+\\\|\ ]/.test(value);

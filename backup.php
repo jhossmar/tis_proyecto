@@ -27,8 +27,8 @@ session_start();
         header("Location: index.php");
     }
 /*----------------------FIN VERIFICACION------------------------------------*/
-$directorio='../public_html';//LINUX
-//$directorio='backups';//WINDOWS
+//$directorio='../public_html';//LINUX
+$directorio='backups';//WINDOWS
 $mensaje=NULL;
 if(isset($_GET['backup']) && isset($_GET['file'])){
 	$file=$directorio."/".$_GET['file'];
@@ -80,8 +80,9 @@ if(isset($_POST['nuevo'])){
 	    $DirBase=$DirBase."bin\mysqldump";
 
 	}
-    $executa="$DirBase -h webtisdb.cs.umss.edu.bo -u munisoft -pWSVBtmXg tis_munisoft > ".$name_file;
-    system($executa,$resultado);
+    //$executa="$DirBase -h webtisdb.cs.umss.edu.bo -u munisoft -pWSVBtmXg tis_munisoft > ".$name_file;
+    $executa="$DirBase --host=localhost --user=tis --password=tis tis --routines --triggers -c --add-drop-table > $ficheroDeLaCopia";
+      system($executa,$resultado);
 	if ($resultado)  //si hay error
 	{
 		header('Location: backup.php?error=4&dirbase='.$DirBase);//error al crear
@@ -109,7 +110,7 @@ if(isset($_POST['aceptar'])){
 			{
 			    $DirBase=$DirBase."\bin\mysql";
 			}
-			$executa = "$DirBase -h webtisdb.cs.umss.edu.bo -u munisoft -pWSVBtmXg  tis_munisoft < $backup_file";
+			$executa = "$DirBase -h localhost -u root -  tis < $backup_file";
 			system($executa,$resultado);
 			if ($resultado)  //si hay error
 			{
