@@ -15,7 +15,7 @@
                $counta=0;
                while($counta < $num){
                       $a=  $_POST["a".$counta];
-                      $b=  3;
+                      $b=  2;
                       $c=  0;
                        if($_POST["b".$counta]){
                            $b=  2;

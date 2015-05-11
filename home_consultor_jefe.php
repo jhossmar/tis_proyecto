@@ -35,11 +35,12 @@ include('header.php');
 						<span class="divider">/</span>
 					</li>
 					<li>
-						<a href="home_consultor_jefe.php">Home Jefe Consultor TIS</a>
+					<!--<a href="home_consultor_jefe.php">Home Jefe Consultor TIS</a>-->
+						<a href="home_consultor_jefe.php">Home Consultor TIS</a>
 					</li>				
 				</ul>
 			</div>
-			<center><h3>Bienvenido Jefe Consultor TIS</h3></center>
+			<center><h3>Bienvenido Consultor TIS</h3></center>
 			<?php 
 			if (!$gestion_valida) { ?>
 			<div class="row-fluid">
@@ -70,7 +71,7 @@ include('header.php');
 					</div>
 					<div class="box-content alerts">
 									
-							Bienvenido Jefe Consultor TIS a la <b>Gesti&oacute;n <?php echo $nombre_gestion; ?></b>, en este sitio usted podr&aacute; realizar la publicaci&oacute;n de avisos
+							Bienvenido Consultor TIS a la <b>Gesti&oacute;n <?php echo $nombre_gestion; ?></b>, en este sitio usted podr&aacute; realizar la publicaci&oacute;n de avisos
 							 y documentos, realizar el seguimiento de las Grupo Empresas que se inscribieron con usted, enviar mensajes a cualquier usuario
 							 del sistema y tambi&eacute;n podr&aacute; participar del espacio de discuci&oacute;n donde las grupo empresas
 							 inscritas con usted dejaran preguntas o dudas esperando su respuesta.

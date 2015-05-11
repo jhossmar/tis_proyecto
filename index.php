@@ -12,7 +12,7 @@ include('header.php');
 					</li>
 				</ul>
 			</div>
-			<center><h4>Bienvenidos al Sistema de Apoyo a la Empresa TIS</h4></center>
+			<center><h3>Bienvenidos al Sistema de Apoyo a la Empresa TIS</h3></center>
 
 			<div class="row-fluid">
 			<div class="box span12">

@@ -62,7 +62,7 @@ include('header.php');
 					</li>				
 				</ul>
 			</div>
-			<center><h3>Informaci&oacute;n Administrador TIS</h3></center>
+			<center><h3>Informaci&oacute;n Consultor TIS</h3></center>
 			<div class="row-fluid">
 				<div class="box span12 center" id="print">
 						<div class="box-header well">
@@ -134,7 +134,7 @@ include('header.php');
 						 <div class="row-fluid">
 							 <div class="span12" style="padding:10px;">  
 							 	<button type="button" class="btn btn-primary" onclick="imprimir();"><i class="icon-print"></i> Imprimir</button>
-								<a href="modificar_registro_admin.php"	 type="button" class="btn"><i class="icon-edit"></i> Modificar Registro</a>							
+								<a href="modificar_registro_admin.php"	 type="button" class="btn"><i class="icon-edit"></i> Modificar Registro</a>
 							</div>
 						</div>
 		                </div>

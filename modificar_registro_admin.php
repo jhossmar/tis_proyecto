@@ -31,7 +31,7 @@ if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=$quien)
 elseif(!isset($_SESSION['nombre_usuario'])){
 	header("Location: index.php");
 }
-		$sql = "SELECT id_usuario,nombre,apellido,clave,telefono,email
+		$sql = "SELECT id_usuario,nombre,apellido,telefono,email
 				FROM usuario u
 				WHERE id_usuario=".$_SESSION['id'];
 		$auxiliar = mysql_query($sql,$conn);
@@ -41,7 +41,6 @@ elseif(!isset($_SESSION['nombre_usuario'])){
 		$ape=$result['apellido'];
 		$telf=$result['telefono'];
 		$mail=$result['email'];
-		$contra=$result['clave'];
 
 /*--------------------------------VALIDAR REGISTRO------------------------------------*/
 if(isset($_POST['enviar'])){
@@ -50,7 +49,6 @@ if(isset($_POST['enviar'])){
 	$nombre=$_POST['firstname'];
 	$telfFijo=trim($_POST['telf']);
 	$eMail=trim($_POST['email']);
-	$passr=$_POST['pass'];
 	$error=false;
 	if (strcmp($mail,$eMail)!=0) { 
 		$sql = "SELECT email
@@ -72,7 +70,7 @@ if(isset($_POST['enviar'])){
 	 	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 							or die("Error no se pudo realizar cambios.");
 	        $sql = "UPDATE usuario as u
-					SET clave='$passr', nombre='$nombre',apellido='$apellido', telefono='$telfFijo',email='$eMail'
+					SET nombre='$nombre',apellido='$apellido', telefono='$telfFijo',email='$eMail'
 					WHERE u.id_usuario=$id_usuario";
 	        $result = mysql_query($sql,$conn) or die(mysql_error());
 
@@ -96,7 +94,7 @@ if(isset($_POST['enviar'])){
 					</li>				
 				</ul>
 			</div>
-			<center><h3>MODIFICAR ADMINISTRADOR TIS</h3></center>
+			<center><h3>Modificar registro Consultor TIS</h3></center>
 			<div class="row-fluid">
 				<div class="box span12 center">
 						<div class="box-header well">
@@ -132,13 +130,6 @@ if(isset($_POST['enviar'])){
 									<label id="error_email" class="error"><?php if(isset($error_email)){ echo $error_email; } ?></label>
 								  </div>
 								</div>
-								<div class="control-group">
-								  <label class="control-label" for="pass"> Contraseña:</label>
-								  <div class="controls">
-									<input type="password" placeholder="Password" name="pass"  id="pass" value='<?php echo $contra; ?>'>									
-								  </div>
-								</div>
-								<hr>
 								<div class="control-group">
 									<div class="controls">
 						         <button name="enviar"type="submit" class="btn btn-primary" id="enviar"><i class="icon-ok"></i> Guardar Cambios</button>
