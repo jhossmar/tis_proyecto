@@ -62,7 +62,7 @@ include('header.php');
 					</li>				
 				</ul>
 			</div>
-			<center><h3>Informaci&oacute;n Consultor TIS</h3></center>
+			<center><h3>Informaci&oacute;n del ADMINISTRADOR TIS</h3></center>
 			<div class="row-fluid">
 				<div class="box span12 center" id="print">
 						<div class="box-header well">

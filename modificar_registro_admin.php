@@ -49,7 +49,15 @@ if(isset($_POST['enviar'])){
 	$nombre=$_POST['firstname'];
 	$telfFijo=trim($_POST['telf']);
 	$eMail=trim($_POST['email']);
+	$contrasena=$_POST['contrasenia'];
 	$error=false;
+
+	      $sql2 = "SELECT clave
+				    FROM usuario
+				    WHERE email='$eMail'";
+		$consulta = mysql_query($sql2);
+		$auxp = mysql_fetch_array($consulta);
+      
 	if (strcmp($mail,$eMail)!=0) { 
 		$sql = "SELECT email
 				FROM usuario
@@ -70,13 +78,18 @@ if(isset($_POST['enviar'])){
 	 	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 							or die("Error no se pudo realizar cambios.");
 	        $sql = "UPDATE usuario as u
-					SET nombre='$nombre',apellido='$apellido', telefono='$telfFijo',email='$eMail'
+					SET clave='$contrasena',nombre='$nombre', apellido='$apellido', telefono='$telfFijo', email='$eMail'
 					WHERE u.id_usuario=$id_usuario";
 	        $result = mysql_query($sql,$conn) or die(mysql_error());
 
-	        header('Location: modificar_registro_admin.php');
+
+          echo "<script type='text/javascript'>"; 
+          echo "alert('sus datos se han actualizado correctamente');";
+          echo "</script>";
+          echo"<META HTTP-EQUIV='Refresh' CONTENT='2; URL=info_admin.php'> ";
+
 			
-	     }
+	  }
 	}
 	/*----------------------FIN VALIDAR REGISTRO------------------------*/
 	include('header.php');
@@ -94,7 +107,7 @@ if(isset($_POST['enviar'])){
 					</li>				
 				</ul>
 			</div>
-			<center><h3>Modificar registro Consultor TIS</h3></center>
+			<center><h3>Modificar registro Administrador TIS</h3></center>
 			<div class="row-fluid">
 				<div class="box span12 center">
 						<div class="box-header well">
@@ -128,6 +141,12 @@ if(isset($_POST['enviar'])){
 								  <div class="controls">
 									<input type="text" placeholder="E-mail" name="email"  id="email" value='<?php echo $mail; ?>'>
 									<label id="error_email" class="error"><?php if(isset($error_email)){ echo $error_email; } ?></label>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="pass">Nueva Contrasenia:</label>
+								  <div class="controls">
+									<input type="password" placeholder="Nueva contrasenia" name="contrasenia">
 								  </div>
 								</div>
 								<div class="control-group">
