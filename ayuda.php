@@ -18,17 +18,23 @@ include('header.php');
 			</div>
 			<center><h3>Ayuda del Sistema de Apoyo a la Empresa TIS</h3></center>
 			
-			
-	   <div id = "menu">
+		
+	<div class="row-fluid">
+	 <div class="box span12">
+	       <div class="box-header well">
+		     <h2><i class="icon-info-sign"></i> Ayuda</h2>
+		   </div>
+	    <div class="box-content">		
+	  <div id = "menu">
 		<ul>
-			<li><a href="ayuda.php?nom_arch=004">INTRODUCCION</a></li>
-			<li><a href="ayuda.php">VISTA PRINCIPAL</a></li>
-			<li><a href="ayuda.php">FUNCIONES DEL ADMINISTRADOR</a></li>
-			<li><a href="ayuda.php">FUNCIONES DEL CONSULTOR TIS</a></li>
-		    <li><a href="ayuda.php">FUNCIONES EXCLUSIVAS DEL CONSULTOR TIS</a></li>
-            <li><a href="ayuda.php">FUNCIONES DEL GRUPO EMPRESA</a></li>		
-		    <li><a href="ayuda.php">FUNCIONES DE LOS INTEGRANTES</a></li>
-		    <li><a href="ayuda.php">FUNCIONES ADICIONALES</a></li>
+			<li><a href="ayuda.php?nom_arch=002">INTRODUCCION</a></li>
+			<li><a href="ayuda.php?nom_arch=003">VISTA PRINCIPAL</a></li>
+			<li><a href="ayuda.php?nom_arch=004">FUNCIONES DEL ADMINISTRADOR</a></li>
+			<li><a href="ayuda.php?nom_arch=005">FUNCIONES DEL CONSULTOR TIS</a></li>
+		    
+            <li><a href="ayuda.php?nom_arch=007">FUNCIONES DEL GRUPO EMPRESA E INTEGRANTES </a></li>		
+		    <li><a href="ayuda.php?nom_arch=008">FUNCIONES DE LOS INTEGRANTES</a></li>
+		    <li><a href="ayuda.php?nom_arch=009">FUNCIONES ADICIONALES</a></li>
 		</ul>
 		
 	
@@ -42,16 +48,21 @@ include('header.php');
 			error_reporting(E_ALL ^ E_NOTICE); //para que no muestre el error la primera vez que se ingrese a ayuda
 			
 			$id=$_GET['nom_arch'];
-			echo($id);
-			echo "<embed src='archivos/".$id.".pdf' width=800 height=500 />";
+			//echo($id);
+			echo "<embed src='archivos/".$id.".pdf' width=780 height=500 />";
 			
 	  	?>
 	    </div>
 	   </div>
 	  </div>	
-
-   </div>
-				
+    </div>
+  </div>
+</div><!--/span-->
+</div><!-- fin row -->				
+			
+			
+			
+			
 				
         <div class="row-fluid">
 			<div class="box span12">
