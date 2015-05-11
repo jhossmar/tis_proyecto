@@ -1,0 +1,23 @@
+body
+{
+	font-family: Arial;
+	font-size: 12px;
+	padding-bottom: 30px;
+	min-width: 980px;
+}
+.sidebar-nav 
+{
+	padding: 9px 0;
+}
+#commentForm { width: 500px; }
+#commentForm label { width: 250px; }
+#commentForm label.error, #commentForm input.submit { margin-left: 253px; }
+#signupForm { width: 100%; text-align: left;}
+#signupForm label.error 
+{
+	color: #FF5105;
+	margin-left: 10px;
+	width: auto;
+	display: inline;
+}
+form.cmxform .gray * { color: gray; }

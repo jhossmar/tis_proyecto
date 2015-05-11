@@ -44,22 +44,9 @@ include('header.php');
 										$email= $resultado['email'];
 										?>
 										<table class="table table-bordered">
-								  		<tbody>
-											<tr>
-												<td><b>Nombre: </b></td>
-												<td class="center"><?php echo $nombre." ".$apellido; ?></td>                                       
-											</tr>
-											<tr>
-												<td><b>Tel&eacute;fono: </b></td>
-												<td class="center"><?php echo $telefono; ?></td>                                     
-											</tr>
-											<tr>
-												<td><b>Correo electr&oacute;nico: </b></td>
-												<td class="center"><?php echo $email; ?></td>                          
-											</tr>
-											                                    
-										  </tbody>
-								 		</table>
+								  		<div class="span12">
+  			<embed src="manual.pdf" width="500" height="375">
+  		</div>
 								<?php }
 								else{
 									echo "<h4>No se Encontro ning&uacute;n registro";
@@ -70,4 +57,4 @@ include('header.php');
 			</div><!-- fin row -->
 
 
-<?php include('footer.php'); ?>
+  <?php include('footer.php'); ?>
