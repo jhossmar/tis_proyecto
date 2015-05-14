@@ -1,6 +1,5 @@
 <?php
-	if(!isset($titulo))
-	{
+	if(!isset($titulo)){
 		header('Location: index.php');
 	}
 	if (isset($_SESSION['nombre_usuario'])){
@@ -18,7 +17,7 @@
                 	$tipo="Consultor TIS";
                     break;
                 case (2) :
-                	$tipo="Consultor TIS";
+                	$tipo="Jefe Consultor TIS";
                     break;
                 case (1) :
                     $tipo ="Administrador";
@@ -41,7 +40,7 @@
 	<!-- The styles -->
 	<link id="bs-css" href="css/bootstrap-cerulean.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/letras.css">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="css/charisma-app.css" rel="stylesheet">
 	<link href="css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
 	<link href='css/fullcalendar.css' rel='stylesheet'>
@@ -67,6 +66,7 @@
 <link href="css/jquery.alerts.css" rel="stylesheet" type="text/css">
 	<!-- calendario -->
 
+
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -84,19 +84,19 @@
 	<div class="navbar">
         <div class="row-fluid navegacion">
             	<div class="span2 logo" >
-	              <!--  <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">-->
-	               <!-- <span class="icon-bar"></span>-->
-	               <!-- <span class="icon-bar"></span>-->
-	               <!-- <span class="icon-bar"></span>-->
-	               <!-- </a>-->
-                    <img class="logo" alt="Logo Sistema de Apoyo a la Empresa TIS" src="img/umssd.png" height="120px"/>
+	                <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                </a>
+                	<img class="logo" alt="Logo Sistema de Apoyo a la Empresa TIS" src="img/umssd.png" height="120px"/>
                 </div>
                 <div class="span10">
                 	<div class="row-fluid contenido-navegacion">
                 		<div class="span10 title">
                 			<img src="img/titulo2.png" height="80px" width="100%" />
                 		</div>
-                		<?php if($sesion_valida){?>
+                		<?php if ($sesion_valida) {?>
                 			<div class="span2 usuarios">
                 			<!-- USUARIOS-->
 						                <div class="btn-group pull-right">
@@ -129,11 +129,11 @@
 						                        <li><a href="conexion/salir.php">Salir</a></li>
 						                    </ul>
 						                </div>
-    	           		   </div><!-- FIN USUARIOS-->
+    	           		</div><!-- FIN USUARIOS-->
     	           		<?php } ?>
                 	</div>
             <div class="row-fluid">
-                <div class="menu">
+            <div class="menu">
                         <ul class="nav">
                             <li class="hidden-tablet">
                                 <a href="index.php" id="link_inicio">Inicio</a>
@@ -171,7 +171,7 @@
                         </ul>
                     </div>
                     <!--/.nav-collapse -->
-            </div><!--FIN FILA ROW-->
+        	</div><!--FIN FILA ROW-->
         </div>
 	</div>
 	</div>

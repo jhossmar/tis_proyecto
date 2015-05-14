@@ -105,7 +105,7 @@ if(isset($_POST['enviar'])){
 	        $bitacora = mysql_query("CALL iniciar_sesion(1)",$conn)
 		or die("Error no se pudo realizar cambios.");
 	        $sql = "INSERT INTO usuario (nombre_usuario,clave,nombre,apellido,telefono,email,habilitado,tipo_usuario,gestion)
-	                VALUES ('$usuario','$clave','$nombre','$apellido','$telf','$eMail',0,2,1)";
+	                VALUES ('$usuario','$clave','$nombre','$apellido','$telf','$eMail',0,3,1)";
 	        $result = mysql_query($sql,$conn) or die(mysql_error());
 
 	        $id_consultor = "SELECT id_usuario

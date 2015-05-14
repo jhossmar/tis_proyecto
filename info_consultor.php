@@ -58,7 +58,7 @@ include('header.php');
   ventana.document.close();  //cerramos el documento
 
   	var css = ventana.document.createElement("link");
-	css.setAttribute("Home Consultor Tis", "css/style.css");
+	css.setAttribute("href", "css/style.css");
 	css.setAttribute("rel", "stylesheet");
 	css.setAttribute("type", "text/css");
 	ventana.document.head.appendChild(css);
@@ -155,7 +155,7 @@ include('header.php');
 									</tr>
 									<tr>
 										<td>Tipo de usuario: </td>
-										<td class="center"><?php echo "Consultor TIS"; ?></td>                          
+										<td class="center"><?php echo $quien_ingresa; ?></td>                          
 									</tr>                                    
 								  </tbody>
 						 </table>

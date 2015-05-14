@@ -69,7 +69,7 @@ include('header.php');
 								  <th>Contrase&ntilde;a</th>
 								  <th>Correo electr&oacute;nico</th>
 								  <th>Curr&iacute;culo</th>
-								  
+								  <th>Jefe Consultor</th>
                                   <th>Habilitado</th>
 							  </tr>
 						  </thead>
@@ -91,8 +91,13 @@ include('header.php');
                                          else{
                                          echo " <td class=\"center\"> <a href=".$row["curriculum"]."> <i class=\"icon-download-alt\"></i> Descargar</a></td>";
                                          }
-                                                                     
-								     
+                                       $aux= $row["tipo_usuario"];
+                                        if($aux=="2"){
+                                           echo "<td ><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi."  checked></center></td>";
+                                         }
+                                         else{
+                                            echo "<td class=\"center\"><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi."></center></td>";
+                                        }
                                         $aux= $row["habilitado"];
                                         if($aux=="1"){
                                            echo "<td class=\"center\"><center> <input type=\"checkbox\" id=c".$identi." name=c".$identi." checked></center></td>";
