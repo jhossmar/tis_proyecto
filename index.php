@@ -21,17 +21,19 @@ include('header.php');
 					</div>
 					<div class="box-content alerts">
 					<?php
-						if ($gestion_valida) {
+						if($gestion_valida) 
+						{
 							 include('conexion/noticias.php');
 
                        }
-                         else{
+                       else
+                       {
                          	echo "<div align=\"center\">
 	                        <h4><i class=\"icon-info-sign\"></i>
 	                        No existe ning&uacute;n aviso para esta gesti&oacute;n.</h4>
 	                      	</div>";
-                         }
-                      ?>
+                        }
+                    ?>
 
 					</div>
 				</div><!--/span-->
