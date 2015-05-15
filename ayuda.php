@@ -27,36 +27,37 @@ include('header.php');
 	    <div class="box-content">		
 	  <div id = "menu">
 		<ul>
-			<li><a href="ayuda.php?nom_arch=002">INTRODUCCION</a></li>
-			<li><a href="ayuda.php?nom_arch=003">VISTA PRINCIPAL</a></li>
-			<li><a href="ayuda.php?nom_arch=004">FUNCIONES DEL ADMINISTRADOR</a></li>
-			<li><a href="ayuda.php?nom_arch=005">FUNCIONES DEL CONSULTOR TIS</a></li>
+			<li><a href="ayuda.php?nom_arch=002#modal1">INTRODUCCION</a></li>
+			<li><a href="ayuda.php?nom_arch=003#modal1">VISTA PRINCIPAL</a></li>
+			<li><a href="ayuda.php?nom_arch=004#modal1">FUNCIONES DEL ADMINISTRADOR</a></li>
+			<li><a href="ayuda.php?nom_arch=005#modal1">FUNCIONES DEL CONSULTOR TIS</a></li>
 		    
-            <li><a href="ayuda.php?nom_arch=007">FUNCIONES DEL GRUPO EMPRESA E INTEGRANTES </a></li>		
-		    <li><a href="ayuda.php?nom_arch=008">FUNCIONES DE LOS INTEGRANTES</a></li>
-		    <li><a href="ayuda.php?nom_arch=009">FUNCIONES ADICIONALES</a></li>
+            <li><a href="ayuda.php?nom_arch=007#modal1">FUNCIONES DEL GRUPO EMPRESA E INTEGRANTES </a></li>		
+		    <li><a href="ayuda.php?nom_arch=008#modal1">FUNCIONES DE LOS INTEGRANTES</a></li>
+		    <li><a href="ayuda.php?nom_arch=009#modal1">FUNCIONES ADICIONALES</a></li>
 		</ul>
 		
 	
 	</div>
-	 
-	<div class="container-fluid">
-	<div class="row-fluid">
-       <div class="span12">
-       	<div class="visor">
-    	<?php
+	<!---- ---------------VISOR DE PDF  ------------------------>
+	<div class="center">
+	  <div id="modal1" class="modalmask">
+		<div class="modalbox movedown">
+			<a href="#close" title="Close" class="close">X</a>
+		<?php
 			error_reporting(E_ALL ^ E_NOTICE); //para que no muestre el error la primera vez que se ingrese a ayuda
 			
 			$id=$_GET['nom_arch'];
 			//echo($id);
-			echo "<embed src='archivos/".$id.".pdf' width=780 height=500 />";
-			
-	  	?>
-	    </div>
+			//echo "<h2>".$id."</h2>";
+			echo "<embed src='archivos/".$id.".pdf' width=900 height=500 />";
+	      ?>
+		
+		 </div>
 	   </div>
-	  </div>	
-    </div>
-  </div>
+	</div>	
+	
+	</div>
 </div><!--/span-->
 </div><!-- fin row -->				
 			

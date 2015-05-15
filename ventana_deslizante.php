@@ -10,20 +10,7 @@
 <title>Crear ventanas modales usando solo css y su selector target</title>
 <style type="text/css">
 
-body{font-family: Arial,sans-serif;color:#333;}
-.center{
-	position:absolute;
-	width:700px;
-	height:600px;
-	top:50%;
-	left:50%;
-	margin-left:-350px;
-	margin-top:-250px;	
 
-}
-h1{
-	font-size:20px;
-}
 .modalmask {
 	position: fixed;
 	font-family: Arial, sans-serif;
@@ -156,14 +143,9 @@ a:hover{
 <body>
 
 <div class="center">
-	 
-	 
-		
-	<h1 align="center"><p style="background:#222;color:#fff;padding:4px;">Pulsa los botones para ver las ventanas modales</p></h1>
 	<ul>
 		<li><a href="#modal1">DESLIZAR</a></li>
-		<li><a href="#modal2">ROTAR</a></li>
-		<li><a href="#modal3">REDIMENSIONAR</a></li>
+		
 	</ul>
 	<div id="modal1" class="modalmask">
 		<div class="modalbox movedown">
@@ -172,22 +154,8 @@ a:hover{
 			<embed src='archivos/004.pdf' width=800 height=500 />
 		 </div>
 	</div>
-	<div id="modal2" class="modalmask">
-		<div class="modalbox rotate">
-			<a href="#close" title="Close" class="close">X</a>
-			<h2>ROTAR</h2>
-			<p>Usando la propiedad transform de CSS3, podemos hacer que las ventanas aparezcan rotando.</p>
-			<p>No hay nada de Javascript, solo unas pocas lineas de CSS.</p>
-		</div>
-	</div>
-		<div id="modal3" class="modalmask">
-		<div class="modalbox resize">
-			<a href="#close" title="Close" class="close">X</a>
-			<h2>REDIMENSIONAR</h2>
-			<p>También puedes redimensionar la ventana hasta hacerla desaparecer.</p>
-			<p>Las posibilidades que ofrece CSS3 son múltiples, tan solo hace falta un poco de imaginación para crear efectos realmente llamativos.</p>
-		</div>
-	</div>
+	
+	</div>	
 		
 
 

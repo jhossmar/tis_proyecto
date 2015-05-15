@@ -1,20 +1,21 @@
-    div#menu{
+ div#menu{
   		width: 450px;
   		margin-top 20px;
-  		//background-color:red;
+  		
   	 }
-  	 div#menu ul {
+ 
+ div#menu ul {
   	 	list-style: none ;
   	 }
   	 
-  	 div#menu ul li {
+ div#menu ul li {
   	 	margin-top: 15px;
   	 	font-family: tahoma;
   	 	font-size: 18 px;
   	 	background-color: #F4F4F4;
   	 	width :450 px;
   	 	padding-top:10px;
-  	 	//padding-bottom: 10px;
+  	
   	 	border-radius:0px 20px 20px 0px;
   	    padding-left:20px;
   	    box-shadow: 5px 0px 10px #939393;
@@ -22,8 +23,9 @@
   	 color: white;
   	 } 
   	 
-  	 div#menu ul li:hover{
+ div#menu ul li:hover{
   	 	padding-left: 100px;
         color: black;
   	    
-  	 }
+  	 } 
+  	 
