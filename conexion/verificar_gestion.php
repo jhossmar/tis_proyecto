@@ -16,7 +16,10 @@ class VerificarGestion
 	public $date=0;
 	public $hora=0;
 	public $fecha_actual=0;
-	
+	public $ini_gestion=0;
+	public $fin_gestion=0;
+	public $fecha_ini =0;
+	public $fecha_fin =0;
 	function __construct()
 	{		
 		$this->date = date("Y-m-d");

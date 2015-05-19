@@ -4,7 +4,7 @@ require_once("conexion/verificar_gestion.php");
   $VeriricarG = new VerificarGestion();
   $GestionValida = $VeriricarG->VerificarFechasGestion();
 session_start();
-$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
+$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$VeriricarG->GetConexion())
 			or die("Error no se pudo realizar cambios.");
 /*------------------VERIFICAR QUE SEAL EL JEFE CONSULTOR------------------------*/
 if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=2)
@@ -65,17 +65,17 @@ if (isset($_POST['enviar'])) {//habilidar registro de grupo empresas
 			if (@checkdate($fin_mes, $fin_dia, $fin_year)) {
 				if($inicio>=$fecha){//corecto
 					if ($fin>=$inicio) {//corecto sobreescribir base de datos
-						if (strtotime($fin)<=$fecha_fin) {
+						if (strtotime($fin)<=$VeriricarG->fecha_fin) {
 							$consulta_sql="UPDATE fase_convocatoria
 									set fecha_inicio='$inicio' , fecha_fin='$fin', activo=1
-									WHERE gestion=$id_gestion AND tipo_fase_convocatoria=2";
-							$consulta = mysql_query($consulta_sql,$conn)
+									WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=2";
+							$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 							or die(mysql_error());
 							header('Location:planificacion.php#registro');
 						}
 						else{
 							$error = true;
-							$error_fecha_fin = "La gesti&oacute;n termina la fecha ".$fin_gestion;
+							$error_fecha_fin = "La gesti&oacute;n termina la fecha ".$VeriricarG->fin_gestion;
 						}
 					}
 					else{
@@ -102,8 +102,8 @@ if (isset($_POST['enviar'])) {//habilidar registro de grupo empresas
 		if (!isset($_POST['newsletter'])) {
 			$consulta_sql="UPDATE fase_convocatoria
 						   set activo=0
-						   WHERE gestion=$id_gestion AND tipo_fase_convocatoria=2";
-			$consulta = mysql_query($consulta_sql,$conn)
+						   WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=2";
+			$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 			or die("Could not execute the select query.");
 			header('Location:planificacion.php#registro');
 			
@@ -127,17 +127,17 @@ if (isset($_POST['enviar_1'])) {//lanzamiento convocatoria
 			if (@checkdate($fin_mes_1, $fin_dia_1, $fin_year_1)) {
 				if($inicio_1>=$fecha){//corecto
 					if ($fin_1>=$inicio_1) {//corecto sobreescribir base de datos
-						if (strtotime($fin_1)<=$fecha_fin) {
+						if (strtotime($fin_1)<=$VeriricarG->fecha_fin) {
 							$consulta_sql="UPDATE fase_convocatoria
 										set fecha_inicio='$inicio_1' , fecha_fin='$fin_1', activo=1
-										WHERE gestion=$id_gestion AND tipo_fase_convocatoria=1";
-							$consulta = mysql_query($consulta_sql,$conn)
+										WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=1";
+							$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 							or die("Could not execute the select query.");
 							header('Location:planificacion.php#lanzamiento');
 						}
 						else{
 							$error_1 = true;
-							$error_fecha_fin_1 = "La gesti&oacute;n termina la fecha ".$fin_gestion;
+							$error_fecha_fin_1 = "La gesti&oacute;n termina la fecha ".$VeriricarG->fin_gestion;
 						}
 					}
 					else{
@@ -164,8 +164,8 @@ if (isset($_POST['enviar_1'])) {//lanzamiento convocatoria
 		if (!isset($_POST['newsletter_1'])) {
 			$consulta_sql="UPDATE fase_convocatoria
 						   set activo=0
-						   WHERE gestion=$id_gestion AND tipo_fase_convocatoria=1";
-			$consulta = mysql_query($consulta_sql,$conn)
+						   WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=1";
+			$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 			or die("Could not execute the select query.");
 			header('Location:planificacion.php#lanzamiento');
 			
@@ -189,17 +189,17 @@ if (isset($_POST['enviar_3'])) {//documentos
 			if (@checkdate($fin_mes_3, $fin_dia_3, $fin_year_3)) {
 				if($inicio_3>=$fecha){//corecto
 					if ($fin_3>=$inicio_3) {//corecto sobreescribir base de datos
-						if (strtotime($fin_3)<=$fecha_fin) {
+						if (strtotime($fin_3)<=$VeriricarG->fecha_fin) {
 							$consulta_sql="UPDATE fase_convocatoria
 										set fecha_inicio='$inicio_3' , fecha_fin='$fin_3', activo=1
-										WHERE gestion=$id_gestion AND tipo_fase_convocatoria=3";
-							$consulta = mysql_query($consulta_sql,$conn)
+										WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=3";
+							$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 							or die("Could not execute the select query.");
 							header('Location:planificacion.php#documentos');
 						}
 						else{
 							$error_3 = true;
-							$error_fecha_fin_3 = "La gesti&oacute;n termina la fecha ".$fin_gestion;
+							$error_fecha_fin_3 = "La gesti&oacute;n termina la fecha ".$VeriricarG->fin_gestion;
 						}
 					}
 					else{
@@ -226,8 +226,8 @@ if (isset($_POST['enviar_3'])) {//documentos
 		if (!isset($_POST['newsletter_3'])) {
 			$consulta_sql="UPDATE fase_convocatoria
 						   set activo=0
-						   WHERE gestion=$id_gestion AND tipo_fase_convocatoria=3";
-			$consulta = mysql_query($consulta_sql,$conn)
+						   WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=3";
+			$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 			or die("Could not execute the select query.");
 			header('Location:planificacion.php#documentos');
 			
@@ -251,17 +251,17 @@ if (isset($_POST['enviar_4'])) {//firma de contratos
 			if (@checkdate($fin_mes_4, $fin_dia_4, $fin_year_4)) {
 				if($inicio_4>=$fecha){//corecto
 					if ($fin_4>=$inicio_4) {//corecto sobreescribir base de datos
-						if (strtotime($fin_4)<=$fecha_fin) {
+						if (strtotime($fin_4)<=$VeriricarG->fecha_fin) {
 							$consulta_sql="UPDATE fase_convocatoria
 										set fecha_inicio='$inicio_4' , fecha_fin='$fin_4', activo=1
-										WHERE gestion=$id_gestion AND tipo_fase_convocatoria=4";
-							$consulta = mysql_query($consulta_sql,$conn)
+										WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=4";
+							$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 							or die("Could not execute the select query.");
 							header('Location:planificacion.php#contratos');
 						}
 						else{
 							$error_4 = true;
-							$error_fecha_fin_4 = "La gesti&oacute;n termina la fecha ".$fin_gestion;
+							$error_fecha_fin_4 = "La gesti&oacute;n termina la fecha ".$VeriricarG->fin_gestion;
 						}
 					}
 					else{
@@ -288,8 +288,8 @@ if (isset($_POST['enviar_4'])) {//firma de contratos
 		if (!isset($_POST['newsletter_4'])) {
 			$consulta_sql="UPDATE fase_convocatoria
 						   set activo=0
-						   WHERE gestion=$id_gestion AND tipo_fase_convocatoria=4";
-			$consulta = mysql_query($consulta_sql,$conn)
+						   WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=4";
+			$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 			or die("Could not execute the select query.");
 			header('Location:planificacion.php#contratos');
 			
@@ -313,17 +313,17 @@ if (isset($_POST['enviar_5'])) {//proceso de desarrollo
 			if (@checkdate($fin_mes_5, $fin_dia_5, $fin_year_5)) {
 				if($inicio_5>=$fecha){//corecto
 					if ($fin_5>=$inicio_5) {//corecto sobreescribir base de datos
-						if (strtotime($fin_5)<=$fecha_fin) {
+						if (strtotime($fin_5)<=$VeriricarG->fecha_fin) {
 							$consulta_sql="UPDATE fase_convocatoria
 										set fecha_inicio='$inicio_5' , fecha_fin='$fin_5', activo=1
-										WHERE gestion=$id_gestion AND tipo_fase_convocatoria=5";
-							$consulta = mysql_query($consulta_sql,$conn)
+										WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=5";
+							$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 							or die("Could not execute the select query.");
 							header('Location:planificacion.php#desarrollo');
 						}
 						else{
 							$error_5 = true;
-							$error_fecha_fin_5 = "La gesti&oacute;n termina la fecha ".$fin_gestion;
+							$error_fecha_fin_5 = "La gesti&oacute;n termina la fecha ".$VeriricarG->fin_gestion;
 						}
 					}
 					else{
@@ -350,8 +350,8 @@ if (isset($_POST['enviar_5'])) {//proceso de desarrollo
 		if (!isset($_POST['newsletter_5'])) {
 			$consulta_sql="UPDATE fase_convocatoria
 						   set activo=0
-						   WHERE gestion=$id_gestion AND tipo_fase_convocatoria=5";
-			$consulta = mysql_query($consulta_sql,$conn)
+						   WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=5";
+			$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion)
 			or die("Could not execute the select query.");
 			header('Location:planificacion.php#desarrollo');
 			
@@ -375,17 +375,17 @@ if (isset($_POST['enviar_6'])) {//entrega productos
 			if (@checkdate($fin_mes_6, $fin_dia_6, $fin_year_6)) {
 				if($inicio_6>=$fecha){//corecto
 					if ($fin_6>=$inicio_6) {//corecto sobreescribir base de datos
-						if (strtotime($fin_6)<=$fecha_fin) {
+						if (strtotime($fin_6)<=$VeriricarG->fecha_fin) {
 							$consulta_sql="UPDATE fase_convocatoria
 										set fecha_inicio='$inicio_6' , fecha_fin='$fin_6', activo=1
-										WHERE gestion=$id_gestion AND tipo_fase_convocatoria=6";
-							$consulta = mysql_query($consulta_sql,$conn)
+										WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=6";
+							$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 							or die("Could not execute the select query.");
 							header('Location:planificacion.php#productos');
 						}
 						else{
 							$error_6 = true;
-							$error_fecha_fin_6 = "La gesti&oacute;n termina la fecha ".$fin_gestion;
+							$error_fecha_fin_6 = "La gesti&oacute;n termina la fecha ".$VeriricarG->fin_gestion;
 						}
 					}
 					else{
@@ -412,8 +412,8 @@ if (isset($_POST['enviar_6'])) {//entrega productos
 		if (!isset($_POST['newsletter_6'])) {
 			$consulta_sql="UPDATE fase_convocatoria
 						   set activo=0
-						   WHERE gestion=$id_gestion AND tipo_fase_convocatoria=6";
-			$consulta = mysql_query($consulta_sql,$conn)
+						   WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=6";
+			$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 			or die("Could not execute the select query.");
 			header('Location:planificacion.php#productos');
 			
@@ -437,17 +437,17 @@ if (isset($_POST['enviar_7'])) {//cierre convocatoria
 			if (@checkdate($fin_mes_7, $fin_dia_7, $fin_year_7)) {
 				if($inicio_7>=$fecha){//corecto
 					if ($fin_7>=$inicio_7) {//corecto sobreescribir base de datos
-						if (strtotime($fin_7)<=$fecha_fin) {
+						if (strtotime($fin_7)<=$VeriricarG->fecha_fin) {
 							$consulta_sql="UPDATE fase_convocatoria
 										set fecha_inicio='$inicio_7' , fecha_fin='$fin_7', activo=1
-										WHERE gestion=$id_gestion AND tipo_fase_convocatoria=7";
-							$consulta = mysql_query($consulta_sql,$conn)
+										WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=7";
+							$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 							or die("Could not execute the select query.");
 							header('Location:planificacion.php#cierre');
 						}
 						else{
 							$error_7 = true;
-							$error_fecha_fin_7 = "La gesti&oacute;n termina la fecha ".$fin_gestion;
+							$error_fecha_fin_7 = "La gesti&oacute;n termina la fecha ".$VeriricarG->fin_gestion;
 						}
 					}
 					else{
@@ -474,8 +474,8 @@ if (isset($_POST['enviar_7'])) {//cierre convocatoria
 		if (!isset($_POST['newsletter_7'])) {
 			$consulta_sql="UPDATE fase_convocatoria
 						   set activo=0
-						   WHERE gestion=$id_gestion AND tipo_fase_convocatoria=7";
-			$consulta = mysql_query($consulta_sql,$conn)
+						   WHERE gestion=$VeriricarG->id_gestion AND tipo_fase_convocatoria=7";
+			$consulta = mysql_query($consulta_sql,$VeriricarG->GetConexion())
 			or die("Could not execute the select query.");
 			header('Location:planificacion.php#cierre');
 			
@@ -522,7 +522,7 @@ include('header.php');
 							$consulta_act_1 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
 										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=1";
-				            $res_1 = mysql_query($consulta_act_1);
+				            $res_1 = mysql_query($consulta_act_1,$VeriricarG->GetConexion());
 				            $row_1= mysql_fetch_array($res_1);
 				            $actividad_1=NULL;
 				            if (!is_null($row_1['fecha_fin']) && !is_null($row_1['fecha_inicio'])) {            	
@@ -584,7 +584,7 @@ include('header.php');
 							$consulta_act_2 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
 										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=2";
-				            $res_2 = mysql_query($consulta_act_2);
+				            $res_2 = mysql_query($consulta_act_2,$VeriricarG->GetConexion());
 				            $row_2= mysql_fetch_array($res_2);
 				            $actividad_2=NULL;
 				            if (!is_null($row_2['fecha_fin']) && !is_null($row_2['fecha_inicio'])) {            	
@@ -645,7 +645,7 @@ include('header.php');
 							$consulta_act_3 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
 										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=3";
-				            $res_3 = mysql_query($consulta_act_3);
+				            $res_3 = mysql_query($consulta_act_3,$VeriricarG->GetConexion());
 				            $row_3= mysql_fetch_array($res_3);
 				            $actividad_3="";
 				            if (!is_null($row_3['fecha_fin']) && !is_null($row_3['fecha_inicio'])) {            	
@@ -707,7 +707,7 @@ include('header.php');
 							$consulta_act_4 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
 										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=4";
-				            $res_4 = mysql_query($consulta_act_4);
+				            $res_4 = mysql_query($consulta_act_4,$VeriricarG->GetConexion());
 				            $row_4= mysql_fetch_array($res_4);
 				            $actividad_4=NULL;
 				            if (!is_null($row_4['fecha_fin']) && !is_null($row_4['fecha_inicio'])) {            	
@@ -769,7 +769,7 @@ include('header.php');
 							$consulta_act_5 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
 										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=5";
-				            $res_5 = mysql_query($consulta_act_5);
+				            $res_5 = mysql_query($consulta_act_5,$VeriricarG->GetConexion());
 				            $row_5= mysql_fetch_array($res_5);
 				            $actividad_5=NULL;
 				            if (!is_null($row_5['fecha_fin']) && !is_null($row_5['fecha_inicio'])) {            	
@@ -831,7 +831,7 @@ include('header.php');
 							$consulta_act_6 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
 										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=6";
-				            $res_6 = mysql_query($consulta_act_6);
+				            $res_6 = mysql_query($consulta_act_6,$VeriricarG->GetConexion());
 				            $row_6= mysql_fetch_array($res_6);
 				            $actividad_6=NULL;
 				           if (!is_null($row_6['fecha_fin']) && !is_null($row_6['fecha_inicio'])) {            	
@@ -893,7 +893,7 @@ include('header.php');
 							$consulta_act_7 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
 										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=7";
-				            $res_7 = mysql_query($consulta_act_7);
+				            $res_7 = mysql_query($consulta_act_7,$VeriricarG->GetConexion());
 				            $row_7= mysql_fetch_array($res_7);
 				            $actividad_7=NULL;
 				           	if (!is_null($row_7['fecha_fin']) && !is_null($row_7['fecha_inicio'])) {            	
