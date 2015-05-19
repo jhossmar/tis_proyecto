@@ -1,6 +1,8 @@
 <?php
 $titulo="Planificaci&oacute;n de actividades";
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
 session_start();
 $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 			or die("Error no se pudo realizar cambios.");
@@ -494,7 +496,7 @@ include('header.php');
 				</ul>
 			</div>
 			<center><h3>Planificar las actividades de la Empresa TIS</h3></center>
-			<?php if($gestion_valida && !$gestion_espera) { //formulario 2 habilitar registro de grupo empresas
+			<?php if($GestionValida && !$VeriricarG->gestion_espera) { //formulario 2 habilitar registro de grupo empresas
 			?>
 			<div class="row-fluid" id="planificacion">
 				<div class="span12">
@@ -519,7 +521,7 @@ include('header.php');
 						if (!isset($_POST['enviar_1'])) {
 							$consulta_act_1 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
-										WHERE gestion=$id_gestion and tipo_fase_convocatoria=1";
+										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=1";
 				            $res_1 = mysql_query($consulta_act_1);
 				            $row_1= mysql_fetch_array($res_1);
 				            $actividad_1=NULL;
@@ -581,7 +583,7 @@ include('header.php');
 						if (!isset($_POST['enviar'])) {
 							$consulta_act_2 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
-										WHERE gestion=$id_gestion and tipo_fase_convocatoria=2";
+										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=2";
 				            $res_2 = mysql_query($consulta_act_2);
 				            $row_2= mysql_fetch_array($res_2);
 				            $actividad_2=NULL;
@@ -642,7 +644,7 @@ include('header.php');
 						if (!isset($_POST['enviar_3'])) {
 							$consulta_act_3 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
-										WHERE gestion=$id_gestion and tipo_fase_convocatoria=3";
+										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=3";
 				            $res_3 = mysql_query($consulta_act_3);
 				            $row_3= mysql_fetch_array($res_3);
 				            $actividad_3="";
@@ -704,7 +706,7 @@ include('header.php');
 						if (!isset($_POST['enviar_4'])) {
 							$consulta_act_4 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
-										WHERE gestion=$id_gestion and tipo_fase_convocatoria=4";
+										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=4";
 				            $res_4 = mysql_query($consulta_act_4);
 				            $row_4= mysql_fetch_array($res_4);
 				            $actividad_4=NULL;
@@ -766,7 +768,7 @@ include('header.php');
 						if (!isset($_POST['enviar_5'])) {
 							$consulta_act_5 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
-										WHERE gestion=$id_gestion and tipo_fase_convocatoria=5";
+										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=5";
 				            $res_5 = mysql_query($consulta_act_5);
 				            $row_5= mysql_fetch_array($res_5);
 				            $actividad_5=NULL;
@@ -828,7 +830,7 @@ include('header.php');
 						if (!isset($_POST['enviar_6'])) {
 							$consulta_act_6 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
-										WHERE gestion=$id_gestion and tipo_fase_convocatoria=6";
+										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=6";
 				            $res_6 = mysql_query($consulta_act_6);
 				            $row_6= mysql_fetch_array($res_6);
 				            $actividad_6=NULL;
@@ -890,7 +892,7 @@ include('header.php');
 						if (!isset($_POST['enviar_7'])) {
 							$consulta_act_7 = "SELECT fecha_inicio,fecha_fin,descripcion,activo
 										FROM fase_convocatoria
-										WHERE gestion=$id_gestion and tipo_fase_convocatoria=7";
+										WHERE gestion=$VeriricarG->id_gestion and tipo_fase_convocatoria=7";
 				            $res_7 = mysql_query($consulta_act_7);
 				            $row_7= mysql_fetch_array($res_7);
 				            $actividad_7=NULL;

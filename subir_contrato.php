@@ -1,6 +1,8 @@
 <?php
 $titulo="Publicar Contrato";
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
 session_start();
 $quien_ingresa="Grupo Empresa";
 $pag_ini="home_grupo.php";
@@ -88,8 +90,8 @@ if(isset($_POST['enviar'])){
 		if(!$errorA){
 	      
             $sql = "INSERT INTO documento_consultor(nombre_documento, descripsion_documento, ruta_documento, fecha_documento, documento_jefe, consultor_tis, gestion)
-	                VALUES ('$tituloD', '$descripcionA', '$contrato', NOW(), 0, '$usuario', '$id_gestion' )";
-	        $result = mysql_query($sql,$conn) or die(mysql_error());
+	                VALUES ('$tituloD', '$descripcionA', '$contrato', NOW(), 0, '$usuario', '$VeriricarG->id_gestion' )";
+	        $result = mysql_query($sql,$VeriricarG->GetConexion()) or die(mysql_error());
 	        header("Location: administrar_archivos.php");
 		}
 	}
@@ -118,7 +120,7 @@ include('header.php');
 						<h2><i class="icon-edit"></i> Formulario de publicaci&oacute;n de Documento</h2>
 					</div>
 					<div class="box-content">
-						<?php if ($gestion_valida){
+						<?php if ($GestionValida){
 						?>
 		                  	<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" action="subir_contrato.php" accept-charset="utf-8">
 								<fieldset>

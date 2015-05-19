@@ -1,6 +1,10 @@
 <?php
 $titulo="Sistema de Apoyo a la Empresa TIS";
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+    
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
+
 session_start();
 include('header.php');
  ?>
@@ -17,14 +21,13 @@ include('header.php');
 			<div class="row-fluid">
 			<div class="box span12">
 					<div class="box-header well">
-						<h2><i class="icon-bullhorn"></i> Avisos: Gesti&oacute;n <?php echo $nombre_gestion; ?></h2>
+						<h2><i class="icon-bullhorn"></i> Avisos: Gesti&oacute;n <?php echo $VeriricarG->nombre_gestion; ?></h2>
 					</div>
 					<div class="box-content alerts">
 					<?php
-						if($gestion_valida) 
+						if($GestionValida) 
 						{
 							 include('conexion/noticias.php');
-
                        }
                        else
                        {

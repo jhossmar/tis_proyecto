@@ -1,21 +1,24 @@
 <?php
 
-  if(!isset($titulo)){
+  if(!isset($titulo))
+  {
     header('Location: ../index.php');
   }
-               $consulta = "SELECT  nombre_documento, ruta_documento, fecha_documento, descripsion_documento, consultor_tis, nombre,apellido
-                            FROM documento_consultor d, usuario u
-                            WHERE  documento_jefe= '1' AND d.gestion=$id_gestion AND d.consultor_tis=u.id_usuario";
-               $resultado = mysql_query($consulta);
-               $numero = 0;
+    $VeriricarG = new VerificarGestion();
+    $GestionValida = $VeriricarG->VerificarFechasGestion();
 
+      $consulta = "SELECT  nombre_documento, ruta_documento, fecha_documento, descripsion_documento, consultor_tis, nombre,apellido
+                   FROM documento_consultor d, usuario u
+                   WHERE  documento_jefe= '1' AND d.gestion=$VeriricarG->id_gestion AND d.consultor_tis=u.id_usuario";
+      $resultado = mysql_query($consulta);
+      $numero = 0;
 
-               $c = "SELECT COUNT(*) as numer
-                     FROM documento_consultor
-                     WHERE  documento_jefe= '1' AND gestion=$id_gestion";
-               $r = mysql_query($c);
-               $res = mysql_fetch_array( $r);
-               $num=  $res['numer'];
+      $c = "SELECT COUNT(*) as numer
+            FROM documento_consultor
+            WHERE  documento_jefe= '1' AND gestion=$VeriricarG->id_gestion";
+      $r = mysql_query($c);
+      $res = mysql_fetch_array( $r);
+      $num=  $res['numer'];
 ?>
    <script src="js/noticias.js"></script>
    <script language="JavaScript" type="text/javascript">
@@ -25,44 +28,42 @@
                timerID = setTimeout("moverAvisos()", 1000);
                 </script>
 <?php
-
-               /*$row_Recordset1 = mysql_fetch_assoc($Recordset1);*/
-               /*$totalRows_Recordset1 = mysql_num_rows($Recordset1);*/
-               if ($num==0) {
-                 echo "<div align=\"center\">
-                        <h4><i class=\"icon-info-sign\"></i>
-                        No existe ning&uacute;n aviso para esta gesti&oacute;n.</h4>
-                      </div>";
-               }
-               else{
-                    if($num < 4){
-                          echo "<table style=\"position:relative; overflow:hidden; width:100%; max-height=390px;\">   ";
-                          while($row = mysql_fetch_array($resultado))
-                                {
-                         echo "  <tr>
-                                     <td>
-                                            <div class=\"caja_aviso\"  id=\"aviso".$numero."\" >
-                                                  <div class=\"subtitulo_aviso\"><h4>Por : ".$row["nombre"]." ".$row['apellido']."</h4>
-                                                  <h4>Asunto: ".$row["nombre_documento"]." <h4></div>
-                                                  <div class=\"letra_aviso\">".$row["descripsion_documento"]." <br></div>
-                                                  <div class=\"pie_aviso\">"; 
-                                                  if(!empty($row["ruta_documento"]))   {
-                                                    echo "    <a href=\" ".$row["ruta_documento"]."\" style=\"float:left;\"> <i class=\"icon-download-alt\"></i> Descargar</a></hr>" ;
-                                                    }
-
-                                                  echo "<p style=\" text-align:right;\">Publicado el  ".$row["fecha_documento"]."</p> </div>
-                                            </div>
-                                      </td>
-                                    </tr>";
-                                  $numero++;
-                               }
-                           echo "</table>";
-               }
-               else{
-
-
-                      echo "
-                            <table width=\"100%\" cellpadding=\"0\"  cellspacing=\"0\">
+    if ($num==0) 
+    {
+        echo "<div align=\"center\">
+        <h4><i class=\"icon-info-sign\"></i>
+        No existe ning&uacute;n aviso para esta gesti&oacute;n.</h4>
+        </div>";
+    }
+    else
+    {
+      if($num < 4)
+      {
+        echo "<table style=\"position:relative; overflow:hidden; width:100%; max-height=390px;\">   ";
+        while($row = mysql_fetch_array($resultado))
+        {
+        echo "  <tr>
+                  <td>
+                    <div class=\"caja_aviso\"  id=\"aviso".$numero."\" >
+                    <div class=\"subtitulo_aviso\"><h4>Por : ".$row["nombre"]." ".$row['apellido']."</h4>
+                    <h4>Asunto: ".$row["nombre_documento"]." <h4></div>
+                    <div class=\"letra_aviso\">".$row["descripsion_documento"]." <br></div>
+                    <div class=\"pie_aviso\">"; 
+                   if(!empty($row["ruta_documento"]))   
+                   {
+                      echo "    <a href=\" ".$row["ruta_documento"]."\" style=\"float:left;\"> <i class=\"icon-download-alt\"></i> Descargar</a></hr>" ;
+                   }
+                    echo "<p style=\" text-align:right;\">Publicado el  ".$row["fecha_documento"]."</p> </div>
+                    </div>
+                  </td>
+                </tr>";
+                $numero++;
+        }
+        echo "</table>";
+      }
+      else
+      {
+          echo "<table width=\"100%\" cellpadding=\"0\"  cellspacing=\"0\">
                                 <tr>
                                     <td style=\"width: 96%\" onmouseover=\"normal()\">
                                          <div style=\"position:relative; overflow:hidden; width:100%; height:390px;\">

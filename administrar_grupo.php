@@ -1,6 +1,8 @@
 <?php
 $titulo="Administrar Grupo Empresas";
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
 session_start();
 /*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
 if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']!=2 && $_SESSION['tipo']!=3))
@@ -54,19 +56,19 @@ include('header.php');
 
 					</div>
 					<div class="box-content">
-						<?php if($gestion_valida) {
-                              include('conexion/conexion.php');
-                               $integrantes ="SELECT id_usuario,nombre_largo,nombre_corto,nombre,apellido,u.habilitado, u.nombre_usuario,g.id_grupo_empresa
+						<?php if( $GestionValida) {
+                              
+        $integrantes ="SELECT id_usuario,nombre_largo,nombre_corto,nombre,apellido,u.habilitado, u.nombre_usuario,g.id_grupo_empresa
 											from grupo_empresa g, usuario u, integrante i
 											where g.consultor_tis=$id_usuario AND i.grupo_empresa=g.id_grupo_empresa AND
-											i.usuario=u.id_usuario AND u.tipo_usuario=4 AND u.gestion=$id_gestion";
-                               $resultado = mysql_query($integrantes);
+											i.usuario=u.id_usuario AND u.tipo_usuario=4 AND u.gestion=$VeriricarG->id_gestion";
+                               $resultado = mysql_query($integrantes,$VeriricarG->GetConexion());
                                $num_res=mysql_num_rows($resultado);
                               if ($num_res>0) {
 							?>
 							<form name="form-data" class="form-horizontal cmxform" method="GET" action="conexion/validar_grupo.php" accept-charset="utf-8">
 								<input type="hidden" id="consultor" name="consultor" value=<?php echo $id_usuario; ?> ></input>
-						  	<input type="hidden" id="gestion" name="gestion" value=<?php echo $id_gestion; ?> ></input>
+						  	<input type="hidden" id="gestion" name="gestion" value=<?php echo $VeriricarG->id_gestion; ?> ></input>
 							<table class="table table-striped table-bordered  datatable" >
 							  <thead >
 								  <tr >

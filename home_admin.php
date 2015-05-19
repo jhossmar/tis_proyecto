@@ -1,6 +1,8 @@
 <?php
 $titulo="Administrador del Sistema";
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
 session_start();
 /*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
 if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=1)
@@ -26,7 +28,7 @@ elseif(!isset($_SESSION['nombre_usuario'])){
 	header("Location: index.php");
 }
 /*----------------------FIN VERIFICACION------------------------------------*/
-if (!$gestion_valida) {
+if (!$GestionValida) {
 	$fecha = date("Y-m-d");
 	$inicio = $fecha;
 	$descripcion=NULL;
@@ -111,7 +113,7 @@ include('header.php');
 			</div>
 			<center><h3>Bienvenido Administrador</h3></center>
 			<?php 
-			if (!$gestion_valida) { ?>
+			if (!$GestionValida) { ?>
 			<div class="row-fluid">
 			<div class="box span12">
 					<div class="box-header well">
@@ -119,7 +121,7 @@ include('header.php');
 					</div>
 					<div class="box-content alerts">
 					
-					<?php if ($gestion_espera) {
+					<?php if($GestionValida->gestion_espera) {
 						echo "Bienvenido Administrador del Sistema de Apoyo a la Empresa TIS, usted ya defini&oacute; una nueva gesti&oacute;n que
 						comenzar&aacute; la fecha <b>".$ini_gestion."</b>.";
 					}
@@ -174,7 +176,7 @@ include('header.php');
 						<h2><i class="icon-info-sign"></i> Informacion</h2>
 					</div>
 					<div class="box-content alerts">
-							Bienvenido Administrador del Sistema de Apoyo a la Empresa TIS a la <b>Gesti&oacute;n <?php echo $nombre_gestion; ?></b>.
+							Bienvenido Administrador del Sistema de Apoyo a la Empresa TIS a la <b>Gesti&oacute;n <?php echo $VeriricarG->nombre_gestion; ?></b>.
 							
 							<br>						
 					</div>	

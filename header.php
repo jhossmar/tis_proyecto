@@ -188,17 +188,10 @@
   	 div#menu ul li:hover{
   	 	padding-left: 100px;
         color: black;
-  	 }
-  	 
-  	 
-}
-  	 
-  
+  	 }  	   	 
+}  	   
 </style>
-
-
 </head>
-
 <body>
 <?php if(!isset($no_visible_elements) || !$no_visible_elements)	{; ?>
 	<!-- topbar starts -->

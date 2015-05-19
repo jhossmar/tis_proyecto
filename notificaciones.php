@@ -1,5 +1,7 @@
 <?php
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
 session_start();
 if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']!=4 && $_SESSION['tipo']!=3 && $_SESSION['tipo']!=2))
 {/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
@@ -45,15 +47,15 @@ include('header.php');
 			<div class="row-fluid">
 			<div class="box span12">
 					<div class="box-header well">
-						<h2><i class="icon-check"></i> Notificaciones de la Gesti&oacute;n : <?php echo $nombre_gestion; ?></h2>
+						<h2><i class="icon-check"></i> Notificaciones de la Gesti&oacute;n : <?php echo $VeriricarG->nombre_gestion; ?></h2>
 					</div>
 					<div class="box-content alerts">
 					<?php
-						if ($gestion_valida) {
+						if($GestionValida) {
 						$usuario=$_SESSION['id'];
 					 $c = "SELECT COUNT(*) as numer
                      FROM notificacion
-                     WHERE usuario_destino = '$usuario' AND fecha <= '$fin_gestion 23:59:59' AND fecha>='$ini_gestion 00:00:01' AND leido=0";
+                     WHERE usuario_destino = '$usuario' AND fecha <= '$VeriricarG->fin_gestion 23:59:59' AND fecha>='$VeriricarG->ini_gestion 00:00:01' AND leido=0";
 	               $r = mysql_query($c);
 	               $res = mysql_fetch_array( $r);
 	               $num=  $res['numer'];
@@ -63,9 +65,9 @@ include('header.php');
                					$consulta = "SELECT  id_notificacion,usuario, descripcion, enlace, fecha, leido
 	                            FROM notificacion, tipo_notificacion
 	                            WHERE (tipo_notificacion = id_tipo_notificacion
-	                            AND usuario_destino = $usuario) AND fecha <= '$fin_gestion 23:59:59' AND fecha>='$ini_gestion 00:00:01' AND leido=0
+	                            AND usuario_destino = $usuario) AND fecha <= '$VeriricarG->fin_gestion 23:59:59' AND fecha>='$VeriricarG->ini_gestion 00:00:01' AND leido=0
 	                            ORDER BY fecha DESC";
-				                $resultado = mysql_query($consulta);
+				                $resultado = mysql_query($consulta,$VeriricarG->GetConexion());
 				                ?>
                  				
             <form method="post" action="conexion/admin_notificacion.php" accept-charset="utf-8">

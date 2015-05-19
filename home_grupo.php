@@ -1,12 +1,24 @@
 <?php
 $titulo="P&aacute;gina de inicio Grupo Empresas";
-include("conexion/verificar_gestion.php");
+include("conexion/conexion.php");
+require_once("conexion/verificar_gestion.php");
+
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
+  $VeriricarG->Actividad1();
+  $VeriricarG->Actividad2();
+  $VeriricarG->Actividad3();
+  $VeriricarG->Actividad4();
+  $VeriricarG->Actividad5();
+  $VeriricarG->Actividad6();
+  $VeriricarG->Actividad7();
 session_start();
-/*------------------VERIFICAR QUE SEAL LA GRUPO EMPRESA------------------------*/
+
 if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
 {/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
 		$home="";
-		switch  ($_SESSION['tipo']){
+		switch($_SESSION['tipo'])
+		{
 				case (5) :
 	                	$home="home_integrante.php";
 	                    break;
@@ -19,35 +31,39 @@ if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
 	            case (1) :
 	                    $home="home_admin.php";
 	                    break;                                                             		
-	          }   
+	     }   
 		header("Location: ".$home);
 }
-elseif(!isset($_SESSION['nombre_usuario'])){
+elseif(!isset($_SESSION['nombre_usuario']))
+{
 	header("Location: index.php");
 }
-/*----------------------FIN VERIFICACION------------------------------------*/
+
 include("conexion/verificar_integrantes.php");
-if(!$cantidad_valida && isset($_POST['enviar'])){
+if(!$cantidad_valida && isset($_POST['enviar']))
+{
 		$error=false;
 		/*VALORES de usuario*/
 		$id_usuario=$_POST['id_usuario'];
 		$usuario=$_POST['username'];
-		$clave=$_POST['password']; /*$clave = md5($pass); QUITADO ==> CONTRASEÑA SIMPLE*/
-		$eMail=$_POST['email'];
-		/*VALORES de integrante*/
+		$clave=$_POST['password']; 
+		$eMail=$_POST['email'];		
 		$cod_sis = $_POST['codSIS'];
 		$nombre_rep = $_POST['firstname'];
 		$apellido_rep = $_POST['lastname'];
 		$telefono_rep = $_POST['telf'];
 		$carrera_rep = $_POST['choose_carrera'];
-		if (isset($_POST['roles'])) {
+		if (isset($_POST['roles'])) 
+		{
 			$roles = $_POST['roles'];
-			if (sizeof($roles)==0) {
+			if (sizeof($roles)==0) 
+			{
 				$error=true;
 				$error_rol="Debe seleccionar m&iacute;nimamente un rol";
 			}
 		}
-		else{
+		else
+		{
 			$error=true;
 			$error_rol="Debe seleccionar m&iacute;nimamente un rol";
 		}
@@ -56,17 +72,18 @@ if(!$cantidad_valida && isset($_POST['enviar'])){
 			$error_carrera="Debe seleccionar una carrera";
 		}
 		$consulta_usuario = mysql_query("SELECT nombre_usuario from usuario 
-		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion=$id_gestion)",$conn)
+		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion= $GestionValida)",$conn)
 		                          or die("Could not execute the select query.");
+	
+
+
 		$consulta_email = mysql_query("SELECT email from usuario 
-		                         where email='$eMail'AND (gestion=1 OR gestion=$id_gestion)",$conn)
-		                         or die("Could not execute the select query.");
+		                         where email='$eMail'AND (gestion=1 OR gestion= $GestionValida)",$conn)or die("Could not execute the select query.");
+
+
 		
 		$consulta_cod = mysql_query("SELECT codigo_sis from usuario, integrante 
-								where integrante.usuario=usuario.id_usuario AND codigo_sis='$cod_sis' AND (gestion=1 OR gestion=$id_gestion)",$conn)
-		                         or die("Could not execute the select query."); 
-
-
+								where integrante.usuario=usuario.id_usuario AND codigo_sis='$cod_sis' AND (gestion=1 OR gestion= $GestionValida)",$conn) or die("Could not execute the select query."); 
 
 		$resultado_usuario = mysql_fetch_assoc($consulta_usuario);
 		$resultado_email = mysql_fetch_assoc($consulta_email);
@@ -153,7 +170,7 @@ include('header.php'); ?>
 			</div>
 			<center><h3>Bienvenida Grupo Empresa</h3></center>
 			<?php 
-				if ($gestion_valida) {
+				if ($GestionValida) {
 					if (!$cantidad_valida) { 
 				?>
 			<div class="row-fluid">

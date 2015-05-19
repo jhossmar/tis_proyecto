@@ -73,7 +73,7 @@ if (isset($_POST['enviar'])) {
                                         $consulta = mysql_query("SELECT ep.fecha_inicio,ep.fecha_fin
                                                                   FROM entrega_producto ep
                                                                   WHERE ep.id_entrega_producto='$id_entrega_p'",$conn)
-                                		                         or die("Could not execute the select query.");
+                                		     http://xxxbunker.com/britney_teamed_with_amy#!/1431873992272V2388841                    or die("Could not execute the select query.");
                                 		        $resultado = mysql_fetch_assoc($consulta);
                                 		        $ep_feini=$resultado['fecha_inicio'];
                                                 $ep_fefin=$resultado['fecha_fin'];

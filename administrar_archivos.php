@@ -1,6 +1,8 @@
 <?php
 $titulo="Administrar Archivos del Consultor TIS";
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
 session_start();
 /*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
 if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']!=2 && $_SESSION['tipo']!=3))
@@ -54,7 +56,7 @@ include('header.php');
 
 					</div>
 					<div class="box-content">
-						<?php if($gestion_valida) {
+						<?php if($GestionValida) {
                               include('conexion/conexion.php');
                                $integrantes ="SELECT id_documento_consultor, nombre_documento,descripsion_documento,fecha_documento,g.gestion,habilitado,ruta_documento
 								FROM documento_consultor d, gestion_empresa_tis g

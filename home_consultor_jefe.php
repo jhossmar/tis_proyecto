@@ -1,6 +1,9 @@
 <?php 
 $titulo="P&aacute;gina de inicio Jefe Consultor TIS";
-include("conexion/verificar_gestion.php");
+require_once("conexion/verificar_gestion.php");
+
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
 session_start();
 /*------------------VERIFICAR QUE SEAL EL JEFE CONSULTOR------------------------*/
 if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=2)
@@ -42,14 +45,14 @@ include('header.php');
 			</div>
 			<center><h3>Bienvenido Jefe Consultor TIS</h3></center>
 			<?php 
-			if (!$gestion_valida) { ?>
+			if (!$GestionValida) { ?>
 			<div class="row-fluid">
 			<div class="box span12">
 					<div class="box-header well">
 						<h2><i class="icon-info-sign"></i> Importante</h2>
 					</div>
 					<div class="box-content alerts">
-					<?php if ($gestion_espera) {
+					<?php if ($VeriricarG->gestion_espera) {
 						echo "En estos momentos el sistema no se encuentra disponible. Ya se habilit&oacute; una nueva gesti&oacute;n pero el inicio de la misma 
 						esta programada para la fecha <b>".$ini_gestion."</b>. Favor tomar nota.";
 					}
@@ -71,7 +74,7 @@ include('header.php');
 					</div>
 					<div class="box-content alerts">
 									
-							Bienvenido Jefe Consultor TIS a la <b>Gesti&oacute;n <?php echo $nombre_gestion; ?></b>, en este sitio usted podr&aacute; realizar la publicaci&oacute;n de avisos
+							Bienvenido Jefe Consultor TIS a la <b>Gesti&oacute;n <?php echo $VeriricarG->nombre_gestion; ?></b>, en este sitio usted podr&aacute; realizar la publicaci&oacute;n de avisos
 							 y documentos, realizar el seguimiento de las Grupo Empresas que se inscribieron con usted, enviar mensajes a cualquier usuario
 							 del sistema y tambi&eacute;n podr&aacute; participar del espacio de discuci&oacute;n donde las grupo empresas
 							 inscritas con usted dejaran preguntas o dudas esperando su respuesta.

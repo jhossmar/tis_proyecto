@@ -1,5 +1,7 @@
 <?php
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
 session_start();
 if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']==1))
 {/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
@@ -43,7 +45,7 @@ include('header.php');
 				</ul>
 			</div>
 			<center><h3>Espacio de Discuci&oacute;n</h3></center>
-			<?php if($gestion_valida){ ?>
+			<?php if($GestionValida){ ?>
 			<div class="row-fluid">
 			<div class="box span12">
 					<div class="box-header well">

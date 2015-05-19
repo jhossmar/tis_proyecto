@@ -17,12 +17,12 @@
 						</div>
 						<div class="box-content">
                         <?php
-                        	if ($gestion_valida) {
+                        	if ($GestionValida) {
                         		
                         	$usuario=$_SESSION['id'];
                         	$c = "SELECT COUNT(*) as numer
                      		FROM notificacion
-                     		WHERE usuario_destino = '$usuario' AND fecha <= '$fin_gestion 23:59:59' AND fecha>='$ini_gestion 00:00:01' AND leido=0";
+                     		WHERE usuario_destino = '$usuario' AND fecha <= '$VeriricarG->fin_gestion 23:59:59' AND fecha>='$VeriricarG->ini_gestion 00:00:01' AND leido=0";
 	               			$r = mysql_query($c);
 	               			$res = mysql_fetch_array( $r);
 	               			$num=  $res['numer'];
@@ -72,28 +72,28 @@
 						<div class="box-content">
 						<ul class="dashboard-list">
 						  
-						<?php if ($gestion_valida) {
-							echo "<li><b>Gesti&oacute;n ".$nombre_gestion.":</b> Del ".strftime("%d/%m/%y",$fecha_ini)." hasta ".strftime("%d/%m/%y",$fecha_fin)."</li>";
-							if ($act_1==1) {
-								echo "<li><b>Inicio convocatoria:</b> Del ".strftime("%d/%m/%y",$fecha_ini_1)." hasta ".strftime("%d/%m/%y",$fecha_fin_1)."</li>";
+						<?php if ($GestionValida) {
+							echo "<li><b>Gesti&oacute;n ".$VeriricarG->nombre_gestion.":</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin)."</li>";
+							if ($VeriricarG->act_1==1) {
+								echo "<li><b>Inicio convocatoria:</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini_1)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin_1)."</li>";
 							}
-							if ($act_2==1) {
-								echo "<li><b>Registro de Grupo Empresas:</b> Del ".strftime("%d/%m/%y",$fecha_ini_2)." hasta ".strftime("%d/%m/%y",$fecha_fin_2)."</li>";
+							if ($VeriricarG->act_2==1) {
+								echo "<li><b>Registro de Grupo Empresas:</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini_2)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin_2)."</li>";
 							}
-							if ($act_3==1) {
-								echo "<li><b>Entrega de Documentos:</b> Del ".strftime("%d/%m/%y",$fecha_ini_3)." hasta ".strftime("%d/%m/%y",$fecha_fin_3)."</li>";
+							if ($VeriricarG->act_3==1) {
+								echo "<li><b>Entrega de Documentos:</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini_3)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin_3)."</li>";
 							}
-							if ($act_4==1) {
-								echo "<li><b>Firma de Contratos:</b> Del ".strftime("%d/%m/%y",$fecha_ini_4)." hasta ".strftime("%d/%m/%y",$fecha_fin_4)."</li>";
+							if ($VeriricarG->act_4==1) {
+								echo "<li><b>Firma de Contratos:</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini_4)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin_4)."</li>";
 							}
-							if ($act_5==1) {
-								echo "<li><b>Proceso de Desarrollo:</b> Del ".strftime("%d/%m/%y",$fecha_ini_5)." hasta ".strftime("%d/%m/%y",$fecha_fin_5)."</li>";
+							if ($VeriricarG->act_5==1) {
+								echo "<li><b>Proceso de Desarrollo:</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini_5)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin_5)."</li>";
 							}
-							if ($act_6==1) {
-								echo "<li><b>Entrega de Productos:</b> Del ".strftime("%d/%m/%y",$fecha_ini_6)." hasta ".strftime("%d/%m/%y",$fecha_fin_6)."</li>";
+							if ($VeriricarG->act_6==1) {
+								echo "<li><b>Entrega de Productos:</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini_6)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin_6)."</li>";
 							}
-							if ($act_7==1) {
-								echo "<li><b>Cierre de la Convocatoria:</b> Del ".strftime("%d/%m/%y",$fecha_ini_7)." hasta ".strftime("%d/%m/%y",$fecha_fin_7)."</li>";
+							if ($VeriricarG->act_7==1) {
+								echo "<li><b>Cierre de la Convocatoria:</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini_7)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin_7)."</li>";
 							}					
 						}else{
 							echo "No existe ninguna fecha definida.";

@@ -1,7 +1,10 @@
 <?php
 session_start();
-include('conexion/verificar_gestion.php');
-$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
+require_once("conexion/verificar_gestion.php");
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
+
+$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$VeriricarG->GetConexion())
 							or die("Error no se pudo realizar cambios.");
 /*------------------VERIFICAR QUE SEAL EL JEFE CONSULTOR------------------------*/
 if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=2)
@@ -84,7 +87,7 @@ if(isset($_POST['enviar'])){
 	if(!$error){
 
             $sql = "INSERT INTO documento_consultor(nombre_documento, descripsion_documento, ruta_documento, fecha_documento, documento_jefe, consultor_tis, gestion)
-	                VALUES ('$tituloD','$descripcion','$documento', NOW(), 1,'".$_SESSION['id']."',$id_gestion)";
+	                VALUES ('$tituloD','$descripcion','$documento', NOW(), 1,'".$_SESSION['id']."',$VeriricarG->id_gestion)";
 	        $result = mysql_query($sql,$conn) or die(mysql_error());
 	        header("Location: index.php");
 	    }
@@ -118,7 +121,7 @@ include('header.php');
 						<h2><i class="icon-edit"></i> Formulario de publicaci&oacute;n de avisos</h2>
 					</div>
 					<div class="box-content">
-						<?php if ($gestion_valida){
+						<?php if($GestionValida){
 						?>
 		                  	<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" action="subir_consultor_jefe.php" accept-charset="utf-8">
 								<fieldset>
