@@ -3,6 +3,15 @@
 		if(!isset($titulo)){
 			header('Location: index.php');
 		}
+		 $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
+  $VeriricarG->Actividad1();
+  $VeriricarG->Actividad2();
+  $VeriricarG->Actividad3();
+  $VeriricarG->Actividad4();
+  $VeriricarG->Actividad5();
+  $VeriricarG->Actividad6();
+  $VeriricarG->Actividad7();
 
 ?>
 			<div class="span2">
