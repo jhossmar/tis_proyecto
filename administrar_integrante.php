@@ -1,5 +1,8 @@
 <?php
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
 session_start();
 /*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
 if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
@@ -73,7 +76,7 @@ include('header.php');
 
 					</div>
 					<div class="box-content">
-						<?php if($gestion_valida){
+						<?php if($GestionValida){
 						  /*de esta consulta, solo sale el id de la empresa a la cual pertenece el usuario de la sesion*/
                               $consulta_id_ge = mysql_query("SELECT ge.id_grupo_empresa
                                FROM usuario u,integrante i,grupo_empresa ge

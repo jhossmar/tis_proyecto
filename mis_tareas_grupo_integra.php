@@ -1,6 +1,8 @@
 <?php
 $titulo="Mis tareas";
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VerificarG = new VerificarGestion();
+  $GestionValida = $VerificarG->VerificarFechasGestion();
 session_start();
 $quien_ingresa="Grupo Empresa";
 $pag_ini="home_grupo.php";
@@ -27,13 +29,13 @@ elseif(!isset($_SESSION['nombre_usuario'])){
 }
 /*----------------------FIN VERIFICACION------------------------------------*/
 include('header.php');
-if($gestion_valida){
+if($GestionValida){
 $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 or die("Error no se pudo realizar cambios.");
 }
 $consulta_id_ge = mysql_query("SELECT ge.id_grupo_empresa ,ge.nombre_corto
                                FROM integrante i,grupo_empresa ge
-                               WHERE i.usuario=".$_SESSION['id']." and i.grupo_empresa=ge.id_grupo_empresa",$conn)  or die("Could not execute the select query.");
+                               WHERE i.usuario=".$_SESSION['id']." and i.grupo_empresa=ge.id_grupo_empresa",$VerificarG->GetConexion())  or die("Could not execute the select query.");
 $resultado_id_ge = mysql_fetch_assoc($consulta_id_ge);
 $id_ge=$resultado_id_ge['id_grupo_empresa'];
 $no_ge=$resultado_id_ge['nombre_corto'];
@@ -43,22 +45,22 @@ $no_ge=$resultado_id_ge['nombre_corto'];
 	$url=$_POST['co_url'];
 	$avance=$_POST['avance'];
         $sql = "UPDATE tarea SET  porcentaje_completado='$avance', resultado_obtenido='$url' WHERE id_tarea ='$ta'";
-                      $result = mysql_query($sql);
+                      $result = mysql_query($sql,$VerificarG->GetConexion());
                              $consulta = mysql_query("SELECT t.actividad
                                                         FROM tarea t
-                                                        WHERE t.id_tarea=$ta",$conn)  or die("Could not execute the select query.");
+                                                        WHERE t.id_tarea=$ta",$VerificarG->GetConexion())  or die("Could not execute the select query.");
                             $resultado = mysql_fetch_assoc($consulta);
                             $id_act=$resultado['actividad'];
                             $consulta = mysql_query("SELECT COUNT(*) as n,SUM( t.porcentaje_completado) as s
                                                       FROM tarea t
-                                                      WHERE t.actividad =$id_act",$conn)  or die("Could not execute the select query.");
+                                                      WHERE t.actividad =$id_act",$VerificarG->GetConexion())  or die("Could not execute the select query.");
                             $resultado = mysql_fetch_assoc($consulta);
                             $porseActividad=$resultado['s'];
 							$numActividad=$resultado['n'];
 							$porseActividad=$porseActividad/$numActividad;
 
                       $sql = "UPDATE actividad_grupo_empresa SET  porcentaje_completado='$porseActividad' WHERE id_actividad = '$id_act'";
-                      $result = mysql_query($sql);
+                      $result = mysql_query($sql,$VerificarG->GetConexion());
 
 
     // header("Location: mis_tareas_grupo_integra.php");
@@ -95,7 +97,7 @@ $no_ge=$resultado_id_ge['nombre_corto'];
 				</ul>
 			</div>
 			<center><h3> Grupo empresa <?php echo "".$no_ge;  ?></h3></center>
-      <?php if($gestion_valida){
+      <?php if($GestionValida){
       ?>
 			<div class="row-fluid">
 				<div class="box span12 " id="print">
@@ -110,7 +112,7 @@ $no_ge=$resultado_id_ge['nombre_corto'];
                               $entregas ="SELECT t.descripcion as ta,t.fecha_inicio,t.fecha_fin,t.porcentaje_completado ,age.descripcion as act,ep.descripcion as enp ,t.id_tarea,t.resultado_obtenido
                                           FROM tarea t,actividad_grupo_empresa age,entrega_producto ep
                                           WHERE t.responsable=".$_SESSION['id']." and t.actividad=age.id_actividad and age.entrega_producto=ep.id_entrega_producto";
-                              $resultado = mysql_query($entregas);
+                              $resultado = mysql_query($entregas,$VerificarG->GetConexion());
                               $num_entre=mysql_num_rows($resultado);
                                 if($num_entre>0){    ?>
                                     <!--    <form name="form-data" class="form-horizontal cmxform" method="POST" action="conexion/validar_grupo.php" accept-charset="utf-8">     -->
@@ -188,7 +190,7 @@ $no_ge=$resultado_id_ge['nombre_corto'];
                                     <div class="controls">
                                                   <?php    echo "     <select id=\"entreprod\" name=\"entreprod\" data-rel=\"chosen\">   ";
                                                                                 //busca todas las emtregas de producto de la grupo empresa
-                                                                                       $resultado = mysql_query($entregas);
+                                                                                       $resultado = mysql_query($entregas,$VerificarG->GetConexion());
                                                                                   while($row = mysql_fetch_array($resultado)) {
                                                                                             echo "<option value=\"".$row['id_tarea']."\">".$row['ta']."</option>";
                                                                                   }

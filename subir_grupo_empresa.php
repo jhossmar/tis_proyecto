@@ -1,6 +1,9 @@
 <?php
 $titulo="Enviar Documentos Grupo Empresa";
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
+
 session_start();
 $quien_ingresa="Grupo Empresa";
 $pag_ini="home_grupo.php";
@@ -27,7 +30,7 @@ elseif(!isset($_SESSION['nombre_usuario'])){
 /*----------------------FIN VERIFICACION------------------------------------*/
 include("conexion/verificar_integrantes.php");
 if(isset($_POST['enviar'])){
-	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
+	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$VeriricarG->GetConexion())
       or die("Error no se pudo realizar cambios.");
 	$sobreA=$_FILES['documentoA'];
 	$sobreB=$_FILES['documentoB'];
@@ -115,7 +118,7 @@ if(isset($_POST['enviar'])){
                              	$sql = "UPDATE grupo_empresa
 										SET sobre_a = '$documentoA', sobre_b = '$documentoB',observacion=NULL
 										WHERE id_grupo_empresa = $rep_id_ge";
-						        $result = mysql_query($sql,$conn);
+						        $result = mysql_query($sql,$VeriricarG->GetConexion());
                              }
                         }
                      }
@@ -171,12 +174,12 @@ include('header.php');
 						<h2><i class="icon-edit"></i> Formulario de env&iacute;o de Documentos</h2>
 					</div>
 					<div class="box-content">
-						<?php if($gestion_valida){
+						<?php if($GestionValida){
 								if ($cantidad_valida) {
 									if($act_3==1 && !$act_3_espera){
 								$consulta_producto = mysql_query("SELECT sobre_a, sobre_b,observacion,habilitado
 																FROM grupo_empresa
-																WHERE id_grupo_empresa = $rep_id_ge",$conn);
+																WHERE id_grupo_empresa = $rep_id_ge",$VeriricarG->GetConexion());
 								$resultado = mysql_fetch_assoc($consulta_producto);
 								if(is_null($resultado['sobre_a']) && is_null($resultado['sobre_a']) ){//si se envio y yarespondio mostrar
 									if (!is_null($resultado['observacion'])) {
@@ -299,11 +302,11 @@ include('header.php');
 
 					</div>
 					<div class="box-content">
-						<?php if($gestion_valida) {
+						<?php if($GestionValida) {
                                $consulta ="SELECT g.consultor_tis, nombre_documento,ruta_documento,descripsion_documento,fecha_documento
 											FROM grupo_empresa g , documento_consultor d
 											WHERE id_grupo_empresa=$rep_id_ge AND g.consultor_tis=d.consultor_tis AND d.habilitado=1 AND d.documento_jefe=0";
-                               $resultado = mysql_query($consulta);
+                               $resultado = mysql_query($consulta,$VeriricarG->GetConexion());
                                $num_res=mysql_num_rows($resultado);
 
                               if ($num_res>0) {

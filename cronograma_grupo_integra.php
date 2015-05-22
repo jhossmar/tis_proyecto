@@ -1,6 +1,8 @@
 <?php
 $titulo="Reporte general de la Grupo Empresa";
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VerificarG = new VerificarGestion();
+  $GestionValida = $VerificarG->VerificarFechasGestion();
 session_start();
 $quien_ingresa="Grupo Empresa";
 $pag_ini="home_grupo.php";
@@ -31,7 +33,7 @@ include('header.php');
 
     $consulta_id_ge = mysql_query("SELECT ge.id_grupo_empresa ,ge.nombre_corto
                                                              FROM integrante i,grupo_empresa ge
-                                                             WHERE i.usuario=".$_SESSION['id']." and i.grupo_empresa=ge.id_grupo_empresa",$conn)  or die("Could not execute the select query.");
+                                                             WHERE i.usuario=".$_SESSION['id']." and i.grupo_empresa=ge.id_grupo_empresa",$VerificarG->GetConexion())  or die("Could not execute the select query.");
                               $resultado_id_ge = mysql_fetch_assoc($consulta_id_ge);
                               $id_ge=$resultado_id_ge['id_grupo_empresa'];
                               $no_ge=$resultado_id_ge['nombre_corto'];
@@ -67,7 +69,7 @@ include('header.php');
 				</ul>
 			</div>
 			<center><h3> Grupo empresa <?php echo "".$no_ge;  ?></h3></center>
-      <?php if($gestion_valida){ ?>
+      <?php if($GestionValida){ ?>
 			<div class="row-fluid">
 				<div class="box span12 " id="print">
 						<div class="box-header well">
@@ -83,7 +85,7 @@ include('header.php');
                                           WHERE ep.grupo_empresa=$id_ge
 										  AND ep.id_responsable=u.id_usuario
 										  ";
-                              $resultado = mysql_query($entregas);
+                              $resultado = mysql_query($entregas,$VerificarG->GetConexion());
                               $num_entre=mysql_num_rows($resultado);
 							  $id_subsistema;
 							  $nombre_subsistema;
@@ -148,7 +150,7 @@ include('header.php');
                               $en ="SELECT ep.descripcion,ep.id_entrega_producto ,ep.enlace_producto,ep.pago_establecido,ep.pago_recibido
                                           FROM entrega_producto ep
                                           WHERE ep.grupo_empresa=$id_ge";
-                              $resu = mysql_query($en);
+                              $resu = mysql_query($en,$VerificarG->GetConexion());
                               $num_entre=mysql_num_rows($resu);
                                 if($num_entre>0){    ?>
                                     <!--    <form name="form-data" class="form-horizontal cmxform" method="GET" action="conexion/validar_grupo.php" accept-charset="utf-8">     -->
@@ -216,7 +218,7 @@ include('header.php');
 										$entregas = "SELECT age.descripcion,age.fecha_inicio,age.fecha_fin,age.porcentaje_completado,us.nombre,us.apellido
                                                     FROM actividad_grupo_empresa age, usuario us
                                                     WHERE age.entrega_producto = ".$id_subsistema[$i]." and age.id_responsable = us.id_usuario";
-										$resultado = mysql_query($entregas);
+										$resultado = mysql_query($entregas,$VerificarG->GetConexion());
 										$num_entre=mysql_num_rows($resultado);
 									?>
 									
@@ -273,7 +275,7 @@ include('header.php');
                                                                     WHERE t.responsable = u.id_usuario
                                                                     AND t.actividad = age.id_actividad
                                                                     AND age.entrega_producto =".$id_subsistema[$i];
-														$resultado = mysql_query($entregas);
+														$resultado = mysql_query($entregas,$VerificarG->GetConexion());
 														$num_entre=mysql_num_rows($resultado);
 														if($num_entre>0){    ?>
 															<table class="table table-striped table-bordered datatable" >
@@ -301,7 +303,7 @@ include('header.php');
                                                                                         AND age.id_actividad =".$row["id_actividad"]."
                                                                                         AND age.entrega_producto =".$id_subsistema[$i]."
                                                                                         AND t.id_tarea =".$row["id_tarea"];
-                                                                            $descri = mysql_query($separador);
+                                                                            $descri = mysql_query($separador,$VerificarG->GetConexion());
                                                                             $des = mysql_fetch_array($descri);
 																			echo "
 																			<tr>

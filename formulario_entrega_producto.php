@@ -30,18 +30,20 @@ elseif(!isset($_SESSION['nombre_usuario'])){
 /*----------------------FIN VERIFICACION------------------------------------*/
 
 include("conexion/verificar_integrantes.php");
-include('conexion/verificar_gestion.php');
+require_once("conexion/verificar_gestion.php");
+  $VerificarG = new VerificarGestion();
+  $GestionValida = $VerificarG->VerificarFechasGestion();
 if(isset($_POST['enviar'])){	
 	$url=$_POST['co_url'];
 	$usuario=$_SESSION['nombre_usuario'];
 	$id_usuario=$_SESSION['id'];
-	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
+	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$VerificarG->GetConexion())
       or die("Error no se pudo realizar cambios.");
 			$sql = "SELECT g.id_grupo_empresa
 					FROM grupo_empresa g, integrante i
 					WHERE i.usuario = '$id_usuario'
 					AND i.grupo_empresa=g.id_grupo_empresa";
-	        $result = mysql_query($sql,$conn) or die(mysql_error());
+	        $result = mysql_query($sql,$$VerificarG->GetConexion()) or die(mysql_error());
 	        $arreglo = mysql_fetch_array($result);
 	        $id_grupo = $arreglo['id_grupo_empresa'];
 
@@ -49,7 +51,7 @@ if(isset($_POST['enviar'])){
 					SET enlace_producto = '$url',fecha_real_entrega = CURDATE()
 					WHERE fecha_fin = CURDATE()
 					AND grupo_empresa='$id_grupo'";
-	        $result = mysql_query($sql,$conn) or die(mysql_error());  
+	        $result = mysql_query($sql,$VerificarG->GetConexion()) or die(mysql_error());  
 
 	        header("Location: cronograma_grupo_integra.php");
 
@@ -61,7 +63,7 @@ if(isset($_POST['enviar'])){
 			$sql = "SELECT descripcion
 			FROM entrega_producto
 			WHERE fecha_fin = CURDATE()";
-	        $result = mysql_query($sql,$conn) or die(mysql_error());
+	        $result = mysql_query($sql,$VerificarG->GetConexion()) or die(mysql_error());
 	        $arreglo = mysql_fetch_array($result);
 	        $fecha = $arreglo['descripcion'];
 
@@ -88,20 +90,20 @@ include('header.php');
 					</div>
 					<div class="box-content">	
 							<?php
-								if($gestion_valida){
+								if($GestionValida){
 								if ($cantidad_valida) {
 									if ($act_5==1 && !$act_5_espera){
 								$consulta_grupo= mysql_query("SELECT id_grupo_empresa
 															FROM integrante i, grupo_empresa g
 															WHERE i.usuario = '$id_usuario' 
-															AND i.grupo_empresa = g.id_grupo_empresa");
+															AND i.grupo_empresa = g.id_grupo_empresa",$VerificarG->GetConexion());
 								$resultado_grupo = mysql_fetch_assoc($consulta_grupo);
 								$grupo = $resultado_grupo['id_grupo_empresa'];
 
 								$consulta_producto = mysql_query("SELECT descripcion, fecha_inicio, fecha_fin, enlace_producto
 												FROM entrega_producto
 												WHERE fecha_fin = CURDATE()
-												AND grupo_empresa = '$grupo'",$conn)
+												AND grupo_empresa = '$grupo'",$VerificarG->GetConexion())
 	                          					or die("Could not execute the select query.");
 								$resultado = mysql_fetch_assoc($consulta_producto);
 								if(is_array($resultado) && !empty($resultado))

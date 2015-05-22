@@ -1,6 +1,12 @@
 <?php
 $titulo="P&aacute;gina de inicio Grupo Empresas";
-include("conexion/verificar_gestion.php");
+require_once("conexion/verificar_gestion.php");
+
+  $VeriricarG = new VerificarGestion();
+  $GestionValida = $VeriricarG->VerificarFechasGestion();
+  $VeriricarG->Actividad1();
+  $VeriricarG->Actividad2();
+
 session_start();
 /*------------------VERIFICAR QUE SEAL LA GRUPO EMPRESA------------------------*/
 if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
@@ -56,14 +62,14 @@ if( ($numero_integrantes<5) && isset($_POST['agregar'])){
 			$error_carrera="Debe seleccionar una carrera";
 		}
 		$consulta_usuario = mysql_query("SELECT nombre_usuario from usuario 
-		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion=$id_gestion)",$conn)
+		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion=$id_gestion)",$GestionValida ->GetConexion())
 		                          or die("Could not execute the select query.");
 		$consulta_email = mysql_query("SELECT email from usuario 
-		                         where email='$eMail'AND (gestion=1 OR gestion=$id_gestion)",$conn)
+		                         where email='$eMail'AND (gestion=1 OR gestion=$id_gestion)",$GestionValida ->GetConexion())
 		                         or die("Could not execute the select query.");
 		
 		$consulta_cod = mysql_query("SELECT codigo_sis from usuario, integrante 
-								where integrante.usuario=usuario.id_usuario AND codigo_sis='$cod_sis' AND (gestion=1 OR gestion=$id_gestion)",$conn)
+								where integrante.usuario=usuario.id_usuario AND codigo_sis='$cod_sis' AND (gestion=1 OR gestion=$id_gestion)",$GestionValida ->GetConexion())
 		                         or die("Could not execute the select query."); 
 
 
@@ -95,22 +101,22 @@ if( ($numero_integrantes<5) && isset($_POST['agregar'])){
 
 		   if(!$error){/*SI NO HAY NINGUN ERROR REGISTRO*/
 		   		/*INSERTAR EL USUARIO*/
-			$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
+			$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$GestionValida ->GetConexion())
 							or die("Error no se pudo realizar cambios.");
 		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email, habilitado, tipo_usuario,gestion)
 		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',1,5,$id_gestion)";
-		        $result = mysql_query($sql,$conn) or die(mysql_error());
+		        $result = mysql_query($sql,$GestionValida ->GetConexion()) or die(mysql_error());
 
 		        /*BUSCAR  el id de la grupo empresa con el id del representante legal*/
 		        $consulta_id_ge = mysql_query("SELECT grupo_empresa
 											from integrante 
-											where usuario=$id_usuario",$conn)
+											where usuario=$id_usuario",$GestionValida ->GetConexion())
 		                         or die("Could not execute the select query.");
 		        $resultado_id_ge = mysql_fetch_assoc($consulta_id_ge); 
 		        $rep_id_ge=(int)$resultado_id_ge['grupo_empresa'];
 
 				/*BUSCAR  el id del usuario*/
-		        $consulta_id_usu = mysql_query("SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$id_gestion",$conn)
+		        $consulta_id_usu = mysql_query("SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$id_gestion",$GestionValida ->GetConexion())
 		                         or die("Could not execute the select query.");
 		        $resultado_id_usu = mysql_fetch_assoc($consulta_id_usu); 
 		        $rep_id_usu=(int)$resultado_id_usu['id_usuario'];
@@ -118,13 +124,13 @@ if( ($numero_integrantes<5) && isset($_POST['agregar'])){
 				/*INSERTAR AL INTEGRANTE*/
 		   		$sql = "INSERT INTO integrante(usuario,codigo_sis,carrera,grupo_empresa)
 		                VALUES ('$rep_id_usu','$cod_sis','$carrera_rep','$rep_id_ge')";
-		        $result = mysql_query($sql,$conn) or die(mysql_error());
+		        $result = mysql_query($sql,$GestionValida ->GetConexion()) or die(mysql_error());
 				
 		        for ($i=0; $i < sizeof($roles) ; $i++) { 
 		        	$id_rol=(int)$roles[$i];
 		        	$sql = "INSERT INTO rol_integrante (integrante,rol)
 		                VALUES ($rep_id_usu,$id_rol)";
-		       		$result = mysql_query($sql,$conn) or die(mysql_error());
+		       		$result = mysql_query($sql,$GestionValida ->GetConexion()) or die(mysql_error());
 
 		        } 
 		       	header('Location: agregar_integrante.php');
@@ -156,16 +162,16 @@ include('header.php'); ?>
 				</ul>
 			</div>
 			<center><h3>Agregar Integrantes a la Grupo Empresa</h3></center>
-			<?php if ($numero_integrantes<5 && $gestion_valida) { ?>
+			<?php if ($numero_integrantes<5 && $GestionValida) { ?>
 			<div class="row-fluid">
 				<div class="box span12 ">
 					<div class="box-header well">
 					<h2><i class="icon-edit"></i> Agregar Integrantes a la Grupo Empresa</h2>					
 					</div>
 					<div class="box-content" id="formulario">
-						<?php	if (!$act_2_espera && $act_2==1) {
+						<?php	if (!$VeriricarG->act_2_espera && $VeriricarG->act_2==1) {
 						?>
-						<b>Usted puede agregar <?php echo (5-$numero_integrantes); ?> integrante(s) m&aacute;s hasta la fecha <?php echo $act_fin_2; ?></b>.</br></br>
+						<b>Usted puede agregar <?php echo (5-$numero_integrantes); ?> integrante(s) m&aacute;s hasta la fecha <?php echo $VeriricarG->act_fin_2; ?></b>.</br></br>
 						<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" accept-charset="utf-8" action="agregar_integrante.php">
 							<fieldset>
 								<input type="hidden" name="id_usuario" value=<?php echo $id_usuario ?> >
@@ -228,7 +234,7 @@ include('header.php'); ?>
 										<?php
 			                               $consulta_carrera = "SELECT *
 														FROM carrera";
-			                               $resultado_carrera = mysql_query($consulta_carrera);
+			                               $resultado_carrera = mysql_query($consulta_carrera,$GestionValida ->GetConexion());
 			                                while($row_sociedad = mysql_fetch_array($resultado_carrera)) {
 			                               		echo "<option value=\"".$row_sociedad['id_carrera']."\">".$row_sociedad['nombre_carrera']."</option>";
 			                                }
@@ -261,7 +267,7 @@ include('header.php'); ?>
 																					AND id_grupo_empresa = $rep_id_ge
 																					)
 																";
-			                               $resultado_rol = mysql_query($consulta_rol,$conn);
+			                               $resultado_rol = mysql_query($consulta_rol,$GestionValida ->GetConexion());
 			                                while($row_rol = mysql_fetch_array($resultado_rol)) {
 			                               		echo "<option value=\"".$row_rol['id_rol']."\">".$row_rol['nombre']."</option>";
 			                                }

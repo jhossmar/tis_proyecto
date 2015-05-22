@@ -72,13 +72,13 @@ if(!$cantidad_valida && isset($_POST['enviar']))
 			$error_carrera="Debe seleccionar una carrera";
 		}
 		$consulta_usuario = mysql_query("SELECT nombre_usuario from usuario 
-		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion= $GestionValida)",$conn)
+		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion= $GestionValida)",$GestionValida ->GetConexion())
 		                          or die("Could not execute the select query.");
 	
 
 
 		$consulta_email = mysql_query("SELECT email from usuario 
-		                         where email='$eMail'AND (gestion=1 OR gestion= $GestionValida)",$conn)or die("Could not execute the select query.");
+		                         where email='$eMail'AND (gestion=1 OR gestion= $GestionValida)",$GestionValida ->GetConexion())or die("Could not execute the select query.");
 
 
 		
@@ -116,18 +116,18 @@ if(!$cantidad_valida && isset($_POST['enviar']))
 							or die("Error no se pudo realizar cambios.");
 		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email, habilitado, tipo_usuario,gestion)
 		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',1,5,$id_gestion)";
-		        $result = mysql_query($sql,$conn) or die(mysql_error());
+		        $result = mysql_query($sql,$GestionValida ->GetConexion()) or die(mysql_error());
 
 		        /*BUSCAR  el id de la grupo empresa con el id del representante legal*/
 		        $consulta_id_ge = mysql_query("SELECT grupo_empresa
 											from integrante 
-											where usuario=$id_usuario",$conn)
+											where usuario=$id_usuario",$GestionValida ->GetConexion())
 		                         or die("Could not execute the select query.");
 		        $resultado_id_ge = mysql_fetch_assoc($consulta_id_ge); 
 		        $rep_id_ge=(int)$resultado_id_ge['grupo_empresa'];
 
 				/*BUSCAR  el id del usuario*/
-		        $consulta_id_usu = mysql_query("SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$id_gestion",$conn)
+		        $consulta_id_usu = mysql_query("SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$id_gestion",$GestionValida ->GetConexion())
 		                         or die("Could not execute the select query.");
 		        $resultado_id_usu = mysql_fetch_assoc($consulta_id_usu); 
 		        $rep_id_usu=(int)$resultado_id_usu['id_usuario'];
@@ -179,7 +179,7 @@ include('header.php'); ?>
 					<h2><i class="icon-warning-sign"></i> Importante: Agregar Integrante a la Grupo Empresa</h2>					
 					</div>
 					<div class="box-content" id="formulario">
-					<?php	if (!$act_2_espera && $act_2==1) {
+					<?php	if (!$VeriricarG->act_2_espera && $VeriricarG->act_2==1) {
 						?>
 						<p><b>Para que su Grupo Empresa quede completamente habilitada debe agregar por lo menos <?php echo $cantidad_faltante; ?> integrantes m&aacute;s.</b></p><br>
 						<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" accept-charset="utf-8" action="home_grupo.php">
@@ -244,7 +244,7 @@ include('header.php'); ?>
 										<?php
 			                               $consulta_carrera = "SELECT *
 														FROM carrera";
-			                               $resultado_carrera = mysql_query($consulta_carrera);
+			                               $resultado_carrera = mysql_query($consulta_carrera,$GestionValida ->GetConexion());
 			                                while($row_sociedad = mysql_fetch_array($resultado_carrera)) {
 			                               		echo "<option value=\"".$row_sociedad['id_carrera']."\">".$row_sociedad['nombre_carrera']."</option>";
 			                                }
@@ -277,7 +277,7 @@ include('header.php'); ?>
 																					AND id_grupo_empresa = $rep_id_ge
 																					)
 																";
-			                               $resultado_carrera = mysql_query($consulta_carrera) or die("error");
+			                               $resultado_carrera = mysql_query($consulta_carrera,$GestionValida ->GetConexion()) or die("error");
 			                                while($row_sociedad = mysql_fetch_array($resultado_carrera)) {
 			                               		echo "<option value=\"".$row_sociedad['id_rol']."\">".$row_sociedad['nombre']."</option>";
 			                                }

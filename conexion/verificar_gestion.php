@@ -37,7 +37,7 @@ class VerificarGestion
 		global $conn;
 			$consulta_sql="UPDATE fase_convocatoria
 					   	   SET activo = 0
-					   	   WHERE gestion = $id_gestion AND tipo_fase_convocatoria = $fase";
+					   	   WHERE gestion = $this->id_gestion AND tipo_fase_convocatoria = $fase";
 
 			$consulta = mysql_query($consulta_sql,$conn) or die(mysql_error());
 	}
@@ -158,8 +158,8 @@ class VerificarGestion
 	}				
 	public function Actividad3()
 	{			    		
-		$this->res_3 = $this->ConsultarActividad(3);
-		$this->act_3=$res_3['activo'];
+		$res_3 = $this->ConsultarActividad(3);
+		$this->act_3 = $res_3['activo'];
 		$this->act_3_espera=false;
 		$this->act_ini_3=$res_3['fecha_inicio'];
 		$this->act_fin_3=$res_3['fecha_fin'];
@@ -292,7 +292,7 @@ class VerificarGestion
 		}
 		if($this->fecha_actual > $fecha_fin_7)
 		{
-			$this->this->ActualizarActividad(7);
+			$this->ActualizarActividad(7);
 			$this->act_7=0;
 			$this->act_7_espera=false;
 		}
