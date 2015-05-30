@@ -1,6 +1,8 @@
 <?php
 $titulo="Registro Consultor TIS";
 include('conexion/verificar_gestion.php');
+$verificarG = new VerificarGestion();
+$gestionValida = $verificarG->VerificarFechasGestion();
 session_start();
 $quien_ingresa="Consultor TIS";
 if(isset($_SESSION['nombre_usuario']))
@@ -152,7 +154,7 @@ if(isset($_POST['enviar'])){
 							<h2><i class="icon-edit"></i> Formulario de registro: Consultor TIS</h2>					
 						</div>
 						<div class="box-content" id="formulario">
-							<?php if ($gestion_valida) {
+							<?php if ($gestionValida) {
 							 ?>
 						</br>
 		                  	<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" accept-charset="utf-8" action="registro_consultor.php">

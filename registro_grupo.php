@@ -1,6 +1,8 @@
 <?php
 $titulo="Registro Grupo Empresa";
 include ('conexion/verificar_gestion.php');
+$verificarG = new VerificarGestion();
+$gestionValida = $verificarG->VerificarFechasGestion();
 session_start();
 $quien_ingresa="Grupo Empresa";
 if(isset($_SESSION['nombre_usuario']))
@@ -202,7 +204,7 @@ if(isset($_SESSION['nombre_usuario']))
 						</div>
 						<div class="box-content" id="formulario">
 						<?php 
-						if($gestion_valida){
+						if($gestionValida){
 							if ($act_2==1) {
 								if (!$act_2_espera) {	
 						?>	
