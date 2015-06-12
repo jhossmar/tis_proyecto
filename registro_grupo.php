@@ -3,6 +3,7 @@ $titulo="Registro Grupo Empresa";
 include ('conexion/verificar_gestion.php');
 $verificarG = new VerificarGestion();
 $gestionValida = $verificarG->VerificarFechasGestion();
+$verificarG->Actividad2();
 session_start();
 $quien_ingresa="Grupo Empresa";
 if(isset($_SESSION['nombre_usuario']))
@@ -70,10 +71,10 @@ if(isset($_SESSION['nombre_usuario']))
 		}
 
 		$consulta_usuario = mysql_query("SELECT nombre_usuario from usuario 
-		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion=$id_gestion)",$conn)
+		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
 		                          or die("Could not execute the select query.");//unico para la gestion
 		$consulta_email = mysql_query("SELECT email from usuario 
-		                         where email='$eMail'AND (gestion=1 OR gestion=$id_gestion)",$conn)
+		                         where email='$eMail'AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
 		                         or die("Could not execute the select query.");//unico para la gestion
 		$consulta_nl = mysql_query("SELECT nombre_largo from grupo_empresa 
 		                         where nombre_largo='$nombre_largo'",$conn)
@@ -82,7 +83,7 @@ if(isset($_SESSION['nombre_usuario']))
 		                         where nombre_corto='$nombre_corto'",$conn)
 		                         or die("Could not execute the select query.");//unico siempre
 		$consulta_cod = mysql_query("SELECT codigo_sis from usuario, integrante 
-								where integrante.usuario=usuario.id_usuario AND codigo_sis='$cod_sis' AND (gestion=1 OR gestion=$id_gestion)",$conn)
+								where integrante.usuario=usuario.id_usuario AND codigo_sis='$cod_sis' AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
 		                         or die("Could not execute the select query."); //unico para la gestion
 
 
@@ -132,11 +133,11 @@ if(isset($_SESSION['nombre_usuario']))
 			or die("Error no se pudo realizar cambios.");
 		   		/*INSERTAR EL USUARIO*/
 		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email, tipo_usuario, habilitado,gestion)
-		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',4,0,$id_gestion)";
+		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',4,0,$verificarG->id_gestion)";
 		        $result = mysql_query($sql,$conn) or die(mysql_error());
 			
 			/*ID DEL USUARIO PARA EL INTEGRANTE*/
-		        $sql = "SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$id_gestion";
+		        $sql = "SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$verificarG->id_gestion";
 		        $result = mysql_query($sql,$conn) or die(mysql_error());
 		        $resultado_user = mysql_fetch_assoc($result);
 		        $id_user=(int)$resultado_user['id_usuario'];
@@ -205,8 +206,8 @@ if(isset($_SESSION['nombre_usuario']))
 						<div class="box-content" id="formulario">
 						<?php 
 						if($gestionValida){
-							if ($act_2==1) {
-								if (!$act_2_espera) {	
+							if ($verificarG->act_2==1) {
+								if (!$verificarG->act_2_espera) {	
 						?>	
 		                  	<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" accept-charset="utf-8" action="registro_grupo.php">
 								<fieldset>

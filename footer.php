@@ -362,8 +362,10 @@ $(document).ready(function() {
 	<script src="js/noticias.js"></script>
 	 
     <?php
-          //include('conexion/verificar_gestion.php');
-          if ($gestion_valida && (strcmp($titulo,"Sistema de Apoyo a la Empresa TIS")==0)) {
+          
+          $verificarG = new VerificarGestion();
+          $gestionValida = $verificarG->VerificarFechasGestion();
+          if ($gestionValida && (strcmp($titulo,"Sistema de Apoyo a la Empresa TIS")==0)) {
                $consulta = "SELECT COUNT(*) as numero
                             FROM documento_consultor
                             WHERE  documento_jefe= '1' AND gestion=$id_gestion";

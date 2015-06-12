@@ -3,6 +3,7 @@ $titulo="Registro Consultor TIS";
 include('conexion/verificar_gestion.php');
 $verificarG = new VerificarGestion();
 $gestionValida = $verificarG->VerificarFechasGestion();
+$conn= $verificarG->GetConexion();
 session_start();
 $quien_ingresa="Consultor TIS";
 if(isset($_SESSION['nombre_usuario']))
@@ -38,10 +39,10 @@ if(isset($_POST['enviar'])){
 	$telf=trim($_POST['telf']);
 	$eMail=trim($_POST['email']);
 	$consulta_usuario = mysql_query("SELECT nombre_usuario from usuario 
-	                          where nombre_usuario='$usuario'AND (gestion=1 OR gestion=$id_gestion)",$conn)
+	                          where nombre_usuario='$usuario'AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
 	                          or die("Could not execute the select query.");
 	$consulta_email = mysql_query("SELECT email from usuario 
-	                         where email='$eMail'AND (gestion=1 OR gestion=$id_gestion)",$conn)
+	                         where email='$eMail'AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
 	                         or die("Could not execute the select query.");                         
 
 	$resultado_usuario = mysql_fetch_assoc($consulta_usuario);
@@ -154,8 +155,7 @@ if(isset($_POST['enviar'])){
 							<h2><i class="icon-edit"></i> Formulario de registro: Consultor TIS</h2>					
 						</div>
 						<div class="box-content" id="formulario">
-							<?php if ($gestionValida) {
-							 ?>
+							<?php if($gestionValida){?>
 						</br>
 		                  	<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" accept-charset="utf-8" action="registro_consultor.php">
 								<fieldset>
@@ -223,8 +223,7 @@ if(isset($_POST['enviar'])){
 							echo "<div align=\"center\">
 				                        <h4><i class=\"icon-info-sign\"></i>
 				                        No existe ninguna actividad para esta gesti&oacute;n.</h4>
-				                      	</div>";
-						
+				                      	</div>";						
 							}    ?>	 
 		                </div>
 				</div><!--/FORMULARIO DE INGRESO-->	
