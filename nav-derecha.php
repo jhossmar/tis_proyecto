@@ -84,7 +84,7 @@
 						<?php if ($GestionValida) {
 							echo "<li><b>Gesti&oacute;n ".$VeriricarG->nombre_gestion.":</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin)."</li>";
 							if ($VeriricarG->act_1==1) {
-								echo "<li><b>Inicio convocatoria:</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini_1)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin_1)."</li>";
+								echo "<li><b>Inicio convocatoria:</b> Del ".strftime("%d/%m/%y",$VeriricarG->act_ini_1)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin_1)."</li>";
 							}
 							if ($VeriricarG->act_2==1) {
 								echo "<li><b>Registro de Grupo Empresas:</b> Del ".strftime("%d/%m/%y",$VeriricarG->fecha_ini_2)." hasta ".strftime("%d/%m/%y",$VeriricarG->fecha_fin_2)."</li>";

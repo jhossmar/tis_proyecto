@@ -1,6 +1,11 @@
 <?php
     $titulo="Habilitar Integrantes";
     include('conexion/verificar_gestion.php');
+    $verificarG = new VerificarGestion();
+    $gestionValida = $verificarG->VerificarFechasGestion();
+    $verificarG->Actividad1();
+    $verificarG->Actividad2();
+    $conn = $verificarG->GetConexion();
     session_start();
 /*--------------------VERIFICAR QUE SEA EL CONSULTOR TIS------------------------*/
 if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']!=2 && $_SESSION['tipo']!=3))
@@ -56,14 +61,14 @@ $id_grupoem = $_GET['value'];
             </div>
             <div class="box-content">
                 <?php
-                    if($gestion_valida){
+                    if($gestionValida){
 
                     /*de esta consulta, salen todos los trabajadores de la empresa, la cual pertenece a la empresa que a su vez
                     pertenece al usuario de la sesion actual*/
                     $integrantes ="SELECT *
                                from integrante i, usuario u, carrera c
                                where grupo_empresa='$id_grupoem' and  u.id_usuario=i.usuario AND i.carrera=c.id_carrera and u.tipo_usuario=5";
-                    $resultado = mysql_query($integrantes);
+                    $resultado = mysql_query($integrantes,$conn);
                     $cantidad = mysql_num_rows($resultado);
                         if($cantidad > 0){
                 ?>

@@ -1,6 +1,6 @@
 <?php
 $titulo="P&aacute;gina de inicio Grupo Empresas";
-include("conexion/conexion.php");
+
 require_once("conexion/verificar_gestion.php");
 
   $VeriricarG = new VerificarGestion();
@@ -12,38 +12,18 @@ require_once("conexion/verificar_gestion.php");
   $VeriricarG->Actividad5();
   $VeriricarG->Actividad6();
   $VeriricarG->Actividad7();
+  $conn = $VeriricarG->GetConexion();
 session_start();
 
-if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch($_SESSION['tipo'])
-		{
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;                                                             		
-	     }   
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario']))
-{
-	header("Location: index.php");
-}
+//if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
 
 include("conexion/verificar_integrantes.php");
-if(!$cantidad_valida && isset($_POST['enviar']))
+$VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
+$cantidadValida=$VerificarI->CantidadValida();
+if(!$cantidadValida && isset($_POST['enviar']))
 {
 		$error=false;
-		/*VALORES de usuario*/
+
 		$id_usuario=$_POST['id_usuario'];
 		$usuario=$_POST['username'];
 		$clave=$_POST['password']; 
@@ -170,8 +150,9 @@ include('header.php'); ?>
 			</div>
 			<center><h3>Bienvenida Grupo Empresa</h3></center>
 			<?php 
-				if ($GestionValida) {
-					if (!$cantidad_valida) { 
+				if($GestionValida){
+					
+					if(!$cantidadValida){ 
 				?>
 			<div class="row-fluid">
 				<div class="box span12 ">
@@ -179,9 +160,8 @@ include('header.php'); ?>
 					<h2><i class="icon-warning-sign"></i> Importante: Agregar Integrante a la Grupo Empresa</h2>					
 					</div>
 					<div class="box-content" id="formulario">
-					<?php	if (!$VeriricarG->act_2_espera && $VeriricarG->act_2==1) {
-						?>
-						<p><b>Para que su Grupo Empresa quede completamente habilitada debe agregar por lo menos <?php echo $cantidad_faltante; ?> integrantes m&aacute;s.</b></p><br>
+					<?php if(!$VeriricarG->act_2_espera && $VeriricarG->act_2==1) {?>
+						<p><b>Para que su Grupo Empresa quede completamente habilitada debe agregar por lo menos <?php echo "".$VerificarI->cantidadFaltante; ?> integrantes m&aacute;s.</b></p><br>
 						<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" accept-charset="utf-8" action="home_grupo.php">
 							<fieldset>
 								<input type="hidden" name="id_usuario" value=<?php echo $id_usuario ?> >
@@ -311,21 +291,21 @@ include('header.php'); ?>
 							<h2><i class="icon-info-sign"></i> Informacion</h2>
 						</div>
 						<div class="box-content alerts">
-								Bienvenida Grupo Empresa a la <b>Gesti&oacute;n <?php echo $nombre_gestion; ?></b>, en este sitio usted podr&aacute; administrar las
+								Bienvenida Grupo Empresa a la <b>Gesti&oacute;n <?php echo $VeriricarG->nombre_gestion; ?></b>, en este sitio usted podr&aacute; administrar las
 								actividades de su Grupo Empresa,tambi&eacute;n la entrega de los sobres A y B, entregar su producto y adem&aacute;s pod&aacute; participar del <a href="mensajes.php">Espacio de discuci&oacute;n</a>.<br>
 						</div>
 					</div><!--/span-->
 				</div><!-- fin row -->
 				<?php 
-				if ($numero_integrantes<5 && $act_2==1 && !$act_2_espera) { ?>
+				if ($VerificarI->numeroIntegrantes<5 && $VeriricarG->act_2==1 && !$VeriricarG->act_2_espera) { ?>
 					<div class="row-fluid">
 					<div class="box span12">
 						<div class="box-header well">
 							<h2><i class="icon-exclamation-sign"></i> Nota</h2>
 						</div>
 						<div class="box-content alerts">
-								Si usted desea puede agregar <b><?php echo $cantidad_faltante; ?> integrante(s) m&aacute;s <a href="agregar_integrante.php">aqu&iacute;.</a> </b>
-								El registro estar&aacute; habilitado hasta la fecha <b><?php echo $act_fin_2 ?></b>, favor tomar nota.<br>
+								Si usted desea puede agregar <b><?php echo $VerificarI->cantidadFaltante; ?> integrante(s) m&aacute;s <a href="agregar_integrante.php">aqu&iacute;.</a> </b>
+								El registro estar&aacute; habilitado hasta la fecha <b><?php echo $VeriricarG->act_fin_2 ?></b>, favor tomar nota.<br>
 						</div>
 					</div><!--/span-->
 				</div><!-- fin row -->

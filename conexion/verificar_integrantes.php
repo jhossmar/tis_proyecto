@@ -1,32 +1,93 @@
 <?php
-	include('conexion.php');
-	$cantidad_valida=false;
-	$cantidad_faltante=0;
-	$consulta_id_ge = mysql_query("SELECT grupo_empresa
-								   FROM integrante
-								   WHERE usuario =".$_SESSION['id'],$conn)
-	or die("Could not execute the select query.");
-    $resultado_id_ge = mysql_fetch_assoc($consulta_id_ge);
-    $rep_id_ge=(int)$resultado_id_ge['grupo_empresa'];
-	$nombre_usuario=$_SESSION['nombre_usuario'];
-	$consulta_sql="SELECT COUNT(*) as numero
-				   from  integrante
-				   WHERE grupo_empresa=$rep_id_ge";
-	$consulta = mysql_query($consulta_sql,$conn)
-		or die("Could not execute the select query.");
-
-	$resultado = mysql_fetch_assoc($consulta);
-	if (!empty($resultado['numero'])){
-		$numero_integrantes=$resultado['numero'];
-		if ($numero_integrantes<3) {
-			$cantidad_valida=false;
-			$cantidad_faltante=3-$numero_integrantes;
-		}
-		elseif ($numero_integrantes>=3) 
+	include('conexion.php');	
+		class VerificarIntegrantes 
 		{
-			$cantidad_valida=true;
-			$cantidad_faltante=5-$numero_integrantes;
-		}
-	}
-	mysql_free_result($consulta);
+	        public $numeroIntegrantes;
+	        public $idGrupo;
+	        public $cantidadFaltante;
+	        public $metodo;
+			function __construct($user)
+			{
+				$this->GetIdGrupoEmpresa($user);
+				$this->GetCantidadIntegrantes();
+				$this->CantidadValida();
+				$this->GetMetodo();
+			}
+			public function GetMetodo()
+			{
+				global $conn;
+                 $consulta_sql="SELECT id_metodologia
+				                FROM  metodologia_grupo_empresa
+				                WHERE id_grupo_empresa='$this->idGrupo'";
+	             $consulta = mysql_query($consulta_sql,$conn)
+		        or die("Could not execute the select query.");
+
+	            $resultado = mysql_fetch_assoc($consulta);
+	            
+		        $idMetodo = (int)$resultado['id_metodologia'];
+		        
+                  $this->metodo=$idMetodo;		        
+			}
+			public function GetIdGrupoEmpresa($user)
+			{
+				global $conn;
+				$idUser=0;
+				$this->idGrupo=0;
+                $consulta_sql="SELECT id_usuario
+				                FROM  usuario
+				                WHERE nombre_usuario='$user'";
+	            $consulta = mysql_query($consulta_sql,$conn)
+		        or die("Could not execute the select query.");
+
+	            $resultado = mysql_fetch_assoc($consulta);
+
+	            if(!empty($resultado['id_usuario']))
+	            {
+		           $idUser = (int)$resultado['id_usuario'];		          
+		        }
+		        if($idUser!=0)
+		        {		           
+                   $idGrupo_sql = "SELECT grupo_empresa
+				                   FROM  integrante
+				                   WHERE usuario=$idUser";
+	               $consulta2 = mysql_query($idGrupo_sql,$conn)
+		           or die("Could not execute the select query. ");
+
+	               $resultado2 = mysql_fetch_assoc($consulta2);
+
+	               if(!empty($resultado2['grupo_empresa']))
+	               {
+		              $this->idGrupo = (int) $resultado2['grupo_empresa'];
+		           }
+		        }		        		    
+			}
+			public function GetCantidadIntegrantes()
+			{				  
+			    global $conn; 
+	            $consulta_sql="SELECT COUNT(*) as numero
+				                FROM  integrante
+				                WHERE grupo_empresa=$this->idGrupo";
+	            $consulta = mysql_query($consulta_sql,$conn)
+		        or die("Could not execute the select query.");
+
+	            $resultado = mysql_fetch_assoc($consulta);
+
+	            if(!empty($resultado['numero']))
+	            {
+		           $this->numeroIntegrantes = (int) $resultado['numero'];
+		        }			              
+		    }	
+		    public function CantidadValida()
+		    {
+		    	$respuesta=false;
+		    	$this->cantidadFaltante = 0;
+		    	if($this->numeroIntegrantes<3)
+		    	{
+                  $this->cantidadFaltante = 3 - $this->numeroIntegrantes;
+                  $respuesta=true;
+		    	}
+		    	return $respuesta;
+		   }
+
+	}		
 ?>
