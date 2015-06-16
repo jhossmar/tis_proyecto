@@ -18,7 +18,7 @@ $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 include("conexion/verificar_integrantes.php");
 $VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
 $cantidadValida=$VerificarI->CantidadValida();
-if($GestionValida){
+if($gestionValida){
   $consulta_id_ge = mysql_query("SELECT ge.id_grupo_empresa
                                  FROM usuario u,integrante i,grupo_empresa ge
                                  WHERE u.id_usuario='".$_SESSION['id']."' and u.id_usuario=i.usuario and i.grupo_empresa =ge.id_grupo_empresa",$conn) or die("Could not execute the select query.");

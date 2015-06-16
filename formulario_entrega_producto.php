@@ -4,49 +4,29 @@ session_start();
 $quien_ingresa="Grupo Empresa";
 $pag_ini="home_grupo.php";
 
-/*------------------VERIFICAR QUE SEAL LA GRUPO EMPRESA------------------------*/
-if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;                                                             		
-	          }   
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
-
+require_once("conexion/verificar_actividades.php");
 include("conexion/verificar_integrantes.php");
 $VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
 $cantidadValida=$VerificarI->CantidadValida();
-require_once("conexion/verificar_gestion.php");
-  $VerificarG = new VerificarGestion();
-  $GestionValida = $VerificarG->VerificarFechasGestion();
-  $VerificarG->Actividad5();
+
+  $verificarA = new VerificarActividades;
+  $gestionValida = $verificarA->GetGestionValida();
+  $verificarA->Actividad5();
+
+    $c = new Conexion;
+    $c->EstablecerConexion();
+    $conn = $c->GetConexion();
 if(isset($_POST['enviar'])){	
 	$url=$_POST['co_url'];
 	$usuario=$_SESSION['nombre_usuario'];
 	$id_usuario=$_SESSION['id'];
-	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$VerificarG->GetConexion())
+	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
       or die("Error no se pudo realizar cambios.");
 			$sql = "SELECT g.id_grupo_empresa
 					FROM grupo_empresa g, integrante i
 					WHERE i.usuario = '$id_usuario'
 					AND i.grupo_empresa=g.id_grupo_empresa";
-	        $result = mysql_query($sql,$$VerificarG->GetConexion()) or die(mysql_error());
+	        $result = mysql_query($sql,$conn) or die(mysql_error());
 	        $arreglo = mysql_fetch_array($result);
 	        $id_grupo = $arreglo['id_grupo_empresa'];
 
@@ -54,7 +34,7 @@ if(isset($_POST['enviar'])){
 					SET enlace_producto = '$url',fecha_real_entrega = CURDATE()
 					WHERE fecha_fin = CURDATE()
 					AND grupo_empresa='$id_grupo'";
-	        $result = mysql_query($sql,$VerificarG->GetConexion()) or die(mysql_error());  
+	        $result = mysql_query($sql,$conn) or die(mysql_error());  
 
 	        header("Location: cronograma_grupo_integra.php");
 
@@ -66,7 +46,7 @@ if(isset($_POST['enviar'])){
 			$sql = "SELECT descripcion
 			FROM entrega_producto
 			WHERE fecha_fin = CURDATE()";
-	        $result = mysql_query($sql,$VerificarG->GetConexion()) or die(mysql_error());
+	        $result = mysql_query($sql,$conn) or die(mysql_error());
 	        $arreglo = mysql_fetch_array($result);
 	        $fecha = $arreglo['descripcion'];
 
@@ -93,20 +73,20 @@ include('header.php');
 					</div>
 					<div class="box-content">	
 							<?php
-								if($GestionValida){
+								if($gestionValida){
 								if ($cantidadValida) {
-									if ($VerificarG->act_5==1 && !$VerificarG->act_5_espera){
+									if($verificarA->activo_5==1 && !$verificarA->act_5_espera){
 								$consulta_grupo= mysql_query("SELECT id_grupo_empresa
 															FROM integrante i, grupo_empresa g
 															WHERE i.usuario = '$VerificarI->IdUsser' 
-															AND i.grupo_empresa = g.id_grupo_empresa",$VerificarG->GetConexion());
+															AND i.grupo_empresa = g.id_grupo_empresa",$conn);
 								$resultado_grupo = mysql_fetch_assoc($consulta_grupo);
 								$grupo = $resultado_grupo['id_grupo_empresa'];
 
 								$consulta_producto = mysql_query("SELECT descripcion, fecha_inicio, fecha_fin, enlace_producto
 												FROM entrega_producto
 												WHERE fecha_fin = CURDATE()
-												AND grupo_empresa = '$grupo'",$VerificarG->GetConexion())
+												AND grupo_empresa = '$grupo'",$conn)
 	                          					or die("Could not execute the select query.");
 								$resultado = mysql_fetch_assoc($consulta_producto);
 								if(is_array($resultado) && !empty($resultado))
