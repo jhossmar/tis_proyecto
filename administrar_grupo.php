@@ -94,18 +94,11 @@
 
 						  </tbody>
 					  </table>
-
-
-
-
 								<div style="padding-left:10px;">
                                   <button name="enviar"type="submit" class="btn btn-primary" id="enviar"><i class="icon-ok"></i> Guardar Cambios</button>
                                   <a href="administrar_grupo.php" rel="activi"><button type="button" class="btn" ><i class="icon-remove"></i> Restablecer</button></a>
 								 </div>
-
-
-
-                    </form>
+                  </form>
                     <?php 	}
                             else{
                             	echo "<div align=\"center\">
@@ -132,9 +125,7 @@
         		            <div class="box span12" id="print">
         					<div class="box-header well" data-original-title>
         						<h2><i class="icon-check"></i> Cronograma y documentaci&oacute;n de las Grupo Empresas</h2>
-                            </div>
-                            
-
+                            </div>                          
         					<div class="box-content">
                             <label>Ingrese aqui para revisar la documentación, pagos y actividades de cada Grupo Empresa</label>
                             <form name="form1" class="form-horizontal cmxform" method="GET" action="ver_cronograma.php" accept-charset="utf-8" >
@@ -144,12 +135,11 @@
                                    <label class="control-label">  Grupo Empresa &emsp;</label>
 
                                     <div class="controls">
-                                                  <?php    echo "     <select id=\"entreprod\" name=\"entreprod\" data-rel=\"chosen\">   ";
-                                                                                //busca todas las emtregas de producto de la grupo empresa
-                                                                                  $integrantes ="SELECT id_usuario,nombre_largo,nombre_corto,nombre,apellido,u.habilitado, u.nombre_usuario , g.id_grupo_empresa
-                                                        											from grupo_empresa g, usuario u, integrante i
-                                                        											where g.consultor_tis=$id_usuario AND i.grupo_empresa=g.id_grupo_empresa AND
-                                                        											i.usuario=u.id_usuario AND u.tipo_usuario=4 AND u.gestion=$verificarG->id_gestion";
+                                                  <?php    echo "<select id=\"entreprod\" name=\"entreprod\" data-rel=\"chosen\">   ";                                                                            
+                                                                 $integrantes ="SELECT id_usuario,nombre_largo,nombre_corto,nombre,apellido,u.habilitado, u.nombre_usuario , g.id_grupo_empresa
+                                                        				    						FROM grupo_empresa g, usuario u, integrante i
+                                                        											  WHERE g.consultor_tis=$id_usuario AND i.grupo_empresa=g.id_grupo_empresa AND
+                                                        											i.usuario=u.id_usuario AND u.tipo_usuario=4 AND u.gestion=$VerificarG->id_gestion";
                                                                                        $resultado = mysql_query($integrantes,$conn);
                                                                                   while($row = mysql_fetch_array($resultado)) {
                                                                                             echo "<option value=\"".$row['id_grupo_empresa']."\">".$row['nombre_largo']."</option>";

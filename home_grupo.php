@@ -1,9 +1,8 @@
 <?php
 $titulo="P&aacute;gina de inicio Grupo Empresas";
 
-include("conexion/verificar_integrantes.php");
 require_once("conexion/verificar_actividades.php");
-
+include("conexion/verificar_integrantes.php");
 
   $verificarA = new VerificarActividades;
   $GestionValida = $verificarA->GetGestionValida();

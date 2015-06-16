@@ -1,5 +1,9 @@
 <?php
     include('conexion.php');
+    $conexion = new Conexion;
+    $conexion->EstablecerConexion();
+    $conn= $conexion->GetConexion();
+
 	session_start();
     $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)or die("Error no se pudo realizar cambios.");
             $u=$_POST["grupo"];

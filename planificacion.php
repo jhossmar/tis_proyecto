@@ -1,8 +1,8 @@
 <?php
   session_start();
   $titulo="Planificaion de las actividades";
-  include("planificacion2.php");
   require_once("conexion/verificar_gestion.php");
+  include("planificacion2.php");
   include("header.php");
   $verificarG = new VerificarGestion;
   $GestionValida = $verificarG->GetGestionValida();

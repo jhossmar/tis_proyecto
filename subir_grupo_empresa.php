@@ -1,30 +1,26 @@
 <?php
 $titulo="Enviar Documentos Grupo Empresa";
-include("conexion/conexion.php");
-require_once("conexion/verificar_actividades.php");
+include("conexion/verificar_actividades.php");
 include("conexion/verificar_integrantes.php");
 
+session_start();
+  $VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);   
+  $cantidadValida=$VerificarI->CantidadValida();
   $verificarA = new VerificarActividades;
   $gestionValida = $verificarA->GetGestionValida();
-  $verificarA->Actividad1();
   $verificarA->Actividad2();
-  $verificarA->Actividad3();
-  $verificarA->Actividad4();
-  $verificarA->Actividad5();
-  $verificarA->Actividad6();
-  $verificarA->Actividad7();
+    
+  $quien_ingresa="Grupo Empresa";
+  $pag_ini="home_grupo.php";
 
-    session_start();
-    $quien_ingresa="Grupo Empresa";
-    $pag_ini="home_grupo.php";
+  $c = new Conexion;
+  $c->EstablecerConexion();
+  $conn = $c->GetConexion();
 
-    $c = new Conexion;
-    $c->EstablecerConexion();
-    $conn = $c->GetConexion();
 
-$VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
-$cantidadValida=$VerificarI->CantidadValida();
-if(isset($_POST['enviar'])){
+if(isset($_POST['enviar']))
+{
+	
 	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$VeriricarG->GetConexion())
       or die("Error no se pudo realizar cambios.");
 	$sobreA=$_FILES['documentoA'];
@@ -145,33 +141,37 @@ if(isset($_POST['enviar'])){
 	}
 include('header.php');
  ?>
-			<div>
-				<ul class="breadcrumb">
-					<li>
-						<a href="index.php">Inicio</a>
-						<span class="divider">/</span>
-					</li>
-					
-					<li>
-						<a href="subir_grupo_empresa.php">Documentos</a>
-					</li>				
-				</ul>
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="index.php">Inicio</a>
+				<span class="divider">/</span>
+			</li>	
+			<li>
+				<a href="subir_grupo_empresa.php">Documentos</a>
+			</li>				
+		</ul>
+	</div>
+	<center><h3>Documentos</h3></center>
+	<div class="row-fluid">
+		<div class="box span12">
+			<div class="box-header well">
+				<h2><i class="icon-edit"></i> Formulario de env&iacute;o de Documentos</h2>
 			</div>
-			<center><h3>Documentos</h3></center>
-			<div class="row-fluid">
-			<div class="box span12">
-					<div class="box-header well">
-						<h2><i class="icon-edit"></i> Formulario de env&iacute;o de Documentos</h2>
-					</div>
-					<div class="box-content">
-						<?php if($gestionValida){
-								if ($cantidadValida) {
-									if($verificarA->activo_3==1 && $verificarA->act_3_espera){
+			<div class="box-content">
+				<?php if($gestionValida)
+				      {				      	
+						if($cantidadValida)
+						{
+							if($verificarA->activo_3==1 && $verificarA->act_3_espera)
+							{
 								$consulta_producto = mysql_query("SELECT sobre_a, sobre_b,observacion,habilitado
-																FROM grupo_empresa
-																WHERE id_grupo_empresa = $VerificarI->idGrupo",$conn);
+																  FROM grupo_empresa
+																  WHERE id_grupo_empresa = $VerificarI->idGrupo",$conn);
 								$resultado = mysql_fetch_assoc($consulta_producto);
-								if(is_null($resultado['sobre_a']) && is_null($resultado['sobre_a']) ){//si se envio y yarespondio mostrar
+								
+								if(is_null($resultado['sobre_a']) && is_null($resultado['sobre_a']))
+								{//si se envio y ya respondio mostrar
 									if (!is_null($resultado['observacion'])) {
 									?>
 									<div class="alert alert-info">
@@ -292,7 +292,7 @@ include('header.php');
 
 					</div>
 					<div class="box-content">
-						<?php if($GestionValida) {
+						<?php if($gestionValida) {
                                $consulta ="SELECT g.consultor_tis, nombre_documento,ruta_documento,descripsion_documento,fecha_documento
 											FROM grupo_empresa g , documento_consultor d
 											WHERE id_grupo_empresa=$VerificarI->idGrupo AND g.consultor_tis=d.consultor_tis AND d.habilitado=1 AND d.documento_jefe=0";

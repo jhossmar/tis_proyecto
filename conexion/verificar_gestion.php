@@ -1,5 +1,5 @@
 <?php
-require_once("conexion.php");
+include("conexion.php");
 class VerificarGestion
 {
 	public $gestion_valida=false;

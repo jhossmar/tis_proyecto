@@ -1,39 +1,16 @@
 <?php
-    $titulo="Habilitar Integrantes";
-    include('conexion/verificar_gestion.php');
-    $verificarG = new VerificarGestion();
-    $gestionValida = $verificarG->VerificarFechasGestion();
-    $verificarG->Actividad1();
-    $verificarG->Actividad2();
-    $conn = $verificarG->GetConexion();
+    $titulo="Habilitar Integrantes";    
+    include('conexion/verificar_actividades.php');
+
+    $conexion = new Conexion;
+    $conexion->EstablecerConexion();
+    $conn= $conexion->GetConexion();
+
+    $verificarA = new VerificarActividades;
+    $gestionValida = $verificarA->GetGestionValida();
+    $verificarA->Actividad1();
+    $verificarA->Actividad2();    
     session_start();
-/*--------------------VERIFICAR QUE SEA EL CONSULTOR TIS------------------------*/
-if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']!=2 && $_SESSION['tipo']!=3))
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (4) :
-	                	$home="home_grupo.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;
-	          }
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
 include('header.php');
 $id_grupoem = $_GET['value'];
 ?>
@@ -63,8 +40,6 @@ $id_grupoem = $_GET['value'];
                 <?php
                     if($gestionValida){
 
-                    /*de esta consulta, salen todos los trabajadores de la empresa, la cual pertenece a la empresa que a su vez
-                    pertenece al usuario de la sesion actual*/
                     $integrantes ="SELECT *
                                from integrante i, usuario u, carrera c
                                where grupo_empresa='$id_grupoem' and  u.id_usuario=i.usuario AND i.carrera=c.id_carrera and u.tipo_usuario=5";

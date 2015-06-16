@@ -1,6 +1,8 @@
 <?php
-include("conexion/conexion.php");
-
+if(!isset($control))
+{
+include('conexion.php');	
+}
 class Planificacion
 {	
 	public function DibujarFormulario($id,$titulo,$id_form,$actividad,$name_actividad,$topico,$inicio,$fin,$form)

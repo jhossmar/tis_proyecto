@@ -1,5 +1,5 @@
 <?php
-   
+$control=0;   
    class Conexion
    {
    	private $conexion;

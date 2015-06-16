@@ -1,33 +1,19 @@
 <?php
 session_start();
-/*------------------VERIFICAR QUE SEAL LA GRUPO EMPRESA------------------------*/
-if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;
-	          }
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
+
+
+require_once("conexion/verificar_actividades.php");
 include("conexion/verificar_integrantes.php");
 $VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
 $cantidadValida=$VerificarI->CantidadValida();
-require_once("conexion/verificar_gestion.php");
-  $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
-  $VeriricarG->Actividad5();
+
+  $verificarA = new VerificarActividades;
+  $GestionValida = $verificarA->GetGestionValida();
+  $verificarA->Actividad5();
+
+  $c = new Conexion;
+  $c->EstablecerConexion();
+  $conn = $c->GetConexion();
 
 if($GestionValida){
   $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
@@ -35,15 +21,15 @@ if($GestionValida){
   //captura el id del grupo empresa
   $consulta_id_ge = mysql_query("SELECT ge.id_grupo_empresa
                                  FROM usuario u,integrante i,grupo_empresa ge
-                                 WHERE u.id_usuario='".$_SESSION['id']."' and u.id_usuario=i.usuario and i.grupo_empresa =ge.id_grupo_empresa",$VeriricarG ->GetConexion())
+                                 WHERE u.id_usuario='".$_SESSION['id']."' and u.id_usuario=i.usuario and i.grupo_empresa =ge.id_grupo_empresa",$conn)
                                   or die("Could not execute the select query.");
   $resultado_id_ge = mysql_fetch_assoc($consulta_id_ge);
   $rep_id_ge=(int)$resultado_id_ge['id_grupo_empresa'];
   $fecha = date("Y-m-d");
   $rep_fgi= $fecha;
   $rep_fgi= $fecha;
-  $rep_fgi=$VeriricarG->ini_gestion;
-  $rep_fgf=$VeriricarG->fin_gestion;
+  $rep_fgi=$verificarA->ini_gestion;
+  $rep_fgf=$verificarA->fin_gestion;
   $inicio = $fecha;
   $fin = $fecha;
 }
@@ -70,7 +56,7 @@ if (isset($_POST['enviar'])) {
                                           // ingresa un new entrga producto
 											 $sql = "INSERT INTO entrega_producto(id_entrega_producto,descripcion,fecha_inicio,fecha_fin,pago_establecido,grupo_empresa,id_responsable)
                                                                         	VALUES (' ','$descripcion','$inicio','$fin','$pago',$rep_id_ge,$responsable)";
-                                             $result = mysql_query($sql,$VeriricarG ->GetConexion()) or die(mysql_error());
+                                             $result = mysql_query($sql,$conn) or die(mysql_error());
                                               header('Location: entrega_prod.php');
                                  }
                                  else{
@@ -114,12 +100,12 @@ while($ccep<$contCEP){
                                     $consulta_idac = "SELECT age.id_actividad
                                                         FROM actividad_grupo_empresa age
                                                         WHERE age.entrega_producto='$ide'";
-                                    $resultado_idac = mysql_query($consulta_idac,$VeriricarG->GetConexion());
+                                    $resultado_idac = mysql_query($consulta_idac,$conn);
                                     while($row_idac = mysql_fetch_array($resultado_idac)){
-                                                   mysql_query("DELETE FROM tarea  WHERE actividad='".$row_idac['id_actividad']."'");
-                                                   mysql_query("DELETE FROM actividad_grupo_empresa  WHERE id_actividad='".$row_idac['id_actividad']."'");
+                                                   mysql_query("DELETE FROM tarea  WHERE actividad='".$row_idac['id_actividad']."'",$conn);
+                                                   mysql_query("DELETE FROM actividad_grupo_empresa  WHERE id_actividad='".$row_idac['id_actividad']."'",$conn);
                                     }
-                                    mysql_query("DELETE FROM entrega_producto  WHERE id_entrega_producto='".$ide."'",$VeriricarG->GetConexion());
+                                    mysql_query("DELETE FROM entrega_producto  WHERE id_entrega_producto='".$ide."'",$conn);
                                     header('Location: entrega_prod.php');
         }
         else{
@@ -151,7 +137,7 @@ while($ccep<$contCEP){
                                                      if($inicio>=$rep_fgi&&$inicio<=$rep_fgf){
                                                            if($fin<=$rep_fgf){
                                                                                  mysql_query("UPDATE entrega_producto SET descripcion='$descrip',fecha_inicio='$inicio',fecha_fin='$fin',pago_establecido='$pago'
-                                                                                      WHERE id_entrega_producto='$ide'",$VeriricarG->GetConexion());
+                                                                                      WHERE id_entrega_producto='$ide'",$conn);
                                                                                       header('Location: entrega_prod.php');
                                                            }
                                                            else{
@@ -221,7 +207,7 @@ include('header.php');
              <?php 
             if($GestionValida){
              if ($cantidadValida) { 
-              if ($VeriricarG->act_5==1 && !$VeriricarG->act_5_espera) {
+              if ($verificarA->activo_5==1 && !$verificarA->act_5_espera) {
                 ?>
 			<div class="row-fluid">
 				<div class="box span12 center" id="print">
@@ -236,7 +222,7 @@ include('header.php');
                                                              WHERE ep.grupo_empresa='VerificarI.idGrupo'
 															 AND ep.id_responsable=u.id_usuario
 															 ";
-                                $resultado_entrega_empresa = mysql_query($consulta_entrega_empresa,$VeriricarG->GetConexion());
+                                $resultado_entrega_empresa = mysql_query($consulta_entrega_empresa,$conn);
                         		$num_registros = mysql_num_rows($resultado_entrega_empresa);
                         		if ($num_registros>0) {
                         ?>
@@ -330,7 +316,7 @@ include('header.php');
 																							AND i.usuario = u.id_usuario
 																							AND i.grupo_empresa = ge.id_grupo_empresa
 																							";
-                                                              $resultado_entrega_empresa = mysql_query($consulta_entrega_empresa,$VeriricarG->GetConexion());
+                                                              $resultado_entrega_empresa = mysql_query($consulta_entrega_empresa,$conn);
                                                               while($row_entrega_empresa = mysql_fetch_array($resultado_entrega_empresa)) {
                                                                         echo "<option value=\"".$row_entrega_empresa['id_usuario']."\">".$row_entrega_empresa['nombre_usuario']."</option>";
                                                               }
