@@ -34,7 +34,7 @@ class VerificarActividades extends VerificarGestion
 	public $act_6_espera =false;
 	public $act_7_espera =false;
 	
-	private function DeshabilitarActividad($fase)
+	private function ActualizarActividad($fase)
 	{
 		
 			$consulta_sql="UPDATE fase_convocatoria
