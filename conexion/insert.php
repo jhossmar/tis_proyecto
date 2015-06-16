@@ -1,5 +1,8 @@
 <?php
-include("verificar_gestion.php");
+include("conexion.php");
+  $conexion = new Conexion;
+  $conexion->EstablecerConexion();
+  $conn = $conexion->GetConexion();
 session_start();
 if(isset($_POST['enviar'])){	
 	$mensaje=$_POST['mensaje'];

@@ -22,6 +22,8 @@ elseif(!isset($_SESSION['nombre_usuario'])){
 }
 /*----------------------FIN VERIFICACION------------------------------------*/
 include("conexion/verificar_integrantes.php");
+$VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
+$cantidadValida=$VerificarI->CantidadValida();
 require_once("conexion/verificar_gestion.php");
   $VeriricarG = new VerificarGestion();
   $GestionValida = $VeriricarG->VerificarFechasGestion();
@@ -218,7 +220,7 @@ include('header.php');
 			<center><h3>Cronograma de entrega de Subsistemas </h3></center>
              <?php 
             if($GestionValida){
-             if ($cantidad_valida) { 
+             if ($cantidadValida) { 
               if ($VeriricarG->act_5==1 && !$VeriricarG->act_5_espera) {
                 ?>
 			<div class="row-fluid">
@@ -231,7 +233,7 @@ include('header.php');
                             //busca todas las emtregas de producto de la grupo empresa
                                 $consulta_entrega_empresa = "SELECT ep.id_entrega_producto,ep.descripcion,ep.fecha_inicio,ep.fecha_fin,ep.pago_establecido,u.nombre,u.apellido
                                                              FROM entrega_producto ep, usuario u
-                                                             WHERE ep.grupo_empresa='$rep_id_ge'
+                                                             WHERE ep.grupo_empresa='VerificarI.idGrupo'
 															 AND ep.id_responsable=u.id_usuario
 															 ";
                                 $resultado_entrega_empresa = mysql_query($consulta_entrega_empresa,$VeriricarG->GetConexion());

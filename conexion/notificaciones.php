@@ -1,7 +1,8 @@
 <?php
-  if(!isset($titulo)){
-    header('Location: ../index.php');
-  }
+      include('conexion/conexion.php');
+      $conexion = new Conexion;
+      $conexion->EstablecerConexion();
+      $conn = $conexion->GetConexion();
 
                $usuario=$_SESSION['id'];
                $consulta = "SELECT  id_notificacion,usuario, descripcion, enlace, fecha, leido
@@ -9,10 +10,10 @@
                             WHERE (tipo_notificacion = id_tipo_notificacion
                             AND usuario_destino = $usuario) AND fecha <= '$fin_gestion 23:59:59' AND fecha>='$ini_gestion 00:00:01'
                             ORDER BY fecha DESC";
-               $resultado = mysql_query($consulta);
+               $resultado = mysql_query($consulta,$conn);
                $numero = 0;
 
-                $resultado = mysql_query($consulta);
+                $resultado = mysql_query($consulta,$conn);
                 $num_res=mysql_num_rows($resultado);
                  if ($num_res>0) {
               ?>
@@ -34,7 +35,7 @@
                                   $ci = "SELECT nombre, apellido
                                         FROM usuario
                                         WHERE id_usuario = '$x'";
-                                  $ri = mysql_query($ci);
+                                  $ri = mysql_query($ci,$conn);
                                   $resi = mysql_fetch_array($ri);
                                   $de = $resi['nombre']." ". $resi['apellido'];
 
@@ -42,7 +43,7 @@
                                         FROM usuario u, tipo_usuario i
                                         WHERE u.id_usuario = '$x'
                                         AND u.tipo_usuario = i.id_tipo_usuario";
-                                  $ri = mysql_query($ci);
+                                  $ri = mysql_query($ci,$conn);
                                   $resi = mysql_fetch_array($ri);
                                   $u = $resi['descripcion'];
 

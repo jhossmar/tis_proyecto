@@ -1,34 +1,14 @@
 <?php
 require_once("conexion/verificar_gestion.php");
-  $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
-session_start();
-if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']!=4 && $_SESSION['tipo']!=3 && $_SESSION['tipo']!=2))
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (4) :
-	                	$home="home_grupo.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;
-	          }
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
+require_once("conexion/conexion.php");
+  
+  $VerificarG = new VerificarGestion;
+  
+  $GestionValida = $VerificarG->GetGestionValida();
+  $conexion= new Conexion;
+  $conexion->EstablecerConexion();
+  $conn=$conexion->GetConexion();
+  session_start();
 $titulo="Notificaciones Grupo Empresa";
 include('header.php');
  ?>
@@ -47,7 +27,7 @@ include('header.php');
 			<div class="row-fluid">
 			<div class="box span12">
 					<div class="box-header well">
-						<h2><i class="icon-check"></i> Notificaciones de la Gesti&oacute;n : <?php echo $VeriricarG->nombre_gestion; ?></h2>
+						<h2><i class="icon-check"></i> Notificaciones de la Gesti&oacute;n : <?php echo $VerificarG->nombre_gestion; ?></h2>
 					</div>
 					<div class="box-content alerts">
 					<?php
@@ -55,8 +35,8 @@ include('header.php');
 						$usuario=$_SESSION['id'];
 					 $c = "SELECT COUNT(*) as numer
                      FROM notificacion
-                     WHERE usuario_destino = '$usuario' AND fecha <= '$VeriricarG->fin_gestion 23:59:59' AND fecha>='$VeriricarG->ini_gestion 00:00:01' AND leido=0";
-	               $r = mysql_query($c);
+                     WHERE usuario_destino = '$usuario' AND fecha <= '$VerificarG->fin_gestion 23:59:59' AND fecha>='$VerificarG->ini_gestion 00:00:01' AND leido=0";
+	               $r = mysql_query($c,$conn);
 	               $res = mysql_fetch_array( $r);
 	               $num=  $res['numer'];
 					
@@ -65,9 +45,9 @@ include('header.php');
                					$consulta = "SELECT  id_notificacion,usuario, descripcion, enlace, fecha, leido
 	                            FROM notificacion, tipo_notificacion
 	                            WHERE (tipo_notificacion = id_tipo_notificacion
-	                            AND usuario_destino = $usuario) AND fecha <= '$VeriricarG->fin_gestion 23:59:59' AND fecha>='$VeriricarG->ini_gestion 00:00:01' AND leido=0
+	                            AND usuario_destino = $usuario) AND fecha <= '$VerificarG->fin_gestion 23:59:59' AND fecha>='$VerificarG->ini_gestion 00:00:01' AND leido=0
 	                            ORDER BY fecha DESC";
-				                $resultado = mysql_query($consulta,$VeriricarG->GetConexion());
+				                $resultado = mysql_query($consulta,$conn);
 				                ?>
                  				
             <form method="post" action="conexion/admin_notificacion.php" accept-charset="utf-8">
@@ -87,7 +67,7 @@ include('header.php');
                                   $ci = "SELECT nombre, apellido
                                         FROM usuario
                                         WHERE id_usuario = '$x'";
-                                  $ri = mysql_query($ci);
+                                  $ri = mysql_query($ci,$conn);
                                   $resi = mysql_fetch_array($ri);
                                   $de = $resi['nombre']." ". $resi['apellido'];
 
@@ -95,7 +75,7 @@ include('header.php');
                                         FROM usuario u, tipo_usuario i
                                         WHERE u.id_usuario = '$x'
                                         AND u.tipo_usuario = i.id_tipo_usuario";
-                                  $ri = mysql_query($ci);
+                                  $ri = mysql_query($ci,$conn);
                                   $resi = mysql_fetch_array($ri);
                                   $u = $resi['descripcion'];
 

@@ -1,6 +1,9 @@
 <?php
-            include('conexion.php');
+  include('conexion.php');
 	session_start();
+  $conexion = new Conexion;
+  $conexion->EstablecerConexion();
+  $conn = $conexion->GetConexion();
 	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 	or die("Error no se pudo realizar cambios.");
               $usuario=(int)$_GET['consultor'];

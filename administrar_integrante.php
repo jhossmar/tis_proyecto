@@ -1,33 +1,13 @@
 <?php
 require_once("conexion/verificar_gestion.php");
+require_once("conexion/conexion.php");
 
-  $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
-session_start();
-/*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
-if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;
-	          }
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
+    $verificarG = new VerificarGestion();
+    $gestionValida = $verificarG->GetGestionValida();
+    $c = new Conexion;
+    $c->EstablecerConexion();
+    $conn = $c->GetConexion();
+    session_start();
 
 $titulo="Administrar Integrantes";
 
@@ -76,7 +56,7 @@ include('header.php');
 
 					</div>
 					<div class="box-content">
-						<?php if($GestionValida){
+						<?php if($gestionValida){
 						  /*de esta consulta, solo sale el id de la empresa a la cual pertenece el usuario de la sesion*/
                               $consulta_id_ge = mysql_query("SELECT ge.id_grupo_empresa
                                FROM usuario u,integrante i,grupo_empresa ge
@@ -89,7 +69,7 @@ include('header.php');
                                $integrantes ="SELECT *
                                from integrante i, usuario u, carrera c
                                where grupo_empresa='$rep_id_ge' and  u.id_usuario=i.usuario AND i.carrera=c.id_carrera";
-                               $resultado = mysql_query($integrantes);
+                               $resultado = mysql_query($integrantes,$conn);
                                $cantidad=mysql_num_rows($resultado);
                                if ($cantidad>0) {
 							?>
@@ -110,7 +90,7 @@ include('header.php');
 						  <tbody>
                             <?php
                                $identi=0;
-                                while($row = mysql_fetch_array($resultado)) {
+                                while($row = mysql_fetch_array($resultado)){
 
                                echo "
                                 <tr>
@@ -122,21 +102,28 @@ include('header.php');
     								  <td>".$row["codigo_sis"]."</td> ";
 
                                  $aux= $row["habilitado"];
-                                 if ($row['id_usuario']==$_SESSION['id']) {
-                                 	if($aux=="1"){
-                                           echo "<td ><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi." editable=FALSE checked></center></td>";
-                                         }
-                                         else{
-                                            echo "<td class=\"center\"><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi." editable=FALSE></center></td>";
-                                        }
-                                 }else{
-                                        if($aux=="1"){
-                                           echo "<td ><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi."  checked ></center></td>";
-                                         }
-                                         else{
-                                            echo "<td class=\"center\"><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi."></center></td>";
-                                        }
+                                 if ($row['id_usuario']==$_SESSION['id'])
+                                 {
+                                 	if($aux=="1")
+                                 	{
+                                        echo "<td ><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi." checked='checked'></center></td>";
                                     }
+                                    else
+                                    {
+                                        echo "<td class=\"center\"><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi." ></center></td>";
+                                    }
+                                 }
+                                 else
+                                 {
+                                    if($aux=="1")
+                                    {
+                                        echo "<td ><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi."  checked='checked' ></center></td>";
+                                    }
+                                    else
+                                    {
+                                        echo "<td class=\"center\"><center> <input type=\"checkbox\" id=b".$identi." name=b".$identi."></center></td>";
+                                    }
+                                 }
                                  echo "<td><center><a class=\"btn btn-success\" href=\"editar.php?value=".$row["id_usuario"]."\" >
 										<i class=\"icon-edit icon-white\"></i>  
 										Editar                                           

@@ -1,23 +1,25 @@
 <?php
 $titulo="P&aacute;gina de inicio Grupo Empresas";
 
-require_once("conexion/verificar_gestion.php");
-
-  $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
-  $VeriricarG->Actividad1();
-  $VeriricarG->Actividad2();
-  $VeriricarG->Actividad3();
-  $VeriricarG->Actividad4();
-  $VeriricarG->Actividad5();
-  $VeriricarG->Actividad6();
-  $VeriricarG->Actividad7();
-  $conn = $VeriricarG->GetConexion();
-session_start();
-
-//if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
-
 include("conexion/verificar_integrantes.php");
+require_once("conexion/verificar_actividades.php");
+
+
+  $verificarA = new VerificarActividades;
+  $GestionValida = $verificarA->GetGestionValida();
+  $verificarA->Actividad1();
+  $verificarA->Actividad2();
+  $verificarA->Actividad3();
+  $verificarA->Actividad4();
+  $verificarA->Actividad5();
+  $verificarA->Actividad6();
+  $verificarA->Actividad7();
+  $conexion = new Conexion;
+  $conexion->EstablecerConexion();
+  $conn = $conexion->GetConexion();
+  session_start();
+
+
 $VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
 $cantidadValida=$VerificarI->CantidadValida();
 if(!$cantidadValida && isset($_POST['enviar']))
@@ -51,14 +53,14 @@ if(!$cantidadValida && isset($_POST['enviar']))
 			$error=true;
 			$error_carrera="Debe seleccionar una carrera";
 		}
-		$consulta_usuario = mysql_query("SELECT nombre_usuario from usuario 
-		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion= $GestionValida)",$GestionValida ->GetConexion())
-		                          or die("Could not execute the select query.");
+		$consulta_usuario = mysql_query('SELECT nombre_usuario from usuario 
+		                          where nombre_usuario="$VerificarI->user" AND (gestion=1 OR gestion= $GestionValida)",$VeriricarG->GetConexion())
+		                          or die("Could not execute the select query.');
 	
 
 
 		$consulta_email = mysql_query("SELECT email from usuario 
-		                         where email='$eMail'AND (gestion=1 OR gestion= $GestionValida)",$GestionValida ->GetConexion())or die("Could not execute the select query.");
+		                         where email='$eMail'AND (gestion=1 OR gestion= $GestionValida)",$conn)or die("Could not execute the select query.");
 
 
 		
@@ -96,18 +98,18 @@ if(!$cantidadValida && isset($_POST['enviar']))
 							or die("Error no se pudo realizar cambios.");
 		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email, habilitado, tipo_usuario,gestion)
 		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',1,5,$id_gestion)";
-		        $result = mysql_query($sql,$GestionValida ->GetConexion()) or die(mysql_error());
+		        $result = mysql_query($sql,$conn) or die(mysql_error());
 
 		        /*BUSCAR  el id de la grupo empresa con el id del representante legal*/
 		        $consulta_id_ge = mysql_query("SELECT grupo_empresa
 											from integrante 
-											where usuario=$id_usuario",$GestionValida ->GetConexion())
+											where usuario=$id_usuario",$conn)
 		                         or die("Could not execute the select query.");
 		        $resultado_id_ge = mysql_fetch_assoc($consulta_id_ge); 
 		        $rep_id_ge=(int)$resultado_id_ge['grupo_empresa'];
 
 				/*BUSCAR  el id del usuario*/
-		        $consulta_id_usu = mysql_query("SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$id_gestion",$GestionValida ->GetConexion())
+		        $consulta_id_usu = mysql_query("SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$id_gestion",$conn)
 		                         or die("Could not execute the select query.");
 		        $resultado_id_usu = mysql_fetch_assoc($consulta_id_usu); 
 		        $rep_id_usu=(int)$resultado_id_usu['id_usuario'];
@@ -224,7 +226,7 @@ include('header.php'); ?>
 										<?php
 			                               $consulta_carrera = "SELECT *
 														FROM carrera";
-			                               $resultado_carrera = mysql_query($consulta_carrera,$GestionValida ->GetConexion());
+			                               $resultado_carrera = mysql_query($consulta_carrera,$conn);
 			                                while($row_sociedad = mysql_fetch_array($resultado_carrera)) {
 			                               		echo "<option value=\"".$row_sociedad['id_carrera']."\">".$row_sociedad['nombre_carrera']."</option>";
 			                                }
@@ -244,7 +246,7 @@ include('header.php'); ?>
 																WHERE (rol.id_metodologia = metodologia.id_metodologia
 																OR rol.id_metodologia = 0)
 																AND metodologia.id_metodologia = metodologia_grupo_empresa.id_metodologia
-																AND metodologia_grupo_empresa.id_grupo_empresa=$rep_id_ge
+																AND metodologia_grupo_empresa.id_grupo_empresa=$VerificarI->IdGrupo
 																AND rol.id_rol != 1
 																AND id_rol NOT IN ( SELECT DISTINCT id_rol
 																					FROM rol, rol_integrante, metodologia_grupo_empresa, integrante
@@ -254,10 +256,10 @@ include('header.php'); ?>
 																					AND rol_integrante.integrante = integrante.usuario
 																					AND integrante.grupo_empresa = metodologia_grupo_empresa.id_grupo_empresa
 																					AND rol.id_metodologia = metodologia_grupo_empresa.id_metodologia
-																					AND id_grupo_empresa = $rep_id_ge
+																					AND id_grupo_empresa = $VerificarI->IdGrupo
 																					)
 																";
-			                               $resultado_carrera = mysql_query($consulta_carrera,$GestionValida ->GetConexion()) or die("error");
+			                               $resultado_carrera = mysql_query($consulta_carrera,$conn) or die("error");
 			                                while($row_sociedad = mysql_fetch_array($resultado_carrera)) {
 			                               		echo "<option value=\"".$row_sociedad['id_rol']."\">".$row_sociedad['nombre']."</option>";
 			                                }
@@ -291,13 +293,13 @@ include('header.php'); ?>
 							<h2><i class="icon-info-sign"></i> Informacion</h2>
 						</div>
 						<div class="box-content alerts">
-								Bienvenida Grupo Empresa a la <b>Gesti&oacute;n <?php echo $VeriricarG->nombre_gestion; ?></b>, en este sitio usted podr&aacute; administrar las
+								Bienvenida Grupo Empresa a la <b>Gesti&oacute;n <?php echo $verificarA->nombre_gestion; ?></b>, en este sitio usted podr&aacute; administrar las
 								actividades de su Grupo Empresa,tambi&eacute;n la entrega de los sobres A y B, entregar su producto y adem&aacute;s pod&aacute; participar del <a href="mensajes.php">Espacio de discuci&oacute;n</a>.<br>
 						</div>
 					</div><!--/span-->
 				</div><!-- fin row -->
 				<?php 
-				if ($VerificarI->numeroIntegrantes<5 && $VeriricarG->act_2==1 && !$VeriricarG->act_2_espera) { ?>
+				if ($VerificarI->numeroIntegrantes<3 && $verificarA->act_2==1 && !$verificarA->act_2_espera) { ?>
 					<div class="row-fluid">
 					<div class="box span12">
 						<div class="box-header well">
@@ -327,3 +329,4 @@ include('header.php'); ?>
 			</div><!-- fin row -->
 		<?php }
 		include('footer.php'); ?>
+

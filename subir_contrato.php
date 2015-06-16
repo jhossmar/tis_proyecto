@@ -1,42 +1,23 @@
 <?php
 $titulo="Publicar Contrato";
 require_once("conexion/verificar_gestion.php");
-  $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
-session_start();
-$quien_ingresa="Grupo Empresa";
-$pag_ini="home_grupo.php";
-if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']!=2 && $_SESSION['tipo']!=3))
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (4) :
-	                	$home="home_grupo.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;
-	          }
-		header("Location: ".$home);
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
+require_once("conexion/conexion.php");
 
-if(isset($_POST['enviar'])){
+  $VerificarG = new VerificarGestion;
+  $GestionValida = $VerificarG->GetGestionValida();
+  $conexion = new Conexion;
+  $conexion->EstablecerConexion();
+  $conn=$conexion->GetConexion();
+session_start();
+
+if(isset($_POST['enviar']))
+{
 	$descripcionA=$_POST['descripcionA'];
 	$tituloD=$_POST['tituloD'];
 	$usuario=$_SESSION['id'];
 	$nombre_usuario=$_SESSION['nombre_usuario'];
 	$errorA=false;
-	/*SUBIDA DEL ARCHIVO ADJUNTO SOBRE A*/
+
 	$contrato="";
    	$tiene_doc=0;
     $ext_permitidas = array('.pdf','.doc','.docx','.xls','.xlsx','.ppt','.pptx');
@@ -83,15 +64,11 @@ if(isset($_POST['enviar'])){
    		$error_docA='Debe seleccionar un archivo';
    		$errorA=true;
    	}
-
-
-	
-
-		if(!$errorA){
+	if(!$errorA){
 	      
             $sql = "INSERT INTO documento_consultor(nombre_documento, descripsion_documento, ruta_documento, fecha_documento, documento_jefe, consultor_tis, gestion)
-	                VALUES ('$tituloD', '$descripcionA', '$contrato', NOW(), 0, '$usuario', '$VeriricarG->id_gestion' )";
-	        $result = mysql_query($sql,$VeriricarG->GetConexion()) or die(mysql_error());
+	                VALUES ('$tituloD', '$descripcionA', '$contrato', NOW(), 0, '$usuario', '$VerificarG->id_gestion' )";
+	        $result = mysql_query($sql,$conn) or die(mysql_error());
 	        header("Location: administrar_archivos.php");
 		}
 	}
@@ -120,7 +97,7 @@ include('header.php');
 						<h2><i class="icon-edit"></i> Formulario de publicaci&oacute;n de Documento</h2>
 					</div>
 					<div class="box-content">
-						<?php if ($GestionValida){
+						<?php if($GestionValida){
 						?>
 		                  	<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" action="subir_contrato.php" accept-charset="utf-8">
 								<fieldset>
@@ -134,8 +111,7 @@ include('header.php');
 
 								<div class="control-group">
 									<label class="control-label" for="descripcion">Descripci&oacute;n:</label>
-									<div class="controls">
-										<!--<textarea id="descripcionA" placeholder="Descripci&oacute;n del Documento" name="descripcionA" onkeydown="if(this.value.length >= 40){return false;}"><?php echo $descripcionA; ?></textarea>-->
+									<div class="controls">									
                                         <textarea id="descripcionA" placeholder="Descripci&oacute;n del Documento" name="descripcionA"><?php echo $descripcionA; ?></textarea>
 									</div>
 								</div>

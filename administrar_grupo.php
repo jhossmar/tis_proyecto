@@ -1,42 +1,17 @@
 <?php
-$titulo="Administrar Grupo Empresas";
-require_once("conexion/verificar_gestion.php");
-  $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
-session_start();
-/*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
-if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']!=2 && $_SESSION['tipo']!=3))
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (4) :
-	                	$home="home_grupo.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;
-	          }
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
-include('header.php');
+  $titulo="Administrar Grupo Empresas";
+  session_start();
+  require_once("conexion/verificar_gestion.php");
+  require_once("conexion/conexion.php");
+
+  $VerificarG = new VerificarGestion();
+  $GestionValida = $VerificarG->GetGestionValida();
+
+  $conexion = new Conexion;
+  $conexion->EstablecerConexion();
+  $conn = $conexion->GetConexion();
+  include('header.php');
  ?>
- 			<!--PARTICIONAR
- 			<li>
-						<a href="#">Inicio</a> <span class="divider">/</span>
-			</li>-->
 			<div>
 				<ul class="breadcrumb">
 					<li>
@@ -56,38 +31,36 @@ include('header.php');
 
 					</div>
 					<div class="box-content">
-						<?php if( $GestionValida) {
+						<?php if($GestionValida){
                               
         $integrantes ="SELECT id_usuario,nombre_largo,nombre_corto,nombre,apellido,u.habilitado, u.nombre_usuario,g.id_grupo_empresa
 											from grupo_empresa g, usuario u, integrante i
 											where g.consultor_tis=$id_usuario AND i.grupo_empresa=g.id_grupo_empresa AND
-											i.usuario=u.id_usuario AND u.tipo_usuario=4 AND u.gestion=$VeriricarG->id_gestion";
-                               $resultado = mysql_query($integrantes,$VeriricarG->GetConexion());
+											i.usuario=u.id_usuario AND u.tipo_usuario=4 AND u.gestion=$VerificarG->id_gestion";
+                               $resultado = mysql_query($integrantes,$conn);
                                $num_res=mysql_num_rows($resultado);
                               if ($num_res>0) {
 							?>
 							<form name="form-data" class="form-horizontal cmxform" method="GET" action="conexion/validar_grupo.php" accept-charset="utf-8">
 								<input type="hidden" id="consultor" name="consultor" value=<?php echo $id_usuario; ?> ></input>
-						  	<input type="hidden" id="gestion" name="gestion" value=<?php echo $VeriricarG->id_gestion; ?> ></input>
-							<table class="table table-striped table-bordered  datatable" >
-							  <thead >
-								  <tr >
+						  	<input type="hidden" id="gestion" name="gestion" value=<?php echo $VerificarG->id_gestion; ?> ></input>
+							    <table class="table table-striped table-bordered  datatable" >
+							    <thead>
+								   <tr>
 									 	  <th>Nombre Largo</th>
 										  <th>Nombre Corto</th>
 										  <th>Representante Legal</th>
 										  <th>Nombre de usuario</th>
 										  <th style="text-align:center">Habilitado</th>
 										  <th style="text-align:center">Reporte</th>
-                                          <th>Habilitar Integrantes</th>
-
-								  </tr>
-							  </thead>
-							  <tbody >
-						  	
-                            <?php
-                               $identi=0;
-                                while($row = mysql_fetch_array($resultado)) {
-
+                      <th>Habilitar Integrantes</th>
+								   </tr>
+							    </thead>
+							   <tbody>
+                      <?php
+                          $identi=0;
+                          while($row = mysql_fetch_array($resultado))
+                          {
                                echo "
                                 <tr>
     								  <td >".$row["nombre_largo"]."</td>
@@ -152,7 +125,8 @@ include('header.php');
 				</div><!--/span-->
 				</div>
                 <?php
-                 if(isset($num_res) && $num_res>0){
+                 if(isset($num_res) && $num_res>0)
+                 {
                   ?>
                 <div class="row-fluid">
         		            <div class="box span12" id="print">
@@ -175,8 +149,8 @@ include('header.php');
                                                                                   $integrantes ="SELECT id_usuario,nombre_largo,nombre_corto,nombre,apellido,u.habilitado, u.nombre_usuario , g.id_grupo_empresa
                                                         											from grupo_empresa g, usuario u, integrante i
                                                         											where g.consultor_tis=$id_usuario AND i.grupo_empresa=g.id_grupo_empresa AND
-                                                        											i.usuario=u.id_usuario AND u.tipo_usuario=4 AND u.gestion=$id_gestion";
-                                                                                       $resultado = mysql_query($integrantes);
+                                                        											i.usuario=u.id_usuario AND u.tipo_usuario=4 AND u.gestion=$verificarG->id_gestion";
+                                                                                       $resultado = mysql_query($integrantes,$conn);
                                                                                   while($row = mysql_fetch_array($resultado)) {
                                                                                             echo "<option value=\"".$row['id_grupo_empresa']."\">".$row['nombre_largo']."</option>";
                                                                                   }
@@ -191,8 +165,6 @@ include('header.php');
 								 <button type="reset" class="btn"><i class="icon-remove"></i> Cancelar</button>
 								 </div>
 								 </div>
-
-
                             </form>
                             </div>
         				</div><!--/span-->

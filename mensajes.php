@@ -1,38 +1,13 @@
 <?php
-require_once("conexion/verificar_gestion.php");
+  require_once("conexion/verificar_gestion.php");
   $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
-session_start();
-if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']==1))
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (4) :
-	                	$home="home_grupo.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;
-	          }
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
-$titulo="Sistema de Apoyo a la Empresa TIS";
-$asunto=NULL;
-include('header.php');
- ?>
+  $GestionValida = $VeriricarG->GetGestionValida();
+  session_start();
+
+  $titulo="Sistema de Apoyo a la Empresa TIS";
+  $asunto=NULL;
+  include('header.php');
+?>
 			<div>
 				<ul class="breadcrumb">
 					<li>

@@ -1,34 +1,29 @@
 <?php
 $titulo="Enviar Documentos Grupo Empresa";
-require_once("conexion/verificar_gestion.php");
-  $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
-
-session_start();
-$quien_ingresa="Grupo Empresa";
-$pag_ini="home_grupo.php";
-/*------------------VERIFICAR QUE SEAL EL CONSULTOR------------------------*/
-if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=4)
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;                                                             		
-	          }   
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
+include("conexion/conexion.php");
+require_once("conexion/verificar_actividades.php");
 include("conexion/verificar_integrantes.php");
+
+  $verificarA = new VerificarActividades;
+  $gestionValida = $verificarA->GetGestionValida();
+  $verificarA->Actividad1();
+  $verificarA->Actividad2();
+  $verificarA->Actividad3();
+  $verificarA->Actividad4();
+  $verificarA->Actividad5();
+  $verificarA->Actividad6();
+  $verificarA->Actividad7();
+
+    session_start();
+    $quien_ingresa="Grupo Empresa";
+    $pag_ini="home_grupo.php";
+
+    $c = new Conexion;
+    $c->EstablecerConexion();
+    $conn = $c->GetConexion();
+
+$VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
+$cantidadValida=$VerificarI->CantidadValida();
 if(isset($_POST['enviar'])){
 	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$VeriricarG->GetConexion())
       or die("Error no se pudo realizar cambios.");
@@ -83,10 +78,6 @@ if(isset($_POST['enviar'])){
    		$errorA=true;
    	}
 
-
-	/*FIN ARCHIVO ADJUNTO*/
-
-	/*SUBIDA DEL ARCHIVO ADJUNTO SOBRE B*/
 	$errorB=false;
 	$documentoB="";
    	$tiene_doc=0;
@@ -118,7 +109,7 @@ if(isset($_POST['enviar'])){
                              	$sql = "UPDATE grupo_empresa
 										SET sobre_a = '$documentoA', sobre_b = '$documentoB',observacion=NULL
 										WHERE id_grupo_empresa = $rep_id_ge";
-						        $result = mysql_query($sql,$VeriricarG->GetConexion());
+						        $result = mysql_query($sql,$conn);
                              }
                         }
                      }
@@ -152,7 +143,6 @@ if(isset($_POST['enviar'])){
 		$sobreB=NULL;
 		$usuario=NULL;
 	}
-
 include('header.php');
  ?>
 			<div>
@@ -174,12 +164,12 @@ include('header.php');
 						<h2><i class="icon-edit"></i> Formulario de env&iacute;o de Documentos</h2>
 					</div>
 					<div class="box-content">
-						<?php if($GestionValida){
-								if ($cantidad_valida) {
-									if($act_3==1 && !$act_3_espera){
+						<?php if($gestionValida){
+								if ($cantidadValida) {
+									if($verificarA->activo_3==1 && $verificarA->act_3_espera){
 								$consulta_producto = mysql_query("SELECT sobre_a, sobre_b,observacion,habilitado
 																FROM grupo_empresa
-																WHERE id_grupo_empresa = $rep_id_ge",$VeriricarG->GetConexion());
+																WHERE id_grupo_empresa = $VerificarI->idGrupo",$conn);
 								$resultado = mysql_fetch_assoc($consulta_producto);
 								if(is_null($resultado['sobre_a']) && is_null($resultado['sobre_a']) ){//si se envio y yarespondio mostrar
 									if (!is_null($resultado['observacion'])) {
@@ -305,8 +295,8 @@ include('header.php');
 						<?php if($GestionValida) {
                                $consulta ="SELECT g.consultor_tis, nombre_documento,ruta_documento,descripsion_documento,fecha_documento
 											FROM grupo_empresa g , documento_consultor d
-											WHERE id_grupo_empresa=$rep_id_ge AND g.consultor_tis=d.consultor_tis AND d.habilitado=1 AND d.documento_jefe=0";
-                               $resultado = mysql_query($consulta,$VeriricarG->GetConexion());
+											WHERE id_grupo_empresa=$VerificarI->idGrupo AND g.consultor_tis=d.consultor_tis AND d.habilitado=1 AND d.documento_jefe=0";
+                               $resultado = mysql_query($consulta,$conn);
                                $num_res=mysql_num_rows($resultado);
 
                               if ($num_res>0) {
@@ -356,7 +346,4 @@ include('header.php');
 					</div>
 				</div><!--/span-->
 				</div>
-
-
-
 <?php include('footer.php'); ?>

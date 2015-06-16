@@ -1,17 +1,21 @@
 <?php
-include("conexion/verificar_gestion.php");
-$verificarG = new VerificarGestion();
-$gestionValida = $verificarG->VerificarFechasGestion();
-$verificarG->Actividad1();
-$verificarG->Actividad2();
-$verificarG->Actividad3();
-$verificarG->Actividad4();
-$verificarG->Actividad5();
-$verificarG->Actividad6();
-$verificarG->Actividad7();
-$conn = $verificarG->GetConexion();
-$titulo="calificar actividades";
 session_start();
+include("conexion/verificar_actividades.php");
+
+$verificarA = new VerificarActividades;
+$gestionValida = $verificarA->GetGestionvalida();
+$verificarA->Actividad1();
+$verificarA->Actividad2();
+$verificarA->Actividad3();
+$verificarA->Actividad4();
+$verificarA->Actividad5();
+$verificarA->Actividad6();
+$verificarA->Actividad7();
+$conexion = new Conexion;
+$conexion->EstablecerConexion();
+$conn = $conexion->GetConexion();
+$titulo="calificar actividades";
+
 $usuario=$_SESSION['nombre_usuario'];
 include("header.php");
 ?>
@@ -29,8 +33,7 @@ include("header.php");
 	<center><h3>calificar las actividades de la grupo empresa</h3></center>
 <?php
 $consulta_consultor = mysql_query("SELECT id_usuario from usuario 
-		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
-		                          or die("Could not execute the select query.");//unico para la gestion
+		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion=$verificarA->id_gestion)",$conn) or die("Could not execute the select query.");
 $resultado_consultor = mysql_fetch_assoc($consulta_consultor);
 		    
 	if(!empty($resultado_consultor))

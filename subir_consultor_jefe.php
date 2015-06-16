@@ -1,93 +1,78 @@
 <?php
 session_start();
 require_once("conexion/verificar_gestion.php");
-  $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
+require_once("conexion/conexion.php");
 
-$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$VeriricarG->GetConexion())
-							or die("Error no se pudo realizar cambios.");
-/*------------------VERIFICAR QUE SEAL EL JEFE CONSULTOR------------------------*/
-if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=2)
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (4) :
-	                	$home="home_grupo.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;	            
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;                                                             		
-	          }   
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
-if(isset($_POST['enviar'])){
-	include('conexion/conexion.php');	
-	$descripcion=$_POST['descripcion'];
+  $VerificarG = new VerificarGestion;
+  $GestionValida = $VerificarG->GetGestionValida();
+
+  $conexion = new Conexion;
+  $conexion->EstablecerConexion();
+  $conn = $conexion->GetConexion();
+
+$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)or die("Error no se pudo realizar cambios.");
+
+if(isset($_POST['enviar']))
+{
 	$usuario=$_SESSION['nombre_usuario'];
+	$descripcion=$_POST['descripcion'];	
 	$tituloD=$_POST['tituloD'];
 	$error=false;
-	include ('conexion/anuncioSubir.php') ;
-	/*SUBIDA DEL ARCHIVO ADJUNTO*/
+	include ('conexion/anuncioSubir.php') ;	
 	$documento="";
    	$tiene_doc=0;
-    $ext_permitidas = array('.pdf','.doc','.docx','.xls','.xlsx','.ppt','.pptx');
-	   if(!empty($_FILES['documento']['name'])){
+    $ext_permitidas = array('.pdf','.doc','.docx','.xls','.xlsx','.ppt','.pptx','.txt');
+	   if(!empty($_FILES['documento']['name']))
+	   {
 	   		$idUnico = time();
 
             $nombre_archivo = $_FILES['documento']['name'];
             $nombre_tmp = $_FILES['documento']['tmp_name'];
             $ext = substr($nombre_archivo, strpos($nombre_archivo, '.'));
             $tamano = $_FILES['documento']['size'];             
-            $limite = 1000 * 1024;
-            if(in_array($ext, $ext_permitidas)){
-            	if( $tamano <= $limite ){
-                    if( $_FILES['documento']['error'] <= 0 ){
-                    	if( file_exists( 'archivos/'.$idUnico.'-'.$nombre_archivo) ){
+            $limite = 5000 * 1024;
+            if(in_array($ext, $ext_permitidas))
+            {
+            	if($tamano <= $limite)
+            	{
+                    if($_FILES['documento']['error'] <= 0 )
+                    {
+                    	if(file_exists( 'archivos/'.$idUnico.'-'.$nombre_archivo))
+                    	{
                               $error_doc='El archivo ya existe';
                               $error=true;
                         }
-                        else{ 
+                        else
+                        { 
                         	 move_uploaded_file($nombre_tmp,'archivos/'.$idUnico.'-'.$nombre_archivo);
                              $documento='archivos/'.$idUnico.'-'.$nombre_archivo;
                              $tiene_doc=1;
-                        }
-                      
+                        }                      
                      }
-                     else{
+                     else
+                     {
                      		$error_doc='Error al subir el archivo';
                       		$error=true;
-
-                       }
-                    }
-                else{
-                      $error_doc='El archivo debe un tama&ntilde;o menor a 1 Mega Byte';
+                     }
+                }
+                else
+                {
+                      $error_doc='El archivo debe un tama&ntilde;o menor a 5 Mega Byte';
                       $error=true;
-                    }
-            }
-            else{
-            	$error=true;
-            	$error_doc='El formato del archivo no esta permitido';
-            }
+                }
+        }
+        else
+        {
+           	$error=true;
+           	$error_doc='El formato del archivo no esta permitido';
+        }
+}
 
-   	}
-
-
-	/*FIN ARCHIVO ADJUNTO*/
-
-	if(!$error){
+	if(!$error)
+	{
 
             $sql = "INSERT INTO documento_consultor(nombre_documento, descripsion_documento, ruta_documento, fecha_documento, documento_jefe, consultor_tis, gestion)
-	                VALUES ('$tituloD','$descripcion','$documento', NOW(), 1,'".$_SESSION['id']."',$VeriricarG->id_gestion)";
+	                VALUES ('$tituloD','$descripcion','$documento', NOW(), 1,'".$_SESSION['id']."',$VerificarG->id_gestion)";
 	        $result = mysql_query($sql,$conn) or die(mysql_error());
 	        header("Location: index.php");
 	    }
@@ -137,7 +122,7 @@ include('header.php');
 										<textarea id="descripcion" placeholder="Descripci&oacute;n del aviso" name="descripcion" ><?php echo $descripcion; ?></textarea>
 									</div>
 								</div>
-                                    <label class="ayudas"> El archivo a subir debe ser de 1 Mb maximo :</label>
+                                    <label class="ayudas"> El archivo a subir debe ser de 5 Mb maximo :</label>
 								<div class="control-group">
 								  <label class="control-label" for="fileInput">Documento:</label>
 								  <div class="controls">

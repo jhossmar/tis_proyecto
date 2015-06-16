@@ -1,37 +1,19 @@
 <?php
 $titulo="Registro Consultor TIS";
+
 include('conexion/verificar_gestion.php');
-$verificarG = new VerificarGestion();
-$gestionValida = $verificarG->VerificarFechasGestion();
-$conn= $verificarG->GetConexion();
+$verificarG = new VerificarGestion;
+$gestionValida = $verificarG->GetGestionValida();
+
+ $c = new Conexion;
+ $c->EstablecerConexion();
+ $conn = $c->GetConexion();
+
 session_start();
 $quien_ingresa="Consultor TIS";
-if(isset($_SESSION['nombre_usuario']))
-{
-	$home="";
-	switch  ($_SESSION['tipo']){
-			case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-            case (4) :
-                	$home="home_grupo.php";
-                    break;
-            case (3) :
-                	$home="home_consultor.php";
-                    break;
-                case (2) :
-                	$home="home_consultor_jefe.php";
-                    break;
-                case (1) :
-                    $home="home_admin.php";
-                    break;                                                             		
-          }   
-	header("Location: ".$home);
-}
-/*--------------------------------VALIDAR REGISTRO------------------------------------*/
+
 if(isset($_POST['enviar'])){
-	include('conexion/conexion.php');
-	/*VALORES DE FORMULARIO*/
+
 	$usuario=trim($_POST['username']);
 	$clave=trim($_POST['password']); /*$clave = md5($pass); QUITADO ==> CONTRASEÑA SIMPLE*/
 	$apellido=$_POST['lastname'];
@@ -39,8 +21,7 @@ if(isset($_POST['enviar'])){
 	$telf=trim($_POST['telf']);
 	$eMail=trim($_POST['email']);
 	$consulta_usuario = mysql_query("SELECT nombre_usuario from usuario 
-	                          where nombre_usuario='$usuario'AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
-	                          or die("Could not execute the select query.");
+	                          where nombre_usuario='$usuario'AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn) or die("Could not execute the select query.");
 	$consulta_email = mysql_query("SELECT email from usuario 
 	                         where email='$eMail'AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
 	                         or die("Could not execute the select query.");                         

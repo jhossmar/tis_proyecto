@@ -1,6 +1,9 @@
 <?php
 $titulo="Ayuda del Sistema de Apoyo a la Empresa TIS";
-include("conexion/verificar_gestion.php");
+include("conexion/conexion.php");  
+    $c = new Conexion;
+    $c->EstablecerConexion();
+    $conn = $c->GetConexion();
 session_start();
 include('header.php');
 

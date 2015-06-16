@@ -30,9 +30,12 @@ elseif(!isset($_SESSION['nombre_usuario'])){
 /*----------------------FIN VERIFICACION------------------------------------*/
 
 include("conexion/verificar_integrantes.php");
+$VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
+$cantidadValida=$VerificarI->CantidadValida();
 require_once("conexion/verificar_gestion.php");
   $VerificarG = new VerificarGestion();
   $GestionValida = $VerificarG->VerificarFechasGestion();
+  $VerificarG->Actividad5();
 if(isset($_POST['enviar'])){	
 	$url=$_POST['co_url'];
 	$usuario=$_SESSION['nombre_usuario'];
@@ -91,11 +94,11 @@ include('header.php');
 					<div class="box-content">	
 							<?php
 								if($GestionValida){
-								if ($cantidad_valida) {
-									if ($act_5==1 && !$act_5_espera){
+								if ($cantidadValida) {
+									if ($VerificarG->act_5==1 && !$VerificarG->act_5_espera){
 								$consulta_grupo= mysql_query("SELECT id_grupo_empresa
 															FROM integrante i, grupo_empresa g
-															WHERE i.usuario = '$id_usuario' 
+															WHERE i.usuario = '$VerificarI->IdUsser' 
 															AND i.grupo_empresa = g.id_grupo_empresa",$VerificarG->GetConexion());
 								$resultado_grupo = mysql_fetch_assoc($consulta_grupo);
 								$grupo = $resultado_grupo['id_grupo_empresa'];

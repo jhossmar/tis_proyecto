@@ -1,36 +1,14 @@
 <?php
-session_start();
-include('conexion/verificar_gestion.php');
-$quien_ingresa="Administrador del sistema";
-$pag_ini="home_admin.php";
-$quien=1;
- $titulo="Modificar datos ".$quien_ingresa;
-/*------------------VERIFICAR QUE SEAL EL CONSULTOR------------------------*/
-if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=$quien)
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (4) :
-	                	$home="home_grupo.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;                                                             		
-	          }   
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
+        session_start();
+    	include('conexion/conexion.php');
+    	$conexion = new Conexion;
+        $conexion->EstablecerConexion();
+        $conn = $conexion->GetConexion();
+        $quien_ingresa="Administrador del sistema";
+        $pag_ini="home_admin.php";
+        $quien=1;
+        $titulo="Modificar datos ".$quien_ingresa;
+
 		$sql = "SELECT id_usuario,nombre,apellido,telefono,email
 				FROM usuario u
 				WHERE id_usuario=".$_SESSION['id'];
@@ -55,14 +33,14 @@ if(isset($_POST['enviar'])){
 	      $sql2 = "SELECT clave
 				    FROM usuario
 				    WHERE email='$eMail'";
-		$consulta = mysql_query($sql2);
+		$consulta = mysql_query($sql2,$conn);
 		$auxp = mysql_fetch_array($consulta);
       
 	if (strcmp($mail,$eMail)!=0) { 
 		$sql = "SELECT email
 				FROM usuario
 				WHERE email='$eMail' AND (gestion=1 OR gestion=$id_gestion)";
-		$auxiliar = mysql_query($sql);
+		$auxiliar = mysql_query($sql,$conn);
 		$result = mysql_fetch_array($auxiliar);
 		if(is_array($result) && !empty($result))//ya existe usuario o email
 		{     
@@ -81,8 +59,7 @@ if(isset($_POST['enviar'])){
 					SET clave='$contrasena',nombre='$nombre', apellido='$apellido', telefono='$telfFijo', email='$eMail'
 					WHERE u.id_usuario=$id_usuario";
 	        $result = mysql_query($sql,$conn) or die(mysql_error());
-
-
+	        
           echo "<script type='text/javascript'>"; 
           echo "alert('sus datos se han actualizado correctamente');";
           echo "</script>";

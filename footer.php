@@ -368,7 +368,7 @@ $(document).ready(function() {
           if ($gestionValida && (strcmp($titulo,"Sistema de Apoyo a la Empresa TIS")==0)) {
                $consulta = "SELECT COUNT(*) as numero
                             FROM documento_consultor
-                            WHERE  documento_jefe= '1' AND gestion=$id_gestion";
+                            WHERE  documento_jefe= '1' AND gestion=$verificarG->id_gestion";
                $resultado = mysql_query($consulta);
                $res = mysql_fetch_array( $resultado);
                $num=  $res['numero'];
@@ -381,32 +381,9 @@ $(document).ready(function() {
 							 setNumAvisos( nume );
 							 timerID = setTimeout("moverAvisos()", 1000);
 						    </script>
-
-
              <?php
                 }
             }
-            /*if ($gestion_valida && (strcmp($titulo,"Notificaciones Grupo Empresa")==0)) {
-               $consulta = "SELECT COUNT(*) as numero
-                     		FROM notificacion
-                    	 	WHERE usuario_destino = '$usuario' OR usuario_destino=1";
-               $resultado = mysql_query($consulta);
-               $res = mysql_fetch_array( $resultado);
-               $num=  $res['numero'];
-               if($res['numero']>3){
-                                       ?>
-                <script language="JavaScript" type="text/javascript">
-						    var nume='<?php  echo $num;  ?>'
-
-							 setTamAviso( 130 );
-							 setNumAvisos( nume );
-							 timerID = setTimeout("moverAvisos()", 1000);
-						    </script>
-
-
-             <?php
-                }
-            }*/
      ?>
         <!-- Inicio Calendario de tareas -->
 <script type="text/javascript" src="js/colorpicker/colorpicker.js"></script>
@@ -414,19 +391,6 @@ $(document).ready(function() {
 <script type="text/javascript" src="js/lib/jshashtable-2.1.js"></script>
 <script type="text/javascript" src="js/frontierCalendar/jquery-frontier-cal-1.3.2.min.js"></script>
 <!--<script type="text/javascript" src="js/manipulacion.js"></script> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
  <?php
  if(strcmp($titulo,"Planificar Tareas Grupo Empresa")==0){
  	include ('jsr/calendarfooter.php');

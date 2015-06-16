@@ -1,9 +1,7 @@
 <?php
-    if(!isset($titulo)){
-        header('Location: ../index.php');
-    }
-    
-    include("conexion.php");
+    $c = new Conexion;
+    $c->EstablecerConexion();
+    $conn = $c->GetConexion(); 
     $men =1;
     $consulta_sql="SELECT COUNT(*) as num
                     FROM usuario
@@ -43,4 +41,3 @@
 
 
 ?>
-             

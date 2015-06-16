@@ -1,18 +1,22 @@
 <?php
-include("verificar_gestion.php");
+include("conexion.php");
+$conexion = new Conexion;
+$conexion->EstablecerConexion();
+$conn = $conexion->GetConexion();
+
 session_start();
                $usuario=$_SESSION['id'];
                $consulta = "SELECT id_mensaje, asunto, de_usuario, contenido, fecha_hora
                             FROM mensaje
                             WHERE visible = 1
                             ORDER BY fecha_hora DESC";
-               $resultado = mysql_query($consulta);
+               $resultado = mysql_query($consulta,$conn);
                $numero = 0;
 
                $c = "SELECT COUNT(*) as numer
                      FROM mensaje
                      WHERE visible = 1";
-               $r = mysql_query($c);
+               $r = mysql_query($c,$conn);
                $res = mysql_fetch_array($r);
                $num=  $res['numer'];
 
@@ -35,7 +39,7 @@ session_start();
                                   $ci = "SELECT nombre, apellido
                                         FROM usuario
                                         WHERE id_usuario = '$x'";
-                                  $ri = mysql_query($ci);
+                                  $ri = mysql_query($ci,$conn);
                                   $resi = mysql_fetch_array($ri);
                                   $de = $resi['nombre']." ". $resi['apellido'];
 
@@ -44,7 +48,7 @@ session_start();
                                         FROM usuario u, tipo_usuario i
                                         WHERE u.id_usuario = '$x'
                                         AND u.tipo_usuario = i.id_tipo_usuario";
-                                  $ri = mysql_query($ci);
+                                  $ri = mysql_query($ci,$conn);
                                   $resi = mysql_fetch_array($ri);
                                   $u = $resi['descripcion'];
                          echo "  <tr>
