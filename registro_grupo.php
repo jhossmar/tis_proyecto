@@ -1,37 +1,21 @@
 <?php
 $titulo="Registro Grupo Empresa";
-include ('conexion/verificar_gestion.php');
-$verificarG = new VerificarGestion();
-$gestionValida = $verificarG->VerificarFechasGestion();
-$verificarG->Actividad2();
+include ('conexion/verificar_actividades.php');
+
+ $c = new Conexion;
+ $c->EstablecerConexion();
+ $conn = $c->GetConexion();
+
+$verificarA = new VerificarActividades;
+$gestionValida = $verificarA->GetGestionValida();
+$verificarA->Actividad2();
 session_start();
 $quien_ingresa="Grupo Empresa";
-if(isset($_SESSION['nombre_usuario']))
-{
-	$home="";
-	switch  ($_SESSION['tipo']){
-			case (5) :
-	                 $home="home_integrante.php";
-	                 break;
-            case (4) :
-                	$home="home_grupo.php";
-                    break;
-            case (3) :
-                	$home="home_consultor.php";
-                    break;
-            case (2) :
-                	$home="home_consultor_jefe.php";
-                    break;
-            case (1) :
-                    $home="home_admin.php";
-                    break;                                                             		
-          }   
-	header("Location: ".$home);
-}
-/*--------------------------------VALIDAR REGISTRO------------------------------------*/
-	if(isset($_POST['enviar'])){
+
+	if(isset($_POST['enviar']))
+	{
 		$error=false;
-		/*VALORES GRUPO EMPRESA*/
+	
 		$nombre_largo=$_POST['lname'];
 		$nombre_corto=$_POST['sname'];
 		$sociedad=$_POST['choose_sociedad'];
@@ -47,7 +31,7 @@ if(isset($_SESSION['nombre_usuario']))
 			$error=true;
 			$error_metodologia="Debe seleccionar m&iacute;nimamente una metodologia";
 		}
-		/*VALORES REPRESENTANTE LEGAL*/
+	
 		$usuario=trim($_POST['username']);
 		$clave=trim($_POST['password']); /*$clave = md5($pass); QUITADO ==> CONTRASEÑA SIMPLE*/
 		$cod_sis = trim($_POST['codSIS']);
@@ -71,10 +55,10 @@ if(isset($_SESSION['nombre_usuario']))
 		}
 
 		$consulta_usuario = mysql_query("SELECT nombre_usuario from usuario 
-		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
+		                          where nombre_usuario='$usuario' AND (gestion=1 OR gestion=$verificarA->id_gestion)",$conn)
 		                          or die("Could not execute the select query.");//unico para la gestion
 		$consulta_email = mysql_query("SELECT email from usuario 
-		                         where email='$eMail'AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
+		                         where email='$eMail'AND (gestion=1 OR gestion=$verificarA->id_gestion)",$conn)
 		                         or die("Could not execute the select query.");//unico para la gestion
 		$consulta_nl = mysql_query("SELECT nombre_largo from grupo_empresa 
 		                         where nombre_largo='$nombre_largo'",$conn)
@@ -83,7 +67,7 @@ if(isset($_SESSION['nombre_usuario']))
 		                         where nombre_corto='$nombre_corto'",$conn)
 		                         or die("Could not execute the select query.");//unico siempre
 		$consulta_cod = mysql_query("SELECT codigo_sis from usuario, integrante 
-								where integrante.usuario=usuario.id_usuario AND codigo_sis='$cod_sis' AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
+								where integrante.usuario=usuario.id_usuario AND codigo_sis='$cod_sis' AND (gestion=1 OR gestion=$verificarA->id_gestion)",$conn)
 		                         or die("Could not execute the select query."); //unico para la gestion
 
 
@@ -133,11 +117,11 @@ if(isset($_SESSION['nombre_usuario']))
 			or die("Error no se pudo realizar cambios.");
 		   		/*INSERTAR EL USUARIO*/
 		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email, tipo_usuario, habilitado,gestion)
-		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',4,0,$verificarG->id_gestion)";
+		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',4,0,$verificarA->id_gestion)";
 		        $result = mysql_query($sql,$conn) or die(mysql_error());
 			
 			/*ID DEL USUARIO PARA EL INTEGRANTE*/
-		        $sql = "SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$verificarG->id_gestion";
+		        $sql = "SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$verificarA->id_gestion";
 		        $result = mysql_query($sql,$conn) or die(mysql_error());
 		        $resultado_user = mysql_fetch_assoc($result);
 		        $id_user=(int)$resultado_user['id_usuario'];
@@ -206,8 +190,8 @@ if(isset($_SESSION['nombre_usuario']))
 						<div class="box-content" id="formulario">
 						<?php 
 						if($gestionValida){
-							if ($verificarG->act_2==1) {
-								if (!$verificarG->act_2_espera) {	
+							if ($verificarA->activo_2==1) {
+								if (!$verificarA->act_2_espera) {	
 						?>	
 		                  	<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" accept-charset="utf-8" action="registro_grupo.php">
 								<fieldset>
@@ -234,7 +218,7 @@ if(isset($_SESSION['nombre_usuario']))
 										<?php
 			                               $consulta_sociedad = "SELECT *
 														FROM sociedad";
-			                               $resultado_sociedad = mysql_query($consulta_sociedad);
+			                               $resultado_sociedad = mysql_query($consulta_sociedad,$conn);
 			                                while($row_sociedad = mysql_fetch_array($resultado_sociedad)) {
 			                               		echo "<option value=\"".$row_sociedad['id_sociedad']."\">".$row_sociedad['descripcion']."</option>";
 			                                }
@@ -270,7 +254,7 @@ if(isset($_SESSION['nombre_usuario']))
 										<?php
 			                               $consulta_metodologia = "SELECT id_metodologia, nombre_metodologia
 														FROM metodologia";
-			                               $resultado_metodologia = mysql_query($consulta_metodologia);
+			                               $resultado_metodologia = mysql_query($consulta_metodologia,$conn);
 			                                while($metodologia = mysql_fetch_array($resultado_metodologia)) {
 			                               		echo "<option value=\"".$metodologia['id_metodologia']."\">".$metodologia['nombre_metodologia']."</option>";
 			                                }
@@ -340,7 +324,7 @@ if(isset($_SESSION['nombre_usuario']))
 										<?php
 			                               $consulta_carrera = "SELECT *
 														FROM carrera";
-			                               $resultado_carrera = mysql_query($consulta_carrera);
+			                               $resultado_carrera = mysql_query($consulta_carrera,$conn);
 			                                while($row_sociedad = mysql_fetch_array($resultado_carrera)) {
 			                               		echo "<option value=\"".$row_sociedad['id_carrera']."\">".$row_sociedad['nombre_carrera']."</option>";
 			                                }
@@ -365,7 +349,7 @@ if(isset($_SESSION['nombre_usuario']))
 					                 else{
 					                	 echo "<div align=\"center\">
 					                        <h4><i class=\"icon-info-sign\"></i>
-					                        <strong>El registro de Grupo Empresas estar&aacute; habilitado la fecha ".$act_ini_2.".</strong></h4>
+					                        <strong>El registro de Grupo Empresas estar&aacute; habilitado la fecha ".$verificarA->fecha_ini_2.".</strong></h4>
 					                      </div>";;
 					                } 
 				                 }

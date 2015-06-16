@@ -1,31 +1,13 @@
 <?php
 $titulo="Informacion de la Grupo Empresa";
-include('conexion/verificar_gestion.php');
+include('conexion/conexion.php');
+    $c = new Conexion;
+    $c->EstablecerConexion();
+    $conn = $c->GetConexion();
 session_start();
 $quien_ingresa="Grupo Empresa";
 $pag_ini="home_grupo.php";
 
-/*------------------VERIFICAR QUE SEAL EL CONSULTOR------------------------*/
-if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']==1 || $_SESSION['tipo']==2 || $_SESSION['tipo']==3))
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;                                                             		
-	          }   
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
 include('header.php');
  ?>
 <script type="text/javascript">

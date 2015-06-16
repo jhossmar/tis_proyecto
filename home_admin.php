@@ -1,49 +1,36 @@
 <?php
-$titulo="Administrador del Sistema";
-require_once("conexion/verificar_gestion.php");
-  $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
-session_start();
-/*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
-if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=1)
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (4) :
-	                	$home="home_grupo.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                    $home="home_consultor.php";
-	                    break;                                                             		
-	          }   
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
-if (!$GestionValida) {
-	$fecha = date("Y-m-d");
-	$inicio = $fecha;
-	$descripcion=NULL;
-	$year = date('Y');
-	$mes = date('m');
-	if($mes >=1 && $mes <=6){
-		$gestion = "1-".$year;
-		$fin_max = $year."-07-31";
-	}
-	else{
+  $titulo="Administrador del Sistema";
+  require_once("conexion/verificar_gestion.php");
+  require_once("conexion/conexion.php");
+  $verificarG = new VerificarGestion();
+  $gestionValida = $verificarG->GetGestionValida();
+
+  $conexion = new Conexion;
+  $conexion->EstablecerConexion();
+  $conn = $conexion->GetConexion();
+  session_start();
+
+    if(!$gestionValida)
+    {
+	   $fecha = date("Y-m-d");
+	   $inicio = $fecha;
+	   $descripcion=NULL;
+	   $year = date('Y');
+	   $mes = date('m');
+	   if($mes >=1 && $mes <=6)
+	   {
+		 $gestion = "1-".$year;
+		 $fin_max = $year."-07-31";
+	   }
+	   else
+	   {
 		$gestion = "2-".$year;
 		$fin_max = $year."-12-31";
+	   }
+	    $fin=$fin_max;
 	}
-	$fin=$fin_max;
-	if (isset($_POST['enviar'])) {
+	if(isset($_POST['enviar']))
+	{
 		$error=false;
 
 		$inicio = $_POST['inicio'];
@@ -51,55 +38,38 @@ if (!$GestionValida) {
 		$gestion=$_POST['gestion'];
 		$fin = $_POST['fin'];
 
-		$ini_dia = substr($inicio, 8);
-		$ini_mes = substr($inicio, 5,2);
-		$ini_year = substr($inicio, 0,4);
-
-		if(@checkdate($ini_mes, $ini_dia, $ini_year)){
-			if(!empty($fin)){
-				$fin_dia = substr($fin, 8);
-				$fin_mes = substr($fin, 5,2);
-				$fin_year = substr($fin, 0,4);
-				if (@checkdate($fin_mes, $fin_dia, $fin_year)) {
-					if($inicio>=$fecha){//corecto
-						if ($fin>$inicio) {//corecto escribir en base de datos
-							$sql = "INSERT INTO gestion_empresa_tis(gestion,fecha_ini_gestion,fecha_fin_gestion,gestion_activa,descripcion_gestion)
-									VALUES('$gestion','$inicio','$fin',1,'$descripcion')";
-					        $result = mysql_query($sql,$conn) or die(mysql_error());
-					        header("Location: home_consultor_jefe.php");
-						}
-						else{
-							$error = true;
-							$error_fecha_fin = "La fecha de finalizaci&oacute;n no debe ser menor o igual a la fecha de inicio";
-						}
-					}
-					else{
-						$error = true;
-						$error_fecha_ini = "La fecha de inicio no debe ser menor a la fecha presente";
-					}
+		if(!empty($fin))
+		{
+			if($inicio>=$fecha)
+			{
+				if($fin>$inicio)
+				{
+					$sql = "INSERT INTO gestion_empresa_tis(gestion,fecha_ini_gestion,fecha_fin_gestion,gestion_activa,descripcion_gestion)
+							VALUES('$gestion','$inicio','$fin',1,'$descripcion')";
+					 mysql_query($sql,$conn) or die(mysql_error());
+					 header("Location: home_consultor_jefe.php");
 				}
-				else{
-				$error = true;
-				$error_fecha_fin = "La fecha de finalizaci&oacute;n no es valida";
+				else
+				{
+					$error = true;
+					$error_fecha_fin = "La fecha de finalizaci&oacute;n no debe ser menor o igual a la fecha de inicio";
 				}
 			}
-			else{
-				$error=true;
-				$error_fecha_fin = "Ingrese una fecha de finalizaci&oacute;n";
+			else
+			{
+				$error = true;
+				$error_fecha_ini = "La fecha de inicio no debe ser menor a la fecha presente";
 			}
 		}
-		else{
+		else
+		{
 			$error = true;
-			$error_fecha_ini = "La fecha de inicio no es v&aacute;lida";
+			$error_fecha_ini = "ingrese una fecha final";
 		}
 	}
-}
+
 include('header.php');
  ?>
- 			<!--PARTICIONAR
- 			<li>
-						<a href="#">Inicio</a> <span class="divider">/</span>
-			</li>-->
 			<div>
 				<ul class="breadcrumb">
 					<li>
@@ -113,7 +83,7 @@ include('header.php');
 			</div>
 			<center><h3>Bienvenido Administrador</h3></center>
 			<?php 
-			if (!$GestionValida) { ?>
+			if (!$gestionValida) { ?>
 			<div class="row-fluid">
 			<div class="box span12">
 					<div class="box-header well">
@@ -121,9 +91,9 @@ include('header.php');
 					</div>
 					<div class="box-content alerts">
 					
-					<?php if($GestionValida->gestion_espera) {
+					<?php if($verificarG->gestion_espera){
 						echo "Bienvenido Administrador del Sistema de Apoyo a la Empresa TIS, usted ya defini&oacute; una nueva gesti&oacute;n que
-						comenzar&aacute; la fecha <b>".$ini_gestion."</b>.";
+						comenzar&aacute; la fecha <b>".$verificarG->ini_gestion."</b>.";
 					}
 					else{?>						
 							Para que el sistema pueda ser utilizado usted debe completar el siguiente formulario para habilitar una <b>Nueva Gesti&oacute;n.</b>
@@ -176,12 +146,11 @@ include('header.php');
 						<h2><i class="icon-info-sign"></i> Informacion</h2>
 					</div>
 					<div class="box-content alerts">
-							Bienvenido Administrador del Sistema de Apoyo a la Empresa TIS a la <b>Gesti&oacute;n <?php echo $VeriricarG->nombre_gestion; ?></b>.
-							
+							Bienvenido Administrador del Sistema de Apoyo a la Empresa TIS a la <b>Gesti&oacute;n <?php echo $verificarG->nombre_gestion; ?></b>							
 							<br>						
 					</div>	
-				</div><!--/span-->  
-			</div><!-- fin row -->
+				</div>
+			</div>
 <?php 
 }
 include('footer.php'); ?>

@@ -1,9 +1,9 @@
 <?php
-    if(!isset($titulo)){
-        //header('Location: ../index.php');
-    }
-            include('conexion.php');
-            session_start();
+      include('conexion.php');
+      $c = new Conexion;
+      $c->EstablecerConexion();
+      $conn = $c->GetConexion(); 
+      session_start();
 			$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 			or die("Error no se pudo realizar cambios.");
              /* $c = "SELECT COUNT(*) as numer
@@ -21,7 +21,7 @@
                         }
 
                       $sql = "UPDATE usuario SET asistencia='$c' WHERE id_usuario = '$a'";
-                      $result = mysql_query($sql);
+                      $result = mysql_query($sql,$conn);
 
                  $counta++;
                }

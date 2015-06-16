@@ -1,39 +1,26 @@
 <?php
 $titulo="Administrar Grupo Empresas";
-include('conexion/verificar_gestion.php');
+
+  include('conexion/verificar_gestion.php');
+
+  $VerificarG = new VerificarGestion();
+  $gestionValida = $VerificarG->GetGestionValida();
+
+  $conexion = new Conexion;
+  $conexion->EstablecerConexion();
+  $conn = $conexion->GetConexion();
 session_start();
-if(isset($_GET['entreprod'])){
+if(isset($_GET['entreprod']))
+{
 	$id_grupoem=$_GET['entreprod'];
-}else{header("Location: administrar_grupo.php");}
-$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
+}
+else
+{
+  header("Location: administrar_grupo.php");
+}
+      $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 			or die("Error no se pudo realizar cambios.");
-/*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
-if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']!=2 && $_SESSION['tipo']!=3))
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-	$home="";
-	switch  ($_SESSION['tipo']){
-		case (5) :
-			$home="home_integrante.php";
-			break;
-		case (4) :
-			$home="home_grupo.php";
-			break;
-		case (2) :
-			$home="home_consultor_jefe.php";
-			break;
-		case (3) :
-			$home="home_consultor.php";
-			break;
-		case (1) :
-			$home="home_admin.php";
-			break;
-	}
-	header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
+
 $consulta_id_ge = mysql_query("SELECT g.nombre_corto,g.nombre_largo
                                 FROM grupo_empresa g
                                 WHERE g.id_grupo_empresa =$id_grupoem",$conn)  or die("Could not execute the select query.");
@@ -86,13 +73,8 @@ if (isset($_GET['enviar_10'])) {
            }
 
    }
-
 include('header.php');
  ?>
- 			<!--PARTICIONAR
- 			<li>
-						<a href="#">Inicio</a> <span class="divider">/</span>
-			</li>-->
 			<div>
 				<ul class="breadcrumb">
 					<li>
@@ -119,7 +101,7 @@ include('header.php');
               $consulta = "SELECT id_grupo_empresa,sobre_a,sobre_b,observacion,habilitado
                                 FROM grupo_empresa g
                                 WHERE id_grupo_empresa=$id_grupoem";
-              $res = mysql_query($consulta);
+              $res = mysql_query($consulta,$conn);
               $row= mysql_fetch_array($res);
               $validado=NULL;
               if ($row['habilitado']==1) {
@@ -195,14 +177,13 @@ include('header.php');
 
 					</div>
 					<div class="box-content">
-						<?php if($gestion_valida) {
-                              include('conexion/conexion.php');
+						<?php if($gestionValida){                              
                                $integrantes ="SELECT ep.descripcion,u.nombre,u.apellido,ep.fecha_inicio,ep.fecha_fin,ep.pago_recibido ,ep.id_entrega_producto,ep.enlace_producto
                                               FROM entrega_producto ep, usuario u
                                               WHERE ep.grupo_empresa=$id_grupoem
 											  AND ep.id_responsable=u.id_usuario
 											  ";
-                               $resultado = mysql_query($integrantes);
+                               $resultado = mysql_query($integrantes,$conn);
                                $num_res=mysql_num_rows($resultado);
                               if ($num_res>0) {
 							?>
@@ -223,7 +204,7 @@ include('header.php');
 
                             <?php
                                $identi=0;
-                                while($row = mysql_fetch_array($resultado)) {
+                                while($row = mysql_fetch_array($resultado)){
 
                                 $arx=$row["enlace_producto"];
                                echo "
@@ -271,7 +252,7 @@ include('header.php');
 				</div>
 
                 <?php
-                 if($gestion_valida && $num_res>0){
+                 if($gestionValida && $num_res>0){
                   ?>
                   <div class="row-fluid">
         		            <div class="box span12" id="print">
@@ -301,7 +282,7 @@ include('header.php');
                                                                        $cal ="SELECT ep.descripcion,ep.id_entrega_producto,ep.enlace_producto,ep.pago_establecido,ep.pago_recibido
                                                                                       FROM entrega_producto ep
                                                                                       WHERE ep.grupo_empresa=$id_grupoem";
-                                                                         $eva = mysql_query($cal);
+                                                                         $eva = mysql_query($cal,$conn);
                                                                          $cou=0;
                                                                           while($row = mysql_fetch_array( $eva )) {
 																		  $id_entre=$row["id_entrega_producto"];
@@ -358,9 +339,6 @@ include('header.php');
         				</div><!--/span-->
                 </div>
 
-
-<!--AQUI EMPIEZA LA SEGUNDA ALTERNATIVA (TAREAS Y ACTIVIDADES JUNTAS)-->
-
 <div class="row-fluid">
 <div class="box span12">
     <div class="box-header well">
@@ -375,7 +353,7 @@ include('header.php');
         $subsistemas = "SELECT ep.descripcion, ep.id_entrega_producto
                     FROM entrega_producto ep
                     WHERE ep.grupo_empresa=$id_grupoem";
-        $cons = mysql_query($subsistemas);
+        $cons = mysql_query($subsistemas,$conn);
         $num_subs=mysql_num_rows($cons);
         if($num_subs > 0){
             while($rows = mysql_fetch_array($cons)){
@@ -436,7 +414,7 @@ include('header.php');
                                                 WHERE t.responsable = u.id_usuario
                                                 AND t.actividad = age.id_actividad
                                                 AND age.entrega_producto =".$rows['id_entrega_producto'];
-                                    $conta = mysql_query($tareas) or die ("no se puede ejecutar conta");
+                                    $conta = mysql_query($tareas,$conn) or die ("no se puede ejecutar conta");
                                     $num_tar = mysql_num_rows($conta);
                                     if($num_tar > 0){
                                 ?>
@@ -469,7 +447,7 @@ include('header.php');
                                                         AND age.id_actividad =".$rowsta["id_actividad"]."
                                                         AND age.entrega_producto =".$rows["id_entrega_producto"]."
                                                         AND t.id_tarea =".$rowsta["id_tarea"];
-                                            $descr = mysql_query($descri);
+                                            $descr = mysql_query($descri,$conn);
                                             $des = mysql_fetch_array($descr);
                                                 echo "<tr>
 
@@ -544,7 +522,7 @@ include('header.php');
             $consulta = "SELECT descripcion, pago_establecido, pago_recibido
                   FROM entrega_producto
                   WHERE grupo_empresa = $id_grupoem";
-                  $resultado = mysql_query($consulta);?>
+                  $resultado = mysql_query($consulta,$conn);?>
         <script src="js/amcharts.js" type="text/javascript"></script>
         <script src="js/serial.js" type="text/javascript"></script>
 

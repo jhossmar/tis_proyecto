@@ -4,19 +4,23 @@
   {
     header('Location: ../index.php');
   }
-    $VeriricarG = new VerificarGestion();
-    $GestionValida = $VeriricarG->VerificarFechasGestion();
+    $VerificarG = new VerificarGestion;
+    $GestionValida = $VerificarG->GetGestionValida();
+    include_once('conexion.php');
+    $conexion = new Conexion;
+    $conexion->EstablecerConexion();
+    $conn = $conexion->GetConexion();
 
       $consulta = "SELECT  nombre_documento, ruta_documento, fecha_documento, descripsion_documento, consultor_tis, nombre,apellido
                    FROM documento_consultor d, usuario u
-                   WHERE  documento_jefe= '1' AND d.gestion=$VeriricarG->id_gestion AND d.consultor_tis=u.id_usuario";
-      $resultado = mysql_query($consulta);
+                   WHERE  documento_jefe= '1' AND d.gestion=$VerificarG->id_gestion AND d.consultor_tis=u.id_usuario";
+      $resultado = mysql_query($consulta,$conn);
       $numero = 0;
 
       $c = "SELECT COUNT(*) as numer
             FROM documento_consultor
-            WHERE  documento_jefe= '1' AND gestion=$VeriricarG->id_gestion";
-      $r = mysql_query($c);
+            WHERE  documento_jefe= '1' AND gestion=$VerificarG->id_gestion";
+      $r = mysql_query($c,$conn);
       $res = mysql_fetch_array( $r);
       $num=  $res['numer'];
 ?>

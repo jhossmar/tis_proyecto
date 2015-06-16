@@ -1,36 +1,14 @@
 <?php
-session_start();
-$quien_ingresa="Administrador del sistema";
-$pag_ini="home_admin.php";
-$titulo="Informacion del usuario".$quien_ingresa; 
-include("conexion/verificar_gestion.php");
-/*------------------VERIFICAR QUE SEAL EL CONSULTOR------------------------*/
-if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=1)
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (4) :
-	                	$home="home_grupo.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;                                                             		
-	          }   
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
-
+    session_start();
+    $quien_ingresa="Administrador del sistema";
+    $pag_ini="home_admin.php";
+    $titulo="Informacion del usuario".$quien_ingresa; 
+    include("conexion/conexion.php");
+    $c = new Conexion;
+    $c->EstablecerConexion();
+    $conn = $c->GetConexion();
 include('header.php');
- ?>
+?>
 <script type="text/javascript">
 	function imprimir(){
   var objeto=document.getElementById('print');  //obtenemos el objeto a imprimir
@@ -44,14 +22,10 @@ include('header.php');
 	css.setAttribute("type", "text/css");
 	ventana.document.head.appendChild(css);
 
-
   ventana.print();  //imprimimos la ventana
   ventana.close();  //cerramos la ventana
 }
-
 </script>
-
-
 			<div>
 				<ul class="breadcrumb">					
 					<li>

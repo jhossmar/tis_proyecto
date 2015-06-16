@@ -1,5 +1,4 @@
 <?php
-
 class Menu 
 {
 	
@@ -22,8 +21,7 @@ class Menu
 						<li><a href="administrar_grupo_empresa.php"><i class="icon-edit"></i><span class="hidden-tablet"> Administrar Grupo Empresas</span></a></li>
 						<li><a href="bitacoras_usuario.php"><i class="icon-eye-open"></i><span class="hidden-tablet"> Bit&aacute;coras de usuario</span></a></li>
 						<li><a href="backup.php"><i class="icon-hdd"></i><span class="hidden-tablet"> Respaldo y Restauraci&oacute;n de la Base de Datos</span></a></li>
-						<li><a href="administrar_mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Administrar espacio de Discuci&oacute;n</span></a></li>
-						<li><a href="control_grupo_empresas.php"><i class="icon-edit"></i><span class="hidden-tablet"> Control de Grupo Empresas</span></a></li>
+						<li><a href="administrar_mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Administrar espacio de Discuci&oacute;n</span></a></li>						
 					</ul>
 				</div>
 			</div>		
@@ -36,7 +34,7 @@ class Menu
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li class="nav-header box-header"><h5>Men&uacute; </h5></li>
 						<li><a href="home_consultor_jefe.php"><i class="icon-home"></i><span class="hidden-tablet"> Home <?php echo $tipo ?></span></a></li>
-						<li><a href="info_consultor.php?value=2"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
+						<li><a href="info_consultor.php"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
 						<li><a href="subir_consultor_jefe.php"><i class="icon-pencil"></i><span class="hidden-tablet"> Publicar Avisos</span></a></li>
 						<li><a href="subir_contrato.php"><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
 						<li><a href="administrar_archivos.php"><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
@@ -57,7 +55,7 @@ class Menu
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li class="nav-header box-header"><h5>Men&uacute; </h5></h5></li>
 						<li><a href="home_consultor.php"><i class="icon-home"></i><span class="hidden-tablet"> Home <?php echo $tipo ?></span></a></li>
-						<li><a href="info_consultor.php?value=3"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
+						<li><a href="info_consultor.php"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
 						<li><a href="subir_contrato.php"><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
 						<li><a href="administrar_archivos.php"><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
 						<li><a href="administrar_grupo.php"><i class="icon-check"></i><span class="hidden-tablet"> Administrar mis Grupo Empresas</span></a></li>

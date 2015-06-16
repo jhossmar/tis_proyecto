@@ -1,4 +1,4 @@
-<?php
+<?php    
 	if(!isset($titulo))
 	{
 		header('Location: index.php');
@@ -69,13 +69,6 @@
 <link href="css/jquery.alerts.css" rel="stylesheet" type="text/css">
 	<!-- calendario -->
 
-
-	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
-	<!--[if lt IE 9]>
-	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-
-	<!-- The fav icon -->
 	<link rel="shortcut icon" href="img/favicon.png">
 	
 <style type="text/css">
@@ -137,8 +130,6 @@
 	width:400px;
 	height:200px;
 }
-
-
 
 .close {
 	background: #606061;
@@ -215,7 +206,7 @@
 						    <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
-	                        <li><a href="conexion/salir.php"><i class= "icon-off"></i> Salir</a></li>
+	                        <li><a href="conexion/salir.php"><i class= "icon-off"></i>Salir</a></li>
 	                    </ul>
 				    </div>
     	           		</div><!-- FIN USUARIOS-->
@@ -233,7 +224,7 @@
                         <a href="iniciar_sesion.php?value=4" data-toggle="dropdown" class="dropdown-toggle" id="link_grupo">Grupo Empresa <b class="caret"></b></a>
                             <ul class="dropdown-menu" id="menu1">
                                 <li>
-                                   <a href="iniciar_sesion_grupo.php" id="link_grupo_ingresar">Ingresar </a>
+                                   <a href="iniciar_sesion.php" id="link_grupo_ingresar">Ingresar </a>
                                 </li>
                                 <li>
                                     <a href="registro_grupo.php" id="link_grupo_registro">Registrarse</a>
@@ -244,7 +235,7 @@
                         <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown" id="link_consultor">Consultor TIS <i class="caret"></i></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a tabindex="-1" href="iniciar_sesion_consultor.php" id="link_consultor_ingresar">Ingresar</a>
+                                    <a tabindex="-1" href="iniciar_sesion.php" id="link_consultor_ingresar">Ingresar</a>
                                 </li>
                                  <li>
                                     <a tabindex="-1" href="registro_consultor.php" id="link_consultor_registro">Registrarse</a>
@@ -266,8 +257,6 @@
     </div>
   </div>
 </div>
-	<!-- topbar ends -->
-	<!-- topbar ends -->
 	<?php } ?>
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -291,4 +280,3 @@
 				</div>
 			</noscript>
 		<div id="content" class="span8">
-		<!-- content starts -->

@@ -1,32 +1,11 @@
 <?php
-$titulo="Bit&aacute;coras de usuario";
-include('conexion/verificar_gestion.php');
-session_start();
-/*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
-    if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=1)
-    {/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-            $home="";
-            switch  ($_SESSION['tipo']){
-                    
-                    case (2) :
-                        $home="home_consultor_jefe.php";
-                        break;
-                    case (3) :
-                         $home="home_consultor.php";
-                         break;
-                    case (4) :
-                         $home="home_grupo.php";
-                         break;
-                    case (5) :
-                        $home="home_integrante.php";
-                        break;                                                                     
-                  }   
-            header("Location: ".$home);
-    }
-    elseif(!isset($_SESSION['nombre_usuario'])){
-        header("Location: index.php");
-    }
-/*----------------------FIN VERIFICACION------------------------------------*/
+    $titulo="Bit&aacute;coras de usuario";
+    include('conexion/conexion.php');
+    $c = new Conexion;
+    $c->EstablecerConexion();
+    $conn = $c->GetConexion(); 
+    session_start();
+
 $consulta = "SELECT id_bitacora_sesion, fecha_hora, operacion, nombre_usuario,g.gestion,descripcion
               FROM bitacora_sesion b, usuario u, gestion_empresa_tis g,tipo_usuario
               WHERE id_usuario=usuario AND u.gestion=g.id_gestion  AND tipo_usuario=id_tipo_usuario";
@@ -50,177 +29,120 @@ $filtro_gestion_2=-1;
 $filtro_tipo_2=-1;
 $error_2=false;
 
-if(isset($_POST['filtrar'])){
-  /*VALORES DE FORMULARIO*/
-  if (!empty($_POST['fecha_ini']) && !empty($_POST['fecha_fin'])) {
+if(isset($_POST['filtrar']))
+{
+
+  if(!empty($_POST['fecha_ini']) && !empty($_POST['fecha_fin']))
+  {
     $ini_filtro=$_POST['fecha_ini'];
     $fin_filtro=$_POST['fecha_fin'];
-    $ini_dia = substr($ini_filtro, 8);
-    $ini_mes = substr($ini_filtro, 5,2);
-    $ini_year = substr($ini_filtro, 0,4);
-
-    $fin_dia = substr($fin_filtro, 8);
-    $fin_mes = substr($fin_filtro, 5,2);
-    $fin_year = substr($fin_filtro, 0,4);
-    if(@checkdate($ini_mes, $ini_dia, $ini_year)){
-      if (@checkdate($fin_mes, $fin_dia, $fin_year)) {
-        if($ini_filtro<=$fecha){//corecto
-          if ($fin_filtro>=$ini_filtro && $fin_filtro<=$fecha) {//ALL RIGHT
-              $consulta=$consulta." AND (fecha_hora>='".$ini_filtro." 00:00:00' AND fecha_hora<='".$fin_filtro." 23:59:59')";
-          }
-          else{
-            $error = true;
-            $error_fecha_fin = "La fecha de finalizaci&oacute;n no es v&aacute;lida";
-          }
+    if($ini_filtro<=$fecha)
+    {
+        if($fin_filtro>=$ini_filtro && $fin_filtro<=$fecha)
+        {
+           $consulta=$consulta." AND (fecha_hora>='".$ini_filtro." 00:00:00' AND fecha_hora<='".$fin_filtro." 23:59:59')";
         }
-        else{
+        else
+        {
           $error = true;
-          $error_fecha_ini = "La fecha de inicio no debe ser mayor a la fecha presente";
+          $error_fecha_fin = "La fecha de finalizaci&oacute;n no es v&aacute;lida";
         }
-      }
-      else{
-            $error = true;
-            $error_fecha_fin = "La fecha de finalizaci&oacute;n no es v&aacute;lida";
-          }
     }
-    else{
-          $error = true;
-          $error_fecha_ini = "La fecha de inicio no es v&aacute;lida";
-      }
+    else
+    {
+        $error = true;
+        $error_fecha_ini = "La fecha de inicio no debe ser mayor a la fecha presente";
+    }    
 
-  }elseif (!empty($_POST['fecha_ini'])) {
+  }
+  elseif(!empty($_POST['fecha_ini']))
+  {
     $ini_filtro=$_POST['fecha_ini'];
     
-    $ini_dia = substr($ini_filtro, 8);
-    $ini_mes = substr($ini_filtro, 5,2);
-    $ini_year = substr($ini_filtro, 0,4);
-    if(@checkdate($ini_mes, $ini_dia, $ini_year)){
-      if($ini_filtro<=$fecha){//corecto
+    if($ini_filtro<=$fecha)
+    {
         $consulta=$consulta." AND (fecha_hora>='".$ini_filtro." 00:00:00')";
-      }
-     else{
-        $error=true;
-        $error_fecha_ini = "La fecha de inicio no debe ser mayor a la fecha presente";
-      }
     }
-    else{
-          $error = true;
-          $error_fecha_ini = "La fecha de inicio no es v&aacute;lida";
-      }
-
-  }elseif(!empty($_POST['fecha_fin'])){
+    else
+    {
+       $error=true;
+       $error_fecha_ini = "La fecha de inicio no debe ser mayor a la fecha presente";
+    }    
+  }
+  elseif(!empty($_POST['fecha_fin']))
+  {
     $fin_filtro=$_POST['fecha_fin'];
-
-    $fin_dia = substr($fin_filtro, 8);
-    $fin_mes = substr($fin_filtro, 5,2);
-    $fin_year = substr($fin_filtro, 0,4);
-    if (@checkdate($fin_mes, $fin_dia, $fin_year)) {
-      if ($fin_filtro<=$fecha) {//ALL RIGHT
-          $consulta=$consulta." AND (fecha_hora<='".$fin_filtro." 23:59:59')";
-      }
-      else{
-            $error = true;
-            $error_fecha_fin = "La fecha de finalizaci&oacute;n no debe ser mayor a la fecha presente";
-          }
-    }else{
-      $error = true;
-      $error_fecha_fin = "La fecha de finalizaci&oacute;n no es v&aacute;lida";
+    if($fin_filtro<=$fecha)
+    {
+       $consulta=$consulta." AND (fecha_hora<='".$fin_filtro." 23:59:59')";
     }
-}
-  
-  if ($_POST['gestion']!=-1) {
+    else
+    {
+      $error = true;
+      $error_fecha_fin = "La fecha de finalizaci&oacute;n no debe ser mayor a la fecha presente";
+    }   
+  }  
+  if($_POST['gestion']!=-1)
+  {
     $filtro_gestion=$_POST['gestion'];
     $consulta=$consulta." AND u.gestion=$filtro_gestion";
   }
-  if ($_POST['usuario']!=-1) {
+  if($_POST['usuario']!=-1) 
+  {
     $filtro_tipo=$_POST['usuario'];
     $consulta=$consulta." AND tipo_usuario=$filtro_tipo";
   }
-  if(!$error){
-          //header('Location: modificar_registro_consultor.php?value='.$quien);
-      
+  if(!$error)
+  {
+          header('Location: modificar_registro_consultor.php?value='.$quien);    
   }
 }
 
-if(isset($_POST['filtrar_2'])){
-  /*VALORES DE FORMULARIO*/
-  if (!empty($_POST['fecha_ini_2']) && !empty($_POST['fecha_fin_2'])) {
-    $ini_filtro_2=$_POST['fecha_ini_2'];
-    $fin_filtro_2=$_POST['fecha_fin_2'];
-    $ini_dia_2 = substr($ini_filtro_2, 8);
-    $ini_mes_2 = substr($ini_filtro_2, 5,2);
-    $ini_year_2 = substr($ini_filtro_2, 0,4);
-
-    $fin_dia_2 = substr($fin_filtro_2, 8);
-    $fin_mes_2 = substr($fin_filtro_2, 5,2);
-    $fin_year_2 = substr($fin_filtro_2, 0,4);
-    if(@checkdate($ini_mes_2, $ini_dia_2, $ini_year_2)){
-      if (@checkdate($fin_mes_2, $fin_dia_2, $fin_year_2)) {
-        if($ini_filtro_2<=$fecha){//corecto
-          if ($fin_filtro_2>=$ini_filtro_2 && $fin_filtro_2<=$fecha) {//ALL RIGHT
-              $consulta_2=$consulta_2." AND (fecha_hora>='".$ini_filtro_2." 00:00:00' AND fecha_hora<='".$fin_filtro_2." 23:59:59')";
-          }
-          else{
-            $error_2 = true;
-            $error_fecha_fin_2 = "La fecha de finalizaci&oacute;n no es v&aacute;lida";
-          }
-        }
-        else{
-          $error_2 = true;
-          $error_fecha_ini_2 = "La fecha de inicio no debe ser mayor a la fecha presente";
-        }
-      }
-      else{
-            $error_2 = true;
-            $error_fecha_fin_2 = "La fecha de finalizaci&oacute;n no es v&aacute;lida";
-          }
-    }
-    else{
-          $error_2 = true;
-          $error_fecha_ini_2 = "La fecha de inicio no es v&aacute;lida";
-      }
-
-  }elseif (!empty($_POST['fecha_ini_2'])) {
-    $ini_filtro_2=$_POST['fecha_ini_2'];
-    
-    $ini_dia_2 = substr($ini_filtro_2, 8);
-    $ini_mes_2 = substr($ini_filtro_2, 5,2);
-    $ini_year_2 = substr($ini_filtro_2, 0,4);
-    if(@checkdate($ini_mes_2, $ini_dia_2, $ini_year_2)){
-      if($ini_filtro_2<=$fecha){//corecto
-        $consulta_2=$consulta_2." AND (fecha_hora>='".$ini_filtro_2." 00:00:00')";
-      }
-     else{
-        $error_2=true;
-        $error_fecha_ini_2 = "La fecha de inicio no debe ser mayor a la fecha presente";
-      }
-    }
-    else{
-          $error_2 = true;
-          $error_fecha_ini_2 = "La fecha de inicio no es v&aacute;lida";
-      }
-
-  }elseif(!empty($_POST['fecha_fin_2'])){
-    $fin_filtro_2=$_POST['fecha_fin_2'];
-
-    $fin_dia_2 = substr($fin_filtro_2, 8);
-    $fin_mes_2 = substr($fin_filtro_2, 5,2);
-    $fin_year_2 = substr($fin_filtro_2, 0,4);
-    if (@checkdate($fin_mes_2, $fin_dia_2, $fin_year_2)) {
-      if ($fin_filtro_2<=$fecha) {//ALL RIGHT
-          $consulta_2=$consulta_2." AND (fecha_hora<='".$fin_filtro_2." 23:59:59')";
-      }
-      else{
-            $error_2 = true;
-            $error_fecha_fin_2 = "La fecha de finalizaci&oacute;n no debe ser mayor a la fecha presente";
-          }
-    }else{
-      $error_2 = true;
-      $error_fecha_fin_2 = "La fecha de finalizaci&oacute;n no es v&aacute;lida";
-    }
-}
+if(isset($_POST['filtrar_2']))
+{
+    if(!empty($_POST['fecha_ini_2']) && !empty($_POST['fecha_fin_2']))
+    {
+        $ini_filtro_2=$_POST['fecha_ini_2'];
+        $fin_filtro_2=$_POST['fecha_fin_2'];
   
-  if ($_POST['gestion_2']!=-1) {
+        if($fin_filtro_2>=$ini_filtro_2 && $fin_filtro_2<=$fecha)
+        {
+            $consulta_2=$consulta_2." AND (fecha_hora>='".$ini_filtro_2." 00:00:00' AND fecha_hora<='".$fin_filtro_2." 23:59:59')";
+        }
+        else
+        {
+           $error_2 = true;
+           $error_fecha_fin_2 = "La fecha de finalizaci&oacute;n no es v&aacute;lida";
+        }
+    }    
+elseif (!empty($_POST['fecha_ini_2']))
+{
+    $ini_filtro_2=$_POST['fecha_ini_2'];
+    if($ini_filtro_2<=$fecha)
+    {
+       $consulta_2=$consulta_2." AND (fecha_hora>='".$ini_filtro_2." 00:00:00')";
+    }
+    else
+    {
+      $error_2=true;
+      $error_fecha_ini_2 = "La fecha de inicio no debe ser mayor a la fecha presente";
+    }    
+
+}
+elseif(!empty($_POST['fecha_fin_2']))
+{
+    $fin_filtro_2=$_POST['fecha_fin_2'];
+    if ($fin_filtro_2<=$fecha) 
+    {
+        $consulta_2=$consulta_2." AND (fecha_hora<='".$fin_filtro_2." 23:59:59')";
+    }
+    else
+    {
+        $error_2 = true;
+        $error_fecha_fin_2 = "La fecha de finalizaci&oacute;n no debe ser mayor a la fecha presente";
+    }    
+}
+    if($_POST['gestion_2']!=-1){
     $filtro_gestion_2=$_POST['gestion_2'];
     $consulta_2=$consulta_2." AND u.gestion=$filtro_gestion_2";
   }
@@ -228,12 +150,11 @@ if(isset($_POST['filtrar_2'])){
     $filtro_tipo_2=$_POST['usuario_2'];
     $consulta_2=$consulta_2." AND tipo_usuario=$filtro_tipo_2";
   }
-  if(!$error){
-          //header('Location: modificar_registro_consultor.php?value='.$quien);
-      
+  if(!$error)
+  {
+      //header('Location: modificar_registro_consultor.php?value='.$quien);     
   }
 }
-
 include('header.php');
  ?>
 			<div>

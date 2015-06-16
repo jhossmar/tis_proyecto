@@ -1,42 +1,19 @@
 <?php
 $titulo="Administrar Archivos del Consultor TIS";
-require_once("conexion/verificar_gestion.php");
-  $VeriricarG = new VerificarGestion();
-  $GestionValida = $VeriricarG->VerificarFechasGestion();
-session_start();
-/*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
-if(isset($_SESSION['nombre_usuario']) && ($_SESSION['tipo']!=2 && $_SESSION['tipo']!=3))
-{/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-		$home="";
-		switch  ($_SESSION['tipo']){
-				case (5) :
-	                	$home="home_integrante.php";
-	                    break;
-	            case (4) :
-	                	$home="home_grupo.php";
-	                    break;
-	            case (2) :
-	                	$home="home_consultor_jefe.php";
-	                    break;
-	            case (3) :
-	                	$home="home_consultor.php";
-	                    break;
-	            case (1) :
-	                    $home="home_admin.php";
-	                    break;
-	          }
-		header("Location: ".$home);
-}
-elseif(!isset($_SESSION['nombre_usuario'])){
-	header("Location: index.php");
-}
-/*----------------------FIN VERIFICACION------------------------------------*/
+
+  session_start();
+  require_once("conexion/verificar_gestion.php");
+  require_once("conexion/conexion.php");
+
+  $VerificarG = new VerificarGestion;
+  $GestionValida = $VerificarG->GetGestionValida();
+
+  $conexion = new Conexion;
+  $conexion->EstablecerConexion();
+  $conn = $conexion->GetConexion();
+
 include('header.php');
  ?>
- 			<!--PARTICIONAR
- 			<li>
-						<a href="#">Inicio</a> <span class="divider">/</span>
-			</li>-->
 			<div>
 				<ul class="breadcrumb">
 					<li>
@@ -53,15 +30,13 @@ include('header.php');
 		            <div class="box span12" id="print">
 					<div class="box-header well" data-original-title>
 						<h2><i class="icon-check"></i> Mis Archivos</h2>
-
 					</div>
 					<div class="box-content">
-						<?php if($GestionValida) {
-                              include('conexion/conexion.php');
+						<?php if($GestionValida) {                              
                                $integrantes ="SELECT id_documento_consultor, nombre_documento,descripsion_documento,fecha_documento,g.gestion,habilitado,ruta_documento
 								FROM documento_consultor d, gestion_empresa_tis g
 								WHERE g.id_gestion=d.gestion AND consultor_tis=$id_usuario AND d.documento_jefe=0";
-                               $resultado = mysql_query($integrantes);
+                               $resultado = mysql_query($integrantes,$conn);
                                $num_res=mysql_num_rows($resultado);
                               if ($num_res>0) {
 							?>
@@ -82,7 +57,7 @@ include('header.php');
 						  	
                             <?php
                                $identi=0;
-                                while($row = mysql_fetch_array($resultado)) {
+                                while($row = mysql_fetch_array($resultado)){
 
                                echo "
                                 <tr>
@@ -113,11 +88,6 @@ include('header.php');
                                 
                                   <button name="enviar"type="submit" class="btn btn-primary" id="enviar"><i class="icon-ok"></i> Guardar Cambios</button>
                                   <a href="administrar_archivos.php" rel="activi"><button type="button" class="btn"><i class="icon-remove"></i> Restablecer</button></a>
-
-								 
-
-
-
                     </form>
                     <?php 	}
                             else{

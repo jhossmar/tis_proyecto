@@ -1,38 +1,12 @@
 <?php
 $titulo="Administrar Consultores TIS";
-include('conexion/verificar_gestion.php');
+include('conexion/conexion.php');
+$c = new Conexion;
+$c->EstablecerConexion();
+$conn = $c->GetConexion(); 
 session_start();
-/*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
-    if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=1)
-    {/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-            $home="";
-            switch  ($_SESSION['tipo']){
-                    
-                    case (2) :
-                        $home="home_consultor_jefe.php";
-                        break;
-                    case (3) :
-                         $home="home_consultor.php";
-                         break;
-                    case (4) :
-                         $home="home_grupo.php";
-                         break;
-                    case (5) :
-                        $home="home_integrante.php";
-                        break;                                                                     
-                  }   
-            header("Location: ".$home);
-    }
-    elseif(!isset($_SESSION['nombre_usuario'])){
-        header("Location: index.php");
-    }
-/*----------------------FIN VERIFICACION------------------------------------*/
 include('header.php');
  ?>
- 			<!--PARTICIONAR
- 			<li>
-						<a href="#">Inicio</a> <span class="divider">/</span>
-			</li>-->
 			<div>
 				<ul class="breadcrumb">
 					<li>
@@ -52,12 +26,11 @@ include('header.php');
 
 					</div>
 					<div class="box-content">
-            <?php 
-                include('conexion/conexion.php');
+            <?php                 
                  $consulta = "SELECT *
                               FROM mensaje
                               ORDER BY fecha_hora DESC";
-                 $resultado = mysql_query($consulta);
+                 $resultado = mysql_query($consulta,$conn);
                 $num_res=mysql_num_rows($resultado);
                  if ($num_res>0) {
               ?>
@@ -79,7 +52,7 @@ include('header.php');
                                   $ci = "SELECT nombre, apellido
                                         FROM usuario
                                         WHERE id_usuario = '$x'";
-                                  $ri = mysql_query($ci);
+                                  $ri = mysql_query($ci,$conn);
                                   $resi = mysql_fetch_array($ri);
                                   $de = $resi['nombre']." ". $resi['apellido'];
 
@@ -88,7 +61,7 @@ include('header.php');
                                         FROM usuario u, tipo_usuario i
                                         WHERE u.id_usuario = '$x'
                                         AND u.tipo_usuario = i.id_tipo_usuario";
-                                  $ri = mysql_query($ci);
+                                  $ri = mysql_query($ci,$conn);
                                   $resi = mysql_fetch_array($ri);
                                   $u = $resi['descripcion'];
 

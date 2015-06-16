@@ -1,5 +1,13 @@
 <?php
-include('conexion/verificar_gestion.php');
+include('conexion/conexion.php');
+$c = new Conexion;
+$c->EstablecerConexion();
+$conn = $c->GetConexion();
+  require_once("conexion/verificar_gestion.php");
+  
+  $verificarG = new VerificarGestion();
+  $gestionValida = $verificarG->GetGestionValida();
+
 session_start();
 if (isset($_GET['value'])) {
 	$integrante=$_GET['value'];
@@ -72,8 +80,8 @@ if(isset($_POST['enviar'])){
 	if (strcmp($mail,$eMail)!=0) { 
 		$sql = "SELECT email
 				FROM usuario
-				WHERE email='$eMail' AND (gestion=1 OR gestion=$id_gestion)";
-		$auxiliar = mysql_query($sql);
+				WHERE email='$eMail' AND (gestion=1 OR gestion=$verificarG->id_gestion)";
+		$auxiliar = mysql_query($sql,$conn);
         $result = mysql_fetch_array($auxiliar);
 		
 		if(is_array($result) && !empty($result))//ya existe usuario o email
@@ -89,7 +97,7 @@ if(isset($_POST['enviar'])){
 		}
 		if (strcmp($cod_sis_2, $cod_sis)!=0) {
 			$consulta_cod = mysql_query("SELECT codigo_sis from usuario, integrante 
-								where integrante.usuario=usuario.id_usuario AND codigo_sis='$cod_sis' AND (gestion=1 OR gestion=$id_gestion)",$conn)
+								where integrante.usuario=usuario.id_usuario AND codigo_sis='$cod_sis' AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn)
 		                         or die("Could not execute the select query.");
 		    $resultado_cod = mysql_fetch_assoc($consulta_cod);
 
@@ -105,8 +113,8 @@ if(isset($_POST['enviar'])){
         if (strcmp($user,$usuario)!=0){
         $sql_user= "SELECT nombre_usuario
                     FROM usuario
-                    WHERE nombre_usuario='$usuario' AND (gestion=1 OR gestion=$id_gestion)";
-        $auxiliar_usuario = mysql_query($sql_user);
+                    WHERE nombre_usuario='$usuario' AND (gestion=1 OR gestion=$verificarG->id_gestion)";
+        $auxiliar_usuario = mysql_query($sql_user,$conn);
         $result_user = mysql_fetch_array($auxiliar_usuario);
         if(is_array($result_user) && !empty($result_user)){
             if(strcmp($result_user['nombre_usuario'],$usuario)==0){

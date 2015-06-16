@@ -1,65 +1,36 @@
 <?php
-$titulo="Control Grupo Empresas";
-include('conexion/verificar_gestion.php');
-session_start();
-/*------------------VERIFICAR QUE SEAL EL ADMINISTRADOR------------------------*/
-    if(isset($_SESSION['nombre_usuario']) && $_SESSION['tipo']!=1)
-    {/*SI EL QUE INGRESO A NUESTRA PAGINA ES CONSULTOR DE CUALQUIER TIPO*/
-            $home="";
-            switch  ($_SESSION['tipo']){
-                    
-                    case (2) :
-                        $home="home_consultor_jefe.php";
-                        break;
-                    case (3) :
-                         $home="home_consultor.php";
-                         break;
-                    case (4) :
-                         $home="home_grupo.php";
-                         break;
-                    case (5) :
-                        $home="home_integrante.php";
-                        break;                                                                     
-                  }   
-            header("Location: ".$home);
-    }
-    elseif(!isset($_SESSION['nombre_usuario'])){
-        header("Location: index.php");
-    }
-/*----------------------FIN VERIFICACION------------------------------------*/
+$titulo="Control Grupo Empresas"; 
 include('header.php');
  ?>
- 			<!--PARTICIONAR
- 			<li>
-						<a href="#">Inicio</a> <span class="divider">/</span>
-			</li>-->
-			<div>
-				<ul class="breadcrumb">
-					<li>
-						<a href="index.php">Inicio</a>
-						<span class="divider">/</span>
-					</li>
-					<li>
-						<a href="control_grupo_empresa.php">Administrar grupo empresas</a>
-					</li>
-				</ul>
-			</div>
-			<center><h3>Administrar Grupo empresas</h3></center>
-			<div class="row-fluid">
-		            <div class="box span12">
-					<div class="box-header well" data-original-title>
-						<h2><i class="icon-user"></i> Grupo Empresas registradas</h2>
-
-					</div>
-					<div class="box-content">
-            <?php 
-                include('conexion/conexion.php');
-                 $consulta = "SELECT DISTINCT u.nombre_usuario,asistencia,ge.nombre_corto,ge.nombre_largo,s.descripcion,u.id_usuario,u.clave,gt.Fecha1
-FROM usuario u,integrante i,grupo_empresa ge,sociedad s,gestion_empresa_tis gt 
-WHERE  u.tipo_usuario = 4 and u.id_usuario=i.usuario and i.grupo_empresa=ge.id_grupo_empresa and ge.sociedad= s.id_sociedad ";
-                 $resultado = mysql_query($consulta);
-                $num_res=mysql_num_rows($resultado);
-                 if ($num_res>0) {
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="index.php">Inicio</a>
+				<span class="divider">/</span>
+			</li>
+			<li>
+				<a href="control_grupo_empresa.php">Administrar grupo empresas</a>
+			</li>
+		</ul>
+	</div>
+	<center><h3>Administrar Grupo empresas</h3></center>
+	<div class="row-fluid">
+        <div class="box span12">
+		<div class="box-header well" data-original-title>
+			<h2><i class="icon-user"></i> Grupo Empresas registradas</h2>
+		</div>
+		<div class="box-content">
+    <?php 
+       include('conexion/conexion.php');
+       $c = new Conexion;
+       $c->EstablecerConexion();
+       $conn = $c->GetConexion();
+       $consulta = "SELECT DISTINCT u.nombre_usuario,ge.nombre_corto,ge.nombre_largo,s.descripcion,u.id_usuario,u.clave,gt.fecha_ini_gestion
+                    FROM usuario u,integrante i,grupo_empresa ge,gestion_empresa_tis gt,sociedad s 
+                    WHERE  u.tipo_usuario = 4 and u.id_usuario=i.usuario and i.grupo_empresa=ge.id_grupo_empresa and ge.sociedad=s.id_sociedad";
+       $resultado = mysql_query($consulta,$conn);
+       $num_res=mysql_num_rows($resultado);
+       if($num_res>0){
               ?>
             <form method="post" action="conexion/admin_control.php" accept-charset="utf-8">
 						<table class="table table-striped table-bordered  datatable">
@@ -117,7 +88,6 @@ WHERE  u.tipo_usuario = 4 and u.id_usuario=i.usuario and i.grupo_empresa=ge.id_g
                                 Ninguna Grupo Empresa se ha registrado.</h4>
                                 </div>";
                             }
-
                   ?>
 					</div>
 				</div><!--/span-->
