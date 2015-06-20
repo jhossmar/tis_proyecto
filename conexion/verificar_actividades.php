@@ -35,8 +35,7 @@ class VerificarActividades extends VerificarGestion
 	public $act_7_espera =false;
 	
 	private function ActualizarActividad($fase)
-	{
-		
+	{		
 			$consulta_sql="UPDATE fase_convocatoria
 					   	   SET activo = 0
 					   	   WHERE gestion = $this->id_gestion AND tipo_fase_convocatoria = $fase";

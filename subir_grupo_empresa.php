@@ -8,7 +8,7 @@ session_start();
   $cantidadValida=$VerificarI->CantidadValida();
   $verificarA = new VerificarActividades;
   $gestionValida = $verificarA->GetGestionValida();
-  $verificarA->Actividad2();
+  $verificarA->Actividad3();
     
   $quien_ingresa="Grupo Empresa";
   $pag_ini="home_grupo.php";
@@ -21,7 +21,7 @@ session_start();
 if(isset($_POST['enviar']))
 {
 	
-	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$VeriricarG->GetConexion())
+	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
       or die("Error no se pudo realizar cambios.");
 	$sobreA=$_FILES['documentoA'];
 	$sobreB=$_FILES['documentoB'];
@@ -163,7 +163,7 @@ include('header.php');
 				      {				      	
 						if($cantidadValida)
 						{
-							if($verificarA->activo_3==1 && $verificarA->act_3_espera)
+							if($verificarA->act_3_espera== false && $verificarA->activo_3==1)
 							{
 								$consulta_producto = mysql_query("SELECT sobre_a, sobre_b,observacion,habilitado
 																  FROM grupo_empresa
