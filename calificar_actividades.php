@@ -14,6 +14,7 @@ $verificarA->Actividad7();
 $conexion = new Conexion;
 $conexion->EstablecerConexion();
 $conn = $conexion->GetConexion();
+
 $titulo="calificar actividades";
 
 $usuario=$_SESSION['nombre_usuario'];
@@ -37,8 +38,7 @@ $consulta_consultor = mysql_query("SELECT id_usuario from usuario
 $resultado_consultor = mysql_fetch_assoc($consulta_consultor);
 		    
 	if(!empty($resultado_consultor))
-	{     
-		//echo "<center><h3>".$resultado_consultor['id_usuario']."</center></h3>";
+	{     		
 		$consultor=	$resultado_consultor['id_usuario'];
 		$consulta_grupo = mysql_query("SELECT nombre_largo 
 			                           FROM grupo_empresa 			
@@ -48,8 +48,13 @@ $resultado_consultor = mysql_fetch_assoc($consulta_consultor);
         if(!empty($resultado_grupo))
 	    { 
 	    	echo "<h3>".$resultado_grupo['nombre_largo']."</h3>";
+
+	    }
+	    else
+	    {
+            echo "<h3> ACTUALMENTE NO SIENTE NINGUN GRUPO EMPRESA REGISTRADO CON USTED</h3>";
 	    }
 	}
-
+include("footer.php");
 		
 ?>
