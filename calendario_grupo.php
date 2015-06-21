@@ -33,6 +33,17 @@ $conexion = new Conexion;
 $conexion->EstablecerConexion();
 $conn = $conexion->GetConexion();
 
+    function randomColor()
+    {
+        srand(time());
+        $color = "";
+        for ($i=0; $i<6; $i++)
+        {
+            $color .= dechex(rand(0,15));
+        }
+        return "#".$color;
+    }
+
 $titulo="Planificar Tareas Grupo Empresa";
 include('header.php');
 ?> 			
@@ -96,14 +107,14 @@ include('header.php');
 		</style>
 		<div id="add-event-form" title="A&ntilde;adir Tarea">
         <!-- action="add_tarea.php" -->
-        <form action="add_tarea.php" method="post" >
+        <form method="post" >
         <?php
             $consulta_actividades_empresa = "SELECT age.id_actividad,age.fecha_inicio,age.fecha_fin,age.descripcion,age.entrega_producto
                                              FROM entrega_producto ep,actividad_grupo_empresa age
                                              WHERE ep.grupo_empresa='$VerificarI->idGrupo' AND ep.id_entrega_producto=age.entrega_producto";
             $resultado_actividades_empresa = mysql_query($consulta_actividades_empresa,$conn);
             $CTA=0;
-            
+
             while($row_actividades_empresa = mysql_fetch_array($resultado_actividades_empresa))
             {
                 echo "<input  type=\"hidden\" id=\"A1".$CTA."\"  name=\"A1".$CTA."\"  value=\"".$row_actividades_empresa['id_actividad']."\" />
@@ -116,13 +127,20 @@ include('header.php');
             echo "<input  type=\"hidden\" id=\"CTA\"  name=\"CTA\"  value=\"".$CTA."\"/>";
         ?>
         </form >
-        <form action="add_tarea.php" method="post">
+        <form method="post">
         <?php
             $consulta_Tareas = "SELECT t.id_tarea,t.descripcion,t.responsable,t.actividad,t.fecha_inicio,t.fecha_fin,t.resultado_esperado,t.resultado_obtenido,t.color_tarea,t.color_texto
                                 FROM entrega_producto ep,actividad_grupo_empresa age,tarea t
 							    WHERE ep.grupo_empresa='$VerificarI->idGrupo' AND ep.id_entrega_producto=age.entrega_producto AND age.id_actividad=t.actividad";
             $resultado_Tareas = mysql_query($consulta_Tareas,$conn);
             $CTT=0;
+                         /*if($num_ep ==0)
+                    {
+                        echo "<div align=\"center\">
+				              <h4><i class=\"icon-info-sign\"></i>
+				              No puede planificar sus tareas, no tiene ninguna actividad programada, <br> puede programar sus actividaes <a style=\"color:#555555; !important\" href=\"actividades_grupo.php\">aqu&iacute;.</a></h4>
+				          	  </div>";
+             }*/
             while($row_Tareas = mysql_fetch_array($resultado_Tareas))
             {
                 echo "<input  type=\"hidden\" id=\"T1".$CTT."\"  name=\"A1".$CTT."\"  value=\"".$row_Tareas['id_tarea']."\" />
@@ -140,9 +158,9 @@ include('header.php');
                 echo "<input  type=\"hidden\" id=\"CTT\"  name=\"CTT\"  value=\"".$CTT."\"  />";
         ?>
         </form>
-		<form  method="POST"  accept-charset="utf-8"  name="form-reser" id="form-reser">
+		<form action="add_tarea.php" method="POST"  accept-charset="utf-8"  name="form-reser" id="form-reser">
 		<fieldset>
-                <input  type="hidden" id="grupoEmpresa"  name="grupoEmpresa" value='<?php  echo $VerificarI->idGrupo  ?>' />
+                <input  type="hidden" id="grupoEmpresa"  name="grupoEmpresa" value='<?php  echo $VerificarI->idGrupo?>' />
 				<label for="name">Descripci&oacute;n:</label>
 				<input type="text" name="what" id="what" class="text ui-widget-content ui-corner-all" style="margin-bottom:12px; width:95%; padding: .4em;"/>
                 <label for="responsable">Responsable:</label>
@@ -171,19 +189,7 @@ include('header.php');
                   echo "<option value=\"".$row_actividades_empresa['id_actividad']."\">".$row_actividades_empresa['descripcion']."</option>";
                 }
             ?>
-			  	</select>
-        <?php
-            $consulta_actividades_empresa = "SELECT DISTINCT age.id_actividad,age.descripcion ,age.fecha_inicio,age.fecha_fin
-                                             FROM entrega_producto ep,actividad_grupo_empresa age
-                                             WHERE ep.grupo_empresa='$VerificarI->idGrupo' AND ep.id_entrega_producto=age.entrega_producto ";
-            $resultado_actividades_empresa = mysql_query($consulta_actividades_empresa,$conn);
-            
-            while($row_actividades_empresa = mysql_fetch_array($resultado_actividades_empresa))
-            {
-                echo "<input type=\"hidden\" id=\"afi".$row_actividades_empresa['id_actividad']." \" name=\"afi".$row_actividades_empresa['id_actividad']." \" value=\"".$row_actividades_empresa['fecha_inicio']."\" /> 
-                      <input type=\"hidden\" id=\"aff".$row_actividades_empresa['id_actividad']." \" name=\"aff".$row_actividades_empresa['id_actividad']." \" value=\"".$row_actividades_empresa['fecha_fin']."\" />";
-            }
-        ?>
+			  	</select>        
                 <label for="name">Resultado de la Conclusi&oacute;n de la tarea:</label>
 				<input type="text" name="res" id="res" class="text ui-widget-content ui-corner-all" style="margin-bottom:12px; width:95%; padding: .4em;"/>
                 <table style="width:100%; padding:5px;">
@@ -207,20 +213,26 @@ include('header.php');
 							<label>Color de Tarea: </label>
 						</td>
 						<td>
-							<div id="colorSelectorBackground"><div style="background-color: #333333; width:30px; height:30px; border: 2px solid #000000;"></div></div>
-							<input type="hidden" id="colorBackground" name="colorBackground" value="#333333">
+						<?php 
+						$color1 = randomColor();
+					    $color2 = randomColor();					    
+				  echo'<div id="colorSelectorBackground"><div style="background-color:'.$color1.'; width:30px; height:30px; border: 2px solid #000000;"></div></div>
+				       <input type="hidden" id="colorBackground" name="colorBackground" value="$color1">
+						
 						</td>
 						<td>&nbsp;&nbsp;&nbsp;</td>
 						<td>
 							<label>Color de texto: </label>
 						</td>
 						<td>
-							<div id="colorSelectorForeground"><div style="background-color: #ffffff; width:30px; height:30px; border: 2px solid #000000;"></div></div>
-							<input type="hidden" id="colorForeground" name ="colorForeground" value="#ffffff">
-						</td>
+							<div id="colorSelectorForeground"><div style="background-color:'.$color2.'; width:30px; height:30px; border: 2px solid #000000;"></div></div>
+							<input type="hidden" id="colorForeground" name ="colorForeground" value="$color2">
+						</td>';
+						?>
 					</tr>
 				</table>
 			</fieldset>
+			 <button name="enviar"type="submit" class="btn btn-primary" id="enviar"><i class="icon-ok"></i> Aceptar</button>
 			</form>
 		</div>
 

@@ -1,45 +1,47 @@
 
 <?php
    include('conexion/conexion.php');
+   $conexion = new Conexion;
+   $conexion->EstablecerConexion();
+   $conn= $conexion->GetConexion();
    session_start();
-            $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
-              or die("Error no se pudo realizar cambios.");
-    $operacion=$_POST['operacion'];
+            $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)or die("Error no se pudo realizar cambios.");
+    
     $grupoempresa=$_POST['grupoEmpresa'];
-	$decripsion=$_POST['what'];
-
-      $fechaini=date("Y-m-d");
-      $fechafin=date("Y-m-d");
+	  $descripcion=$_POST['what'];
+    $responsable=$_POST['choose_responsable'];
+    $actividad=$_POST['choose_actividad'];
+    $res=$_POST['res'];
     $fechaini=$_POST['startDate'];
-    $fechafin=$_POST['endDate'];
-     if($operacion == "insert"){
-	$responsable=$_POST['choose_responsable'];
+    $fechafin=$_POST['endDate'];  
     $colorTarea=$_POST['colorBackground'];
     $colorTexto=$_POST['colorForeground'];
-    $res=$_POST['res'];
-    $actividad=$_POST['choose_actividad'];
-                                  $rep_fia=date("Y-m-d");
-                                   $rep_fif=date("Y-m-d");
-                                  $resultado = mysql_fetch_assoc(mysql_query("SELECT age.fecha_inicio,age.fecha_fin FROM actividad_grupo_empresa age WHERE age.id_actividad=$actividad"));
-                                  $rep_fia=$resultado['fecha_inicio'];
-                                  $rep_fif=$resultado['fecha_fin'];
+   
+    $fechaini=date("Y-m-d");
+    $fechafin=date("Y-m-d");     
+    $rep_fia=date("Y-m-d");
+    $rep_fif=date("Y-m-d");
+    $resultado = mysql_fetch_assoc(mysql_query("SELECT age.fecha_inicio,age.fecha_fin FROM actividad_grupo_empresa age WHERE age.id_actividad=$actividad",$conn));
+   
+    $rep_fia=$resultado['fecha_inicio'];
+    $rep_fif=$resultado['fecha_fin'];
               // $fia="".substr($rep_fia, 0,4)."".substr($rep_fia, 5,2)."".substr($rep_fia, 8); $fia=(int)$fia;
               // $ffa="".substr($rep_fif, 0,4)."".substr($rep_fif, 5,2)."".substr($rep_fif, 8); $ffa=(int)$ffa;
               // $fit="".substr($fechaini, 0,4)."".substr($fechaini, 5,2)."".substr($fechaini, 8);$fit=(int)$fit;
               // $fft="".substr($fechafin, 0,4)."".substr($fechafin, 5,2)."".substr($fechafin, 8);$fft=(int)$fft;
               // if($fechaini<$rep_fia||$fechaini>$rep_fif){$fechaini=$rep_fia; }
               // if($fechafin>$rep_fif){$fechafin=$rep_fif;}
-               if(strlen($decripsion)!=0){
-                         $sql = "INSERT INTO tarea (id_tarea,descripcion,fecha_inicio,fecha_fin,resultado_esperado,resultado_obtenido,color_tarea,color_texto,actividad,responsable)
-                         VALUES (' ','$decripsion','$fechaini','$fechafin','$res',' ','$colorTarea','$colorTexto','$actividad','$responsable')";
-            	         $result = mysql_query($sql,$conn) or die(mysql_error());
+              // if(strlen($decripsion)!=0){
+    $sql = "INSERT INTO tarea (descripcion,fecha_inicio,fecha_fin,resultado_esperado,color_tarea,color_texto,actividad,responsable)
+            VALUES ('$descripcion','$fechaini','$fechafin','$res','$colorTarea','$colorTexto','$actividad','$responsable')";
+    mysql_query($sql,$conn) or die(mysql_error());
 
-
-              }
-
-
-
-          }
+    echo "<script type='text/javascript'>
+         alert('la tarea se ha registrado de forma exitosa');
+         </script>
+        <META HTTP-EQUIV='Refresh' CONTENT='2; URL=home_grupo.php'> ";
+    //          }
+      /*}
  if($operacion == "update"){ }
 
  if($operacion == "deletetarea"){
@@ -75,29 +77,5 @@ if($operacion == "deleteall"){
                              $result = mysql_query($sql,$conn) or die(mysql_error());
                       }
 
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }*/
 ?>

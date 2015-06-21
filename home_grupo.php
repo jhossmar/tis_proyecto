@@ -13,11 +13,12 @@ include("conexion/verificar_integrantes.php");
   $verificarA->Actividad5();
   $verificarA->Actividad6();
   $verificarA->Actividad7();
+
   $conexion = new Conexion;
   $conexion->EstablecerConexion();
   $conn = $conexion->GetConexion();
-  session_start();
 
+  session_start();
 
 $VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
 $cantidadValida=$VerificarI->CantidadValida();
@@ -48,7 +49,8 @@ if(!$cantidadValida && isset($_POST['enviar']))
 			$error=true;
 			$error_rol="Debe seleccionar m&iacute;nimamente un rol";
 		}
-		if ($carrera_rep=='-1' ) {
+		if ($carrera_rep=='-1' ) 
+		{
 			$error=true;
 			$error_carrera="Debe seleccionar una carrera";
 		}
@@ -96,7 +98,7 @@ if(!$cantidadValida && isset($_POST['enviar']))
 			$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 							or die("Error no se pudo realizar cambios.");
 		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email, habilitado, tipo_usuario,gestion)
-		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',1,5,$id_gestion)";
+		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',1,5,$verificarA->id_gestion)";
 		        $result = mysql_query($sql,$conn) or die(mysql_error());
 
 		        /*BUSCAR  el id de la grupo empresa con el id del representante legal*/
@@ -108,7 +110,7 @@ if(!$cantidadValida && isset($_POST['enviar']))
 		        $rep_id_ge=(int)$resultado_id_ge['grupo_empresa'];
 
 				/*BUSCAR  el id del usuario*/
-		        $consulta_id_usu = mysql_query("SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$id_gestion",$conn)
+		        $consulta_id_usu = mysql_query("SELECT id_usuario from usuario where nombre_usuario='$usuario' and gestion=$verificarA->id_gestion",$conn)
 		                         or die("Could not execute the select query.");
 		        $resultado_id_usu = mysql_fetch_assoc($consulta_id_usu); 
 		        $rep_id_usu=(int)$resultado_id_usu['id_usuario'];
@@ -161,7 +163,7 @@ include('header.php'); ?>
 					<h2><i class="icon-warning-sign"></i> Importante: Agregar Integrante a la Grupo Empresa</h2>					
 					</div>
 					<div class="box-content" id="formulario">
-					<?php if(!$VeriricarG->act_2_espera && $VeriricarG->act_2==1) {?>
+					<?php if(!$verificarA->act_2_espera && $verificarA->activo_2==1) {?>
 						<p><b>Para que su Grupo Empresa quede completamente habilitada debe agregar por lo menos <?php echo "".$VerificarI->cantidadFaltante; ?> integrantes m&aacute;s.</b></p><br>
 						<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" accept-charset="utf-8" action="home_grupo.php">
 							<fieldset>
@@ -224,9 +226,10 @@ include('header.php'); ?>
 										<option value="-1">-- Seleccione una carrera --</option>
 										<?php
 			                               $consulta_carrera = "SELECT *
-														FROM carrera";
+														        FROM carrera";
 			                               $resultado_carrera = mysql_query($consulta_carrera,$conn);
-			                                while($row_sociedad = mysql_fetch_array($resultado_carrera)) {
+			                                while($row_sociedad = mysql_fetch_array($resultado_carrera))
+			                                {
 			                               		echo "<option value=\"".$row_sociedad['id_carrera']."\">".$row_sociedad['nombre_carrera']."</option>";
 			                                }
 
@@ -245,7 +248,7 @@ include('header.php'); ?>
 																WHERE (rol.id_metodologia = metodologia.id_metodologia
 																OR rol.id_metodologia = 0)
 																AND metodologia.id_metodologia = metodologia_grupo_empresa.id_metodologia
-																AND metodologia_grupo_empresa.id_grupo_empresa=$VerificarI->IdGrupo
+																AND metodologia_grupo_empresa.id_grupo_empresa=$VerificarI->idGrupo
 																AND rol.id_rol != 1
 																AND id_rol NOT IN ( SELECT DISTINCT id_rol
 																					FROM rol, rol_integrante, metodologia_grupo_empresa, integrante
@@ -255,7 +258,7 @@ include('header.php'); ?>
 																					AND rol_integrante.integrante = integrante.usuario
 																					AND integrante.grupo_empresa = metodologia_grupo_empresa.id_grupo_empresa
 																					AND rol.id_metodologia = metodologia_grupo_empresa.id_metodologia
-																					AND id_grupo_empresa = $VerificarI->IdGrupo
+																					AND id_grupo_empresa = $VerificarI->idGrupo
 																					)
 																";
 			                               $resultado_carrera = mysql_query($consulta_carrera,$conn) or die("error");
