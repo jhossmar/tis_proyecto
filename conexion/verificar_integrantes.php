@@ -71,8 +71,7 @@ include('conexion.php');
 		        }		        		    
 			}
 			public function GetCantidadIntegrantes()
-			{				  
-			    global $conn; 
+			{				  			    
 	            $consulta_sql="SELECT COUNT(*) as numero
 				                FROM  integrante
 				                WHERE grupo_empresa=$this->idGrupo";

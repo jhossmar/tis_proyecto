@@ -15,7 +15,7 @@
         $VerificarA->Actividad5();
         $VerificarA->Actividad6();
         $VerificarA->Actividad7();  
-        require_once("conexion/conexion.php");
+        
         $c = new Conexion;
         $c->EstablecerConexion();
         $conn = $c->GetConexion();       

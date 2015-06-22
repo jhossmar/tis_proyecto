@@ -1,5 +1,8 @@
 <?php
-include("conexion.php");
+if(!isset($control))
+{
+include('conexion.php');	
+}
 class VerificarGestion
 {
 	public $gestion_valida=false;

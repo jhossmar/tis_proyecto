@@ -1,5 +1,8 @@
 <?php
   include('conexion.php');
+  $conexion = new Conexion;
+  $conexion->EstablecerConexion();
+  $conn=$conexion->GetConexion();
 	session_start();
 	$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 	or die("Error no se pudo realizar cambios.");
@@ -7,7 +10,7 @@
               $c ="SELECT COUNT(id_documento_consultor) as numer
                     FROM documento_consultor d, gestion_empresa_tis g
                     WHERE g.id_gestion=d.gestion AND consultor_tis=$usuario";
-               $r = mysql_query($c);
+               $r = mysql_query($c,$conn);
                $res = mysql_fetch_array($r);
                $num=  $res['numer'];
                $counta=0;
@@ -21,7 +24,7 @@
                         $sql = "UPDATE documento_consultor
                         SET habilitado='$b'
                         WHERE id_documento_consultor ='$a'";
-                        $result = mysql_query($sql);      
+                        $result = mysql_query($sql,$conn);      
                  $counta++;
                }
                header("Location:../administrar_archivos.php");

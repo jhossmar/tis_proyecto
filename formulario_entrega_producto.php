@@ -3,20 +3,22 @@ session_start();
 
 $quien_ingresa="Grupo Empresa";
 $pag_ini="home_grupo.php";
-
 require_once("conexion/verificar_actividades.php");
 include("conexion/verificar_integrantes.php");
+
 $VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
 $cantidadValida=$VerificarI->CantidadValida();
 
-  $verificarA = new VerificarActividades;
-  $gestionValida = $verificarA->GetGestionValida();
-  $verificarA->Actividad5();
+$verificarA = new VerificarActividades;
+$gestionValida = $verificarA->GetGestionValida();
+$verificarA->Actividad5();
 
-    $c = new Conexion;
-    $c->EstablecerConexion();
-    $conn = $c->GetConexion();
-if(isset($_POST['enviar'])){	
+$c = new Conexion;
+$c->EstablecerConexion();
+$conn = $c->GetConexion();
+
+if(isset($_POST['enviar']))
+{	
 	$url=$_POST['co_url'];
 	$usuario=$_SESSION['nombre_usuario'];
 	$id_usuario=$_SESSION['id'];
@@ -53,70 +55,68 @@ if(isset($_POST['enviar'])){
 $titulo="Entrega de Productos";
 include('header.php');
  ?>
-			<div>
-				<ul class="breadcrumb">
-					<li>
-						<a href="index.php">Inicio</a>
-						<span class="divider">/</span>
-					</li>
-					
-					<li>
-						<a href="formulario_entrega_producto.php">Entrega Producto</a>
-					</li>				
-				</ul>
-			</div>
-			<center><h3>Entrega Producto: <?php echo "$fecha";?></h3></center>
-			<div class="row-fluid">
-			<div class="box span12">
-					<div class="box-header well">
-						<h2><i class="icon-edit"></i> Formulario de Entrega de Producto</h2>
+    <div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="index.php">Inicio</a>
+				<span class="divider">/</span>
+			</li>
+			<li>
+				<a href="formulario_entrega_producto.php">Entrega Producto</a>
+			</li>				
+		</ul>
+	</div>
+	<center><h3>Entrega Producto: <?php echo "$fecha";?></h3></center>
+	<div class="row-fluid">
+		<div class="box span12">
+			<div class="box-header well">
+				<h2><i class="icon-edit"></i> Formulario de Entrega de Producto</h2>
+				</div>
+			<div class="box-content">	
+	<?php
+		if($gestionValida)
+		{
+		    if($cantidadValida)
+		    {
+				if($verificarA->activo_5==1 && $verificarA->act_5_espera==false)
+				{
+					$consulta_grupo= mysql_query("SELECT id_grupo_empresa
+				 								  FROM integrante i, grupo_empresa g
+												  WHERE i.usuario = '$VerificarI->idUser' AND i.grupo_empresa = g.id_grupo_empresa",$conn);
+					$resultado_grupo = mysql_fetch_assoc($consulta_grupo);
+					$grupo = $resultado_grupo['id_grupo_empresa'];
+					$consulta_producto = mysql_query("SELECT descripcion, fecha_inicio, fecha_fin, enlace_producto
+												      FROM entrega_producto
+												      WHERE fecha_fin = CURDATE() AND grupo_empresa = '$grupo'",$conn)or die("Could not execute the select query.");
+					$resultado = mysql_fetch_assoc($consulta_producto);
+					if(is_array($resultado) && !empty($resultado))
+					{	
+						$des_prod=$resultado['descripcion'];
+						$fecha_inicio=$resultado['fecha_inicio'];
+						$fecha_fin=$resultado['fecha_fin'];
+						$enlace_1=$resultado['enlace_producto'];
+	?>
+		<br>
+		<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" action="formulario_entrega_producto.php" accept-charset="utf-8">
+		<fieldset>
+			<div class="control-group">
+		  		<label class="control-label">Descripci&oacute;n: </label>
+			  		<div class="controls">	
+						<input class="disabled" type="text" name="descripcion" value='<?php echo $des_prod; ?>' disabled=""/>
 					</div>
-					<div class="box-content">	
-							<?php
-								if($gestionValida){
-								if ($cantidadValida) {
-									if($verificarA->activo_5==1 && !$verificarA->act_5_espera){
-								$consulta_grupo= mysql_query("SELECT id_grupo_empresa
-															FROM integrante i, grupo_empresa g
-															WHERE i.usuario = '$VerificarI->IdUsser' 
-															AND i.grupo_empresa = g.id_grupo_empresa",$conn);
-								$resultado_grupo = mysql_fetch_assoc($consulta_grupo);
-								$grupo = $resultado_grupo['id_grupo_empresa'];
-
-								$consulta_producto = mysql_query("SELECT descripcion, fecha_inicio, fecha_fin, enlace_producto
-												FROM entrega_producto
-												WHERE fecha_fin = CURDATE()
-												AND grupo_empresa = '$grupo'",$conn)
-	                          					or die("Could not execute the select query.");
-								$resultado = mysql_fetch_assoc($consulta_producto);
-								if(is_array($resultado) && !empty($resultado))
-								{	
-										$des_prod=$resultado['descripcion'];
-										$fecha_inicio=$resultado['fecha_inicio'];
-										$fecha_fin=$resultado['fecha_fin'];
-										$enlace_1=$resultado['enlace_producto'];
-										?>
-										<br>
-							<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" action="formulario_entrega_producto.php" accept-charset="utf-8">
-								<fieldset>
-									<div class="control-group">
-								  		<label class="control-label">Descripci&oacute;n: </label>
-								  		<div class="controls">	
-											<input class="disabled" type="text" name="descripcion" value='<?php echo $des_prod; ?>' disabled=""/>
-										</div>
-									</div>
-									<div class="control-group">
-								  		<label class="control-label">Fecha Inicio: </label>
-								  		<div class="controls">	
-											<input class="disabled" type="text" name="fecha_ini" value='<?php echo $fecha_inicio; ?>' disabled=""/>
-										</div>
-									</div>
-									<div class="control-group">
-								  		<label class="control-label">Fecha Fin: </label>
-								  		<div class="controls">	
-											<input class="disabled" type="text" name="fecha_fin" value='<?php echo $fecha_fin; ?> ' disabled=""/>
-										</div>
-									</div>
+			</div>
+			<div class="control-group">
+		  		<label class="control-label">Fecha Inicio: </label>
+			  		<div class="controls">	
+						<input class="disabled" type="text" name="fecha_ini" value='<?php echo $fecha_inicio; ?>' disabled=""/>
+					</div>
+				</div>
+			<div class="control-group">
+	  		  <label class="control-label">Fecha Fin: </label>
+	  		    <div class="controls">	
+  				   <input class="disabled" type="text" name="fecha_fin" value='<?php echo $fecha_fin; ?> ' disabled=""/>
+			    </div>
+			</div>
 									<div class="control-group">
 								  		<label class="control-label">Enlace Producto: </label>
 								  		<div class="controls">	

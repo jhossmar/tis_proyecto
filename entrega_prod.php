@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-
 require_once("conexion/verificar_actividades.php");
 include("conexion/verificar_integrantes.php");
-$VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
-$cantidadValida=$VerificarI->CantidadValida();
+
+  $VerificarI = new VerificarIntegrantes($_SESSION['nombre_usuario']);
+  $cantidadValida=$VerificarI->CantidadValida();
 
   $verificarA = new VerificarActividades;
   $GestionValida = $verificarA->GetGestionValida();
@@ -15,35 +15,36 @@ $cantidadValida=$VerificarI->CantidadValida();
   $c->EstablecerConexion();
   $conn = $c->GetConexion();
 
-if($GestionValida){
-  $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
-  			or die("Error no se pudo realizar cambios.");
-  //captura el id del grupo empresa
-  $consulta_id_ge = mysql_query("SELECT ge.id_grupo_empresa
-                                 FROM usuario u,integrante i,grupo_empresa ge
-                                 WHERE u.id_usuario='".$_SESSION['id']."' and u.id_usuario=i.usuario and i.grupo_empresa =ge.id_grupo_empresa",$conn)
-                                  or die("Could not execute the select query.");
-  $resultado_id_ge = mysql_fetch_assoc($consulta_id_ge);
-  $rep_id_ge=(int)$resultado_id_ge['id_grupo_empresa'];
-  $fecha = date("Y-m-d");
-  $rep_fgi= $fecha;
-  $rep_fgi= $fecha;
-  $rep_fgi=$verificarA->ini_gestion;
-  $rep_fgf=$verificarA->fin_gestion;
-  $inicio = $fecha;
-  $fin = $fecha;
-}
-if (isset($_POST['enviar'])) {
-	$error=false;
-	if (isset($_POST['inicio']) && isset($_POST['fin'])) {
-		$inicio = $_POST['inicio'];
-		$fin = $_POST['fin'];
-		$ini_dia = substr($inicio, 8);
-		$ini_mes = substr($inicio, 5,2);
-		$ini_year = substr($inicio, 0,4);
-		$fin_dia = substr($fin, 8);
-		$fin_mes = substr($fin, 5,2);
-		$fin_year = substr($fin, 0,4);                 //$_SESSION['id']
+  if($GestionValida)
+  {
+
+      $bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn) or die("Error no se pudo realizar cambios.");
+  
+      $consulta_id_ge = mysql_query("SELECT ge.id_grupo_empresa
+                                     FROM integrante i,grupo_empresa ge
+                                     WHERE i.usuario='".$_SESSION['id']."' and i.grupo_empresa =ge.id_grupo_empresa",$conn)or die("Could not execute the select query.");
+
+      $resultado_id_ge = mysql_fetch_assoc($consulta_id_ge);
+      $rep_id_ge=(int)$resultado_id_ge['id_grupo_empresa'];
+      $fecha = date("Y-m-d");          
+      $rep_fgi=$verificarA->ini_gestion;
+      $rep_fgf=$verificarA->fin_gestion;
+      $inicio = $fecha;
+      $fin = $fecha;
+  }
+  if(isset($_POST['enviar'])) 
+  {
+	   $error=false;
+	   if(isset($_POST['inicio']) && isset($_POST['fin'])) 
+     {
+		      $inicio = $_POST['inicio'];
+		      $fin = $_POST['fin'];
+		      $ini_dia = substr($inicio, 8);
+		      $ini_mes = substr($inicio, 5,2);
+		      $ini_year = substr($inicio, 0,4);
+		      $fin_dia = substr($fin, 8);
+		      $fin_mes = substr($fin, 5,2);
+		      $fin_year = substr($fin, 0,4);
        if(@checkdate($ini_mes, $ini_dia, $ini_year)){
 			if (@checkdate($fin_mes, $fin_dia, $fin_year)) {
 				if($inicio>=$fecha){//corecto
@@ -175,115 +176,91 @@ while($ccep<$contCEP){
                $ccep++;
 	}
 
-
-
-
 }
-
- 
-
-
-
 $titulo="Cronograma de entrega de subsistemas";
 include('header.php');
 ?>
- 			<!--PARTICIONAR
- 			<li>
-						<a href="#">Inicio</a> <span class="divider">/</span>
-			</li>-->
-			<div>
-				<ul class="breadcrumb">
-					<li>
-						<a href="index.php">Inicio</a>
-						<span class="divider">/</span>
-					</li>
-					<li>
-						<a href="entrega_prod.php">Entrega De Subsistemas </a>
-
-					</li>
-				</ul>
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="index.php">Inicio</a>
+				<span class="divider">/</span>
+			</li>
+ 		  <li>
+			  <a href="entrega_prod.php">Entrega De Subsistemas </a>
+			</li>
+		</ul>
+	</div>
+	<center><h3>Cronograma de entrega de Subsistemas </h3></center>
+  <?php 
+    if($GestionValida)
+    {
+      if($cantidadValida)
+      { 
+        if($verificarA->activo_5==1 && $verificarA->act_5_espera==false)
+        {
+  ?>
+	<div class="row-fluid">
+		<div class="box span12 center" id="print">
+			<div class="box-header well">
+				<h2><i class="icon-calendar"></i> Cronograma en entrega de subsistema</h2>
 			</div>
-			<center><h3>Cronograma de entrega de Subsistemas </h3></center>
-             <?php 
-            if($GestionValida){
-             if ($cantidadValida) { 
-              if ($verificarA->activo_5==1 && !$verificarA->act_5_espera) {
-                ?>
-			<div class="row-fluid">
-				<div class="box span12 center" id="print">
-						<div class="box-header well">
-							<h2><i class="icon-calendar"></i> Cronograma en entrega de subsistema</h2>
-						</div>
-						<div class="box-content padding-in" style="text-align:left;" >
-						<?php
-                            //busca todas las emtregas de producto de la grupo empresa
-                                $consulta_entrega_empresa = "SELECT ep.id_entrega_producto,ep.descripcion,ep.fecha_inicio,ep.fecha_fin,ep.pago_establecido,u.nombre,u.apellido
-                                                             FROM entrega_producto ep, usuario u
-                                                             WHERE ep.grupo_empresa='VerificarI.idGrupo'
-															 AND ep.id_responsable=u.id_usuario
-															 ";
-                                $resultado_entrega_empresa = mysql_query($consulta_entrega_empresa,$conn);
-                        		$num_registros = mysql_num_rows($resultado_entrega_empresa);
-                        		if ($num_registros>0) {
-                        ?>
-                        <form name="activi" class="form-horizontal cmxform" method="POST" id="activi" action="entrega_prod.php" accept-charset="utf-8"  >
-                                       <TABLE id="dataTable" name="dataTable pagos" class="table table-striped table-bordered"  >
-                                          <thead>
-                                            <TR  >
-                                            <TH>Descripci&oacute;n</TH>
-											<TH>Responsable</TH>
-                                            <TH>Fecha Inicio</th>
-                                            <TH>Fecha Conclusi&oacute;n </th>
-                                            <TH>Pago Asociado </th>
-                                            <TH style="text-align:center;">Eliminar</TH>
-                                            </TR>
-                                           </thead  >
-                                            <tbody>
-                                       	<?php
-
-                                        $CEP=0;
-                                         while($row_entrega_empresa = mysql_fetch_array($resultado_entrega_empresa))
-                                          {     echo "  <TR > ";
-                                                echo "
-                                                <TD>".$row_entrega_empresa['descripcion'] ."</TD>
-												<TD>".$row_entrega_empresa['nombre']." ".$row_entrega_empresa['apellido']."</TD>
-                                                <TD>".$row_entrega_empresa['fecha_inicio'] ."</TD>
-                                                <TD>".$row_entrega_empresa['fecha_fin'] ."</TD>
-                                                <TD>".$row_entrega_empresa['pago_establecido'] ."</TD>
-                                                 ";
-                                                echo " <TD style=\"text-align:center;\"><input type=\"checkbox\" id=\"A1".$CEP."\" name=\"A1".$CEP."\" value=\"Eliminar\" class=\"btn btn-primary\" onclick=\"roly\" /></TD> ";
-                                                echo "<input  type=\"hidden\" id=\"A0".$CEP."\"  name=\"A0".$CEP."\"  value=\"".$row_entrega_empresa['id_entrega_producto']."\" />";
-                                                echo      "</TR>";
-                                                $CEP++;
-                                          }
-                                          echo "<input  type=\"hidden\" id=\"CEP\"  name=\"CEP\"  value=\"".$CEP."\"  />";
-
-                                        if($CEP==0){
-                                          echo "<center><h4>No existe Entrega De Producto Programada.</h4></center>";
-                                        }
-                                      ?> 
-
-                                                 </tbody>
-
-                                                  </TABLE>
-
-
-
-
-								
-                                  <button type="submit" id="guardar" name="guardar" value="Guardar Cambios" class="btn btn-primary"  ><i class="icon-ok"></i> Guardar Cambios</button>
-                                  <a href="entrega_prod.php" rel="activi"><button type="button" class="btn" ><i class="icon-remove"></i> Restablecer</button></a>
-
-
-		                	  </form>
-		                	 <?php
-		                	 }else{
+			<div class="box-content padding-in" style="text-align:left;" >
+	<?php
+    $consulta_entrega_empresa = "SELECT ep.id_entrega_producto,ep.descripcion,ep.fecha_inicio,ep.fecha_fin,ep.pago_establecido,u.nombre,u.apellido
+                                 FROM entrega_producto ep, usuario u
+                                 WHERE ep.grupo_empresa='$VerificarI->idGrupo'AND ep.id_responsable=u.id_usuario";
+    $resultado_entrega_empresa = mysql_query($consulta_entrega_empresa,$conn);
+    $num_registros = mysql_num_rows($resultado_entrega_empresa);
+    if($num_registros>0) 
+    {
+  ?>
+  <form name="activi" class="form-horizontal cmxform" method="POST" id="activi" action="entrega_prod.php" accept-charset="utf-8"  >
+  <TABLE id="dataTable" name="dataTable pagos" class="table table-striped table-bordered"  >
+  <thead>
+   <TR>
+      <TH>Descripci&oacute;n</TH>
+			<TH>Responsable</TH>
+      <TH>Fecha Inicio</th>
+      <TH>Fecha Conclusi&oacute;n </th>
+      <TH>Pago Asociado </th>
+      <TH style="text-align:center;">Eliminar</TH>
+   </TR>
+  </thead  >
+  <tbody>
+  <?php
+  $CEP=0;
+  while($row_entrega_empresa = mysql_fetch_array($resultado_entrega_empresa))
+  {     
+    echo "<TR > 
+          <TD>".$row_entrega_empresa['descripcion'] ."</TD>
+					<TD>".$row_entrega_empresa['nombre']." ".$row_entrega_empresa['apellido']."</TD>
+          <TD>".$row_entrega_empresa['fecha_inicio'] ."</TD>
+          <TD>".$row_entrega_empresa['fecha_fin'] ."</TD>
+          <TD>".$row_entrega_empresa['pago_establecido'] ."</TD>
+          <TD style=\"text-align:center;\"><input type=\"checkbox\" id=\"A1".$CEP."\" name=\"A1".$CEP."\" value=\"Eliminar\" class=\"btn btn-primary\" onclick=\"roly\" /></TD> 
+          <input  type=\"hidden\" id=\"A0".$CEP."\"  name=\"A0".$CEP."\"  value=\"".$row_entrega_empresa['id_entrega_producto']."\" />
+          </TR>";
+    $CEP++;
+  }
+  echo "<input  type=\"hidden\" id=\"CEP\"  name=\"CEP\"  value=\"".$CEP."\"  />";
+  if($CEP==0)
+  {
+    echo "<center><h4>No existe Entrega De Producto Programada.</h4></center>";
+  }
+  ?> 
+  </tbody>
+  </TABLE>
+    <button type="submit" id="guardar" name="guardar" value="Guardar Cambios" class="btn btn-primary"  ><i class="icon-ok"></i> Guardar Cambios</button>
+    <a href="entrega_prod.php" rel="activi"><button type="button" class="btn" ><i class="icon-remove"></i> Restablecer</button></a>
+  </form>
+  <?php
+	}else{
 		                	 	echo "<div align=\"center\">
 				                        <h4><i class=\"icon-info-sign\"></i>
 				                        No se ha programado ninguna entrega de subsistema.</h4>
 				                      	</div>";
 				                      }
-
 		                	 ?>
 		                </div>
 				</div>
