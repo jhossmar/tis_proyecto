@@ -39,7 +39,7 @@ class Menu
 						<li><a href="subir_contrato.php"><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
 						<li><a href="administrar_archivos.php"><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
 						<li><a href="planificacion.php"><i class="icon-calendar"></i><span class="hidden-tablet"> Planificar actividades</span></a></li>
-						<li><a href="calificar_actividades.php"><i class="icon-edit"></i><span class="hidden-tablet"> calificar actividades</span></a></li>
+						<li><a href="calificar_grupo_empresa.php"><i class="icon-edit"></i><span class="hidden-tablet"> calificar actividades</span></a></li>
 						<li><a href="administrar_grupo.php"><i class="icon-check"></i><span class="hidden-tablet"> Administrar mis Grupo Empresas</span></a></li>
 						<li><a href="notificaciones.php"><i class="icon-globe"></i><span class="hidden-tablet"> Notificaciones</span></a></li>
 						<li><a href="mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Espacio de Discuci&oacute;n</span></a></li>
