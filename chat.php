@@ -128,29 +128,4 @@ include('header.php');
 					</div>
 				</div><!--/span-->
 			</div><!-- fin row -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <?php include('footer.php'); ?>

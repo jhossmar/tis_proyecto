@@ -22,6 +22,7 @@
 			$_SESSION['id'] = $resultado['id_usuario'];
 			$_SESSION['tipo']= $resultado['tipo_usuario'];			
 			$_SESSION['nombre_usuario'] = $resultado['nombre_usuario'];
+			$_SESSION['foto']= $resultado['foto'];
 			$bitacora = mysql_query("INSERT into bitacora_sesion(usuario,fecha_hora,operacion)
 								     VALUES (".$_SESSION['id'].",CURRENT_TIMESTAMP,0)",$conn);
 			header("Location: home_admin.php");

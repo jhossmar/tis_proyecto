@@ -1,5 +1,5 @@
 <?php
-$titulo="Ayuda del Sistema de Apoyo a la Empresa TIS";
+$titulo="Modificacion de foto de perfil";
 include("conexion/conexion.php");  
     $c = new Conexion;
     $c->EstablecerConexion();
@@ -7,53 +7,12 @@ include("conexion/conexion.php");
 session_start();
 include('header.php');
 ?>
-			<div>
-				<ul class="breadcrumb">
-					<li>
-						<a href="home_consultor.php">Inicio</a>
-						<span class="divider">/</span>
-					</li>
-					<li>
-						<a href="ayuda.php">Ayuda</a>
-					</li>
-				</ul>
-			</div>
-			<center><h3>Ayuda del Sistema de Apoyo a la Empresa TIS</h3></center>
-			
-		
-	<div class="row-fluid">
-	 <div class="box span12">
-	       <div class="box-header well">
-		     <h2><i class="icon-info-sign"></i> Ayuda</h2>
-		   </div>
-	    <div class="box-content">		
-	  <div id = "menu">
-		<ul>
-			<li><a href="ayuda.php?nom_arch=002#modal1">INTRODUCCION</a></li>
-			<li><a href="ayuda.php?nom_arch=003#modal1">VISTA PRINCIPAL</a></li>
-			<li><a href="ayuda.php?nom_arch=004#modal1">FUNCIONES DEL ADMINISTRADOR</a></li>
-			<li><a href="ayuda.php?nom_arch=005#modal1">FUNCIONES DEL CONSULTOR TIS</a></li>
-		    
-            <li><a href="ayuda.php?nom_arch=007#modal1">FUNCIONES DEL GRUPO EMPRESA E INTEGRANTES </a></li>		
-		    <li><a href="ayuda.php?nom_arch=008#modal1">FUNCIONES DE LOS INTEGRANTES</a></li>
-		    <li><a href="ayuda.php?nom_arch=009#modal1">FUNCIONES ADICIONALES</a></li>
-		</ul>
-		
-	
-	</div>
-	<!---- ---------------VISOR DE PDF  ------------------------>
+ <!---- ---------------VISOR DE PDF  ------------------------>
 	<div class="center">
 	  <div id="modal1" class="modalmask">
 		<div class="modalbox movedown">
 			<a href="#close" title="Close" class="close">X</a>
-		<?php
-			error_reporting(E_ALL ^ E_NOTICE); //para que no muestre el error la primera vez que se ingrese a ayuda
-			
-			$id=$_GET['nom_arch'];
-			//echo($id);
-			//echo "<h2>".$id."</h2>";
-			echo "<embed src='archivos/".$id.".pdf' width=900 height=500 />";
-	      ?>
+		
 		
 		 </div>
 	   </div>
@@ -123,5 +82,4 @@ include('header.php');
 <?php
    include('footer.php');
  ?>
-
 
