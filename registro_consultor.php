@@ -20,6 +20,8 @@ if(isset($_POST['enviar'])){
 	$nombre=$_POST['firstname'];
 	$telf=trim($_POST['telf']);
 	$eMail=trim($_POST['email']);
+	$foto='img/profiles/default.jpg'; // foto que se ingresa por defecto;
+
 	$consulta_usuario = mysql_query("SELECT nombre_usuario from usuario 
 	                          where nombre_usuario='$usuario'AND (gestion=1 OR gestion=$verificarG->id_gestion)",$conn) or die("Could not execute the select query.");
 	$consulta_email = mysql_query("SELECT email from usuario 
@@ -88,8 +90,8 @@ if(isset($_POST['enviar'])){
 	     if(!$error){/*SI NO HAY NINGUN ERROR REGISTRO*/
 	        $bitacora = mysql_query("CALL iniciar_sesion(1)",$conn)
 		or die("Error no se pudo realizar cambios.");
-	        $sql = "INSERT INTO usuario (nombre_usuario,clave,nombre,apellido,telefono,email,habilitado,tipo_usuario,gestion)
-	                VALUES ('$usuario','$clave','$nombre','$apellido','$telf','$eMail',0,3,1)";
+	        $sql = "INSERT INTO usuario (nombre_usuario,clave,nombre,apellido,telefono,email,foto,habilitado,tipo_usuario,gestion)
+	                VALUES ('$usuario','$clave','$nombre','$apellido','$telf','$eMail','$foto',0,3,1)";
 	        $result = mysql_query($sql,$conn) or die(mysql_error());
 
 	        $id_consultor = "SELECT id_usuario

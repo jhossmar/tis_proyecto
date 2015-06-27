@@ -296,7 +296,7 @@
                   <img src= <?php echo $nombre_foto;  ?> WIDTH=150 HEIGHT=150><span class="hidden-phone"> <?php echo $nombre_usuario;  ?></span>
                   
                   <form action="conexion/guardar_foto.php" method="post" enctype="multipart/form-data">
-                     <input type="file" name="foto" />y
+                     <input type="file" name="foto"/>
                     <input type="submit" value="Subir Foto" name="btn_upload"/>
 	              </form>
 	          </div>  
