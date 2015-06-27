@@ -8,6 +8,8 @@
 		$sesion_valida=true;
 		$nombre_usuario=$_SESSION['nombre_usuario'];
 		$id_usuario=$_SESSION['id'];
+		$nombre_foto=$_SESSION['foto'];
+
 		switch ($_SESSION['tipo'])
 		{
 				case (5) :
@@ -202,11 +204,14 @@
                 <!-- USUARIOS-->
 				    <div class="btn-group pull-right">
 						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						    <i class="icon-user"></i><span class="hidden-phone"> <?php echo $nombre_usuario;  ?></span>
+						   
+						    <img src= <?php echo $nombre_foto;  ?> WIDTH=60 HEIGHT=60><span class="hidden-phone"> <?php echo $nombre_usuario;  ?></span>
 						    <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
+	                        <li><a href="#modal2"><i  class="icon-edit"></i>combiar foto</a></li>
 	                        <li><a href="conexion/salir.php"><i class= "icon-off"></i>Salir</a></li>
+	                        
 	                    </ul>
 				    </div>
     	           		</div><!-- FIN USUARIOS-->
@@ -280,3 +285,24 @@
 				</div>
 			</noscript>
 		<div id="content" class="span8">
+
+	   <div class="center">
+	     <div id="modal2" class="modalmask">
+		   <div class="modalbox movedown">
+			<a href="#close" title="Close" class="close">X</a>
+              <?php if ($sesion_valida) {?>
+               
+               <div>
+                  <img src= <?php echo $nombre_foto;  ?> WIDTH=150 HEIGHT=150><span class="hidden-phone"> <?php echo $nombre_usuario;  ?></span>
+                  
+                  <form action="conexion/guardar_foto.php" method="post" enctype="multipart/form-data">
+                     <input type="file" name="foto"/>
+                    <input type="submit" value="Subir Foto" name="btn_upload"/>
+	              </form>
+	          </div>  
+             <?php } ?>
+           
+            </div>
+	   </div>
+	</div>
+	

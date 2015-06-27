@@ -11,13 +11,13 @@ session_start();
         $consulta_sql;		
 		if($tipo==1)
 		{
-		    $consulta_sql="SELECT id_usuario, nombre_usuario, tipo_usuario
+		    $consulta_sql="SELECT id_usuario, nombre_usuario, tipo_usuario, foto
 			   		       FROM usuario 
 					       WHERE nombre_usuario='$usuario' and clave='$clave' and (tipo_usuario=2 OR tipo_usuario=3) AND habilitado=1";
 		}
 		else
 		{
-            $consulta_sql="SELECT id_usuario, nombre_usuario, tipo_usuario
+            $consulta_sql="SELECT id_usuario, nombre_usuario, tipo_usuario, foto
 			   		       FROM usuario 
 					       WHERE nombre_usuario='$usuario' and clave='$clave' and (tipo_usuario=4 OR tipo_usuario=5) AND habilitado=1";
 		}
@@ -32,6 +32,7 @@ session_start();
 			$_SESSION['id'] = $resultado['id_usuario'];
 			$_SESSION['tipo']= $resultado['tipo_usuario'];
 			$_SESSION['nombre_usuario'] = $resultado['nombre_usuario'];
+			$_SESSION['foto']=$resultado['foto'];
 		}
 		else
 		{

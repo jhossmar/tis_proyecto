@@ -20,6 +20,7 @@ $quien_ingresa="Grupo Empresa";
 		$nombre_corto=$_POST['sname'];
 		$sociedad=$_POST['choose_sociedad'];
 		$consultor=$_POST['choose_consultor'];
+		$foto = 'img/profiles/default.jpg' //foto por defecto  para el registro
 		if (isset($_POST['metodologias'])) {
 			$metodologias=$_POST['metodologias'];
 			if (sizeof($metodologias)==0) {
@@ -116,8 +117,8 @@ $quien_ingresa="Grupo Empresa";
 			$bitacora = mysql_query("CALL iniciar_sesion(1)",$conn)
 			or die("Error no se pudo realizar cambios.");
 		   		/*INSERTAR EL USUARIO*/
-		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email, tipo_usuario, habilitado,gestion)
-		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',4,0,$verificarA->id_gestion)";
+		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono,email,foto,tipo_usuario, habilitado,gestion)
+		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail','$foto',4,0,$verificarA->id_gestion)";
 		        $result = mysql_query($sql,$conn) or die(mysql_error());
 			
 			/*ID DEL USUARIO PARA EL INTEGRANTE*/
