@@ -1,26 +1,18 @@
 <?php
 include_once('conexion/conexion.php');
 $titulo="Iniciar sesi&oacute;n";
-session_start();
+
 
 	if(isset($_POST['aceptar'])) 
 	{			
 		$usuario = trim($_POST['username']);
-		$clave = trim($_POST['password']);
-		$tipo=(int)$_POST['tipo'];		
+		$clave = trim($_POST['password']);		
         $consulta_sql;		
-		if($tipo==1)
-		{
-		    $consulta_sql="SELECT id_usuario, nombre_usuario, tipo_usuario, foto
-			   		       FROM usuario 
-					       WHERE nombre_usuario='$usuario' and clave='$clave' and (tipo_usuario=2 OR tipo_usuario=3) AND habilitado=1";
-		}
-		else
-		{
-            $consulta_sql="SELECT id_usuario, nombre_usuario, tipo_usuario, foto
-			   		       FROM usuario 
-					       WHERE nombre_usuario='$usuario' and clave='$clave' and (tipo_usuario=4 OR tipo_usuario=5) AND habilitado=1";
-		}
+		
+	    $consulta_sql="SELECT id_usuario, nombre_usuario, tipo_usuario, foto
+		   		       FROM usuario 
+				       WHERE nombre_usuario='$usuario' and clave='$clave' AND habilitado=1";	
+		
 		$conexion = new Conexion;
 		$conexion->EstablecerConexion();
 		$conn=$conexion->GetConexion();
@@ -29,6 +21,7 @@ session_start();
 		$resultado = mysql_fetch_assoc($consulta);
 		if(!empty($resultado))
 		{
+			session_start();
 			$_SESSION['id'] = $resultado['id_usuario'];
 			$_SESSION['tipo']= $resultado['tipo_usuario'];
 			$_SESSION['nombre_usuario'] = $resultado['nombre_usuario'];
@@ -93,13 +86,7 @@ include('header.php');
 								  <label class="control-label" for="pass">Contrase&ntilde;a: </label>
 								  <div class="controls">
 									  <input type="password" placeholder="Contrase&ntilde;a" name="password" id="password">
-								  </div>
-								</div>   
-								<div class="control-group">
-								   <input type="radio" name="tipo" value="1">consultor TIS      
-                                   <input type="radio" name="tipo" value="2">Integrante grupo empresa
-                                   <br><p>
-								</div>								
+								  </div>				
 								<div class="control-group">
 								  <div class="controls">
 						            <button name="aceptar" type="submit" class="btn btn-primary" id="enviar">Ingresar</button>

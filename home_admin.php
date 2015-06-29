@@ -47,7 +47,7 @@
 					$sql = "INSERT INTO gestion_empresa_tis(gestion,fecha_ini_gestion,fecha_fin_gestion,gestion_activa,descripcion_gestion)
 							VALUES('$gestion','$inicio','$fin',1,'$descripcion')";
 					 mysql_query($sql,$conn) or die(mysql_error());
-					 header("Location: home_consultor_jefe.php");
+					 header("Location: index.php");
 				}
 				else
 				{

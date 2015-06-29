@@ -6,7 +6,7 @@ $control=0;
 
    	public function EstablecerConexion()
    	{
-   	   $this->conexion = mysql_connect("localhost","root","") or die("Error en conexion");
+   	   $this->conexion = mysql_connect("localhost","munisoft","WSVBtmXg") or die("Error en conexion");
    	   
 	   mysql_select_db("tis_munisoft", $this->conexion) or die("Error en base de datos");
 	   mysql_query("SET NAMES 'utf8'");		   
