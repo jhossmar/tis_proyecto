@@ -78,6 +78,7 @@ class Menu
 						<li><a href="subir_grupo_empresa.php"><i class="icon-list-alt"></i><span class="hidden-tablet"> Documentos</span></a></li>
                         <li><a href="entrega_prod.php"><i class="icon-calendar"></i><span class="hidden-tablet"> Cronograma de Pagos y de Subsistemas  </span></a></li>
                         <li><a href="actividades_grupo.php"><i class="icon-edit"></i><span class="hidden-tablet"> Planificar Actividades de Subsistemas</span></a></li>
+                        <li><a href="calificacion_grupo.php"><i class="icon-check"></i><span class="hidden-tablet"> Ver las notas de las actividades</span></a></li>
                         <li><a href="formulario_entrega_producto.php"><i class="icon-star"></i><span class="hidden-tablet"> Entrega de Subsistemas</span></a></li>
                         <li><a href="mis_tareas_grupo_integra.php"><i class="icon-briefcase"></i><span class="hidden-tablet"> Gestionar mis Tareas</span></a></li>
                         <li><a href="cronograma_grupo_integra.php"><i class="icon-tasks"></i><span class="hidden-tablet"> Reporte general de la Grupo Empresa </span></a></li>

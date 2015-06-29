@@ -2,25 +2,44 @@
 $titulo="Registro Grupo Empresa";
 include ('conexion/verificar_actividades.php');
 
- $c = new Conexion;
- $c->EstablecerConexion();
- $conn = $c->GetConexion();
-
+$c = new Conexion;
+$c->EstablecerConexion();
+$conn = $c->GetConexion();
 $verificarA = new VerificarActividades;
-$gestionValida = $verificarA->GetGestionValida();
 $verificarA->Actividad2();
+$gestionValida = $verificarA->GetGestionValida();
 session_start();
 $quien_ingresa="Grupo Empresa";
-
-	if(isset($_POST['enviar']))
-	{
+if(isset($_SESSION['nombre_usuario']))
+{
+	$home="";
+	switch  ($_SESSION['tipo']){
+			case (5) :
+	                 $home="home_integrante.php";
+	                 break;
+            case (4) :
+                	$home="home_grupo.php";
+                    break;
+            case (3) :
+                	$home="home_consultor.php";
+                    break;
+            case (2) :
+                	$home="home_consultor_jefe.php";
+                    break;
+            case (1) :
+                    $home="home_admin.php";
+                    break;                                                             		
+          }   
+	header("Location: ".$home);
+}
+/*--------------------------------VALIDAR REGISTRO------------------------------------*/
+	if(isset($_POST['enviar'])){
 		$error=false;
-	
+		/*VALORES GRUPO EMPRESA*/
 		$nombre_largo=$_POST['lname'];
 		$nombre_corto=$_POST['sname'];
 		$sociedad=$_POST['choose_sociedad'];
 		$consultor=$_POST['choose_consultor'];
-		$foto = 'img/profiles/default.jpg' //foto por defecto  para el registro
 		if (isset($_POST['metodologias'])) {
 			$metodologias=$_POST['metodologias'];
 			if (sizeof($metodologias)==0) {
@@ -32,7 +51,7 @@ $quien_ingresa="Grupo Empresa";
 			$error=true;
 			$error_metodologia="Debe seleccionar m&iacute;nimamente una metodologia";
 		}
-	
+		/*VALORES REPRESENTANTE LEGAL*/
 		$usuario=trim($_POST['username']);
 		$clave=trim($_POST['password']); /*$clave = md5($pass); QUITADO ==> CONTRASEÑA SIMPLE*/
 		$cod_sis = trim($_POST['codSIS']);
@@ -117,8 +136,8 @@ $quien_ingresa="Grupo Empresa";
 			$bitacora = mysql_query("CALL iniciar_sesion(1)",$conn)
 			or die("Error no se pudo realizar cambios.");
 		   		/*INSERTAR EL USUARIO*/
-		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono,email,foto,tipo_usuario, habilitado,gestion)
-		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail','$foto',4,0,$verificarA->id_gestion)";
+		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email, tipo_usuario, habilitado,gestion)
+		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',4,0,$verificarA->id_gestion)";
 		        $result = mysql_query($sql,$conn) or die(mysql_error());
 			
 			/*ID DEL USUARIO PARA EL INTEGRANTE*/
@@ -219,7 +238,7 @@ $quien_ingresa="Grupo Empresa";
 										<?php
 			                               $consulta_sociedad = "SELECT *
 														FROM sociedad";
-			                               $resultado_sociedad = mysql_query($consulta_sociedad,$conn);
+			                               $resultado_sociedad = mysql_query($consulta_sociedad);
 			                                while($row_sociedad = mysql_fetch_array($resultado_sociedad)) {
 			                               		echo "<option value=\"".$row_sociedad['id_sociedad']."\">".$row_sociedad['descripcion']."</option>";
 			                                }
@@ -255,7 +274,7 @@ $quien_ingresa="Grupo Empresa";
 										<?php
 			                               $consulta_metodologia = "SELECT id_metodologia, nombre_metodologia
 														FROM metodologia";
-			                               $resultado_metodologia = mysql_query($consulta_metodologia,$conn);
+			                               $resultado_metodologia = mysql_query($consulta_metodologia);
 			                                while($metodologia = mysql_fetch_array($resultado_metodologia)) {
 			                               		echo "<option value=\"".$metodologia['id_metodologia']."\">".$metodologia['nombre_metodologia']."</option>";
 			                                }
@@ -325,7 +344,7 @@ $quien_ingresa="Grupo Empresa";
 										<?php
 			                               $consulta_carrera = "SELECT *
 														FROM carrera";
-			                               $resultado_carrera = mysql_query($consulta_carrera,$conn);
+			                               $resultado_carrera = mysql_query($consulta_carrera);
 			                                while($row_sociedad = mysql_fetch_array($resultado_carrera)) {
 			                               		echo "<option value=\"".$row_sociedad['id_carrera']."\">".$row_sociedad['nombre_carrera']."</option>";
 			                                }
@@ -350,7 +369,7 @@ $quien_ingresa="Grupo Empresa";
 					                 else{
 					                	 echo "<div align=\"center\">
 					                        <h4><i class=\"icon-info-sign\"></i>
-					                        <strong>El registro de Grupo Empresas estar&aacute; habilitado la fecha ".$verificarA->fecha_ini_2.".</strong></h4>
+					                        <strong>El registro de Grupo Empresas estar&aacute; habilitado la fecha ".$act_ini_2.".</strong></h4>
 					                      </div>";;
 					                } 
 				                 }
