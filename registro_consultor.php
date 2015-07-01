@@ -15,7 +15,10 @@ $quien_ingresa="Consultor TIS";
 if(isset($_POST['enviar'])){
 
 	$usuario=trim($_POST['username']);
-	$clave=trim($_POST['password']); /*$clave = md5($pass); QUITADO ==> CONTRASEÑA SIMPLE*/
+	$salt="$2x$07$./f4af7kJi1jdaxlswE34$";
+	$clave=crypt($_POST['password'], $salt);
+	//$clave=trim($_POST['password']);
+
 	$apellido=$_POST['lastname'];
 	$nombre=$_POST['firstname'];
 	$telf=trim($_POST['telf']);

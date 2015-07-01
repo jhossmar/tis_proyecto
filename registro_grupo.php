@@ -53,7 +53,9 @@ if(isset($_SESSION['nombre_usuario']))
 		}
 		/*VALORES REPRESENTANTE LEGAL*/
 		$usuario=trim($_POST['username']);
-		$clave=trim($_POST['password']); /*$clave = md5($pass); QUITADO ==> CONTRASEÑA SIMPLE*/
+		//$clave=trim($_POST['password']); /*$clave = md5($pass); QUITADO ==> CONTRASEÑA SIMPLE*/
+		$salt="$2x$07$./f4af7kJi1jdaxlswE34$";
+	    $clave=crypt($_POST['password'], $salt);
 		$cod_sis = trim($_POST['codSIS']);
 		$eMail=trim($_POST['email']);
 		$nombre_rep = $_POST['firstname'];

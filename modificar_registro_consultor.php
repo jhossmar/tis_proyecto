@@ -43,7 +43,9 @@ if(isset($_POST['enviar']))
 {
 	/*VALORES DE FORMULARIO*/
     $usuario=trim($_POST['username']);
-    $clave=trim($_POST['password']);
+    //$clave=trim($_POST['password']);
+    $salt="$2x$07$./f4af7kJi1jdaxlswE34$";
+	$clave=crypt($_POST['password'], $salt);  
 	$apellido=$_POST['lastname'];
 	$nombre=$_POST['firstname'];
 	$telfFijo=trim($_POST['telf']);
