@@ -107,7 +107,8 @@ $no_ge=$resultado_id_ge['nombre_corto'];
                           										  <th>Fecha inicio</th>
                           										  <th>Fecha conclusi&oacute;n </th>
                           										  <th>Porcentaje completado  </th>
-                                                                  <th>Documentos</th>
+                                                <th>Documentos</th>
+                                                <th>Grafica de avance<th>
                             								  </tr>
                             							  </thead>
                             							  <tbody >
@@ -127,6 +128,8 @@ $no_ge=$resultado_id_ge['nombre_corto'];
                                                                       else{
                                                                       echo " <td > <a href= ".$row["resultado_obtenido"]."> <i class=\"icon-zoom-in\"></i> Ver Avance</a></td>
                                                                        ";}
+                                                                      echo "<td><img src= 'ImgTareaAvance.php?avance=".$row["porcentaje_completado"]."' ></td>"; // prueba
+
                                                         		 echo "	</tr> ";
                                                                  $identi++;
                                                                 }

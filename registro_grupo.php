@@ -58,6 +58,7 @@ if(isset($_SESSION['nombre_usuario']))
 	    $clave=crypt($_POST['password'], $salt);
 		$cod_sis = trim($_POST['codSIS']);
 		$eMail=trim($_POST['email']);
+		$foto='img/profiles/default.jpg';
 		$nombre_rep = $_POST['firstname'];
 		$apellido_rep = $_POST['lastname'];
 		$telefono_rep = trim($_POST['telf']);
@@ -138,8 +139,8 @@ if(isset($_SESSION['nombre_usuario']))
 			$bitacora = mysql_query("CALL iniciar_sesion(1)",$conn)
 			or die("Error no se pudo realizar cambios.");
 		   		/*INSERTAR EL USUARIO*/
-		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email, tipo_usuario, habilitado,gestion)
-		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',4,0,$verificarA->id_gestion)";
+		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email,foto, tipo_usuario, habilitado,gestion)
+		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail','$foto',4,0,$verificarA->id_gestion)";
 		        $result = mysql_query($sql,$conn) or die(mysql_error());
 			
 			/*ID DEL USUARIO PARA EL INTEGRANTE*/

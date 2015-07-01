@@ -45,6 +45,7 @@ if(($VerificarI->numeroIntegrantes<5) && isset($_POST['agregar'])){
 		$usuario=$_POST['username'];
 		$clave=$_POST['password']; /*$clave = md5($pass); QUITADO ==> CONTRASEÑA SIMPLE*/
 		$eMail=$_POST['email'];
+		$foto = "img/profiles/default.jpg";
 		/*VALORES de integrante*/
 		$cod_sis = $_POST['codSIS'];
 		$nombre_rep = $_POST['firstname'];
@@ -106,8 +107,8 @@ if(($VerificarI->numeroIntegrantes<5) && isset($_POST['agregar'])){
 		   		/*INSERTAR EL USUARIO*/
 			$bitacora = mysql_query("CALL iniciar_sesion(".$_SESSION['id'].")",$conn)
 							or die("Error no se pudo realizar cambios.");
-		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email, habilitado, tipo_usuario,gestion)
-		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail',1,5,$verificarA->id_gestion)";
+		        $sql = "INSERT INTO usuario (nombre_usuario, clave,nombre,apellido,telefono, email,foto, habilitado, tipo_usuario,gestion)
+		                VALUES ('$usuario','$clave','$nombre_rep','$apellido_rep','$telefono_rep','$eMail','$foto',1,5,$verificarA->id_gestion)";
 		        $result = mysql_query($sql,$conn) or die(mysql_error());
 
 		        /*BUSCAR  el id de la grupo empresa con el id del representante legal*/
