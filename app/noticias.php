@@ -23,7 +23,7 @@ class Noticias extends Model
       }
       return $this->documento;
 	}	
-	public function GetNumero($id_gestion)
+	public function GetNumeroDocumentos($id_gestion)
 	{
       $this->numero = 0;
 
@@ -40,12 +40,26 @@ class Noticias extends Model
       }
       return $this->num;
 	}
-  public function GetNoticiasGestion($usuario,$fecha_fin_gestion,$fecha_ini_gestion)
+  public function GetNotificaciones($usuario,$fecha_fin_gestion,$fecha_ini_gestion)
   {
     $consulta = DB::select("SELECT COUNT(*) as numer
                             FROM notificacion
                             WHERE usuario_destino = :'usuario' AND fecha <= 'fecha_fin_gestion 23:59:59' AND fecha>='fecha_ini_gestion 00:00:01' AND leido=0",['usuario'=>$usuario,'fecha_ini_gestion'=>$fecha_ini_gestion,'fecha_fin_gestion'=>$fecha_fin_gestion]);
     return $consulta;
-  }  
+  }
+  public function GetNumeroConsultores()
+  {
+    $consulta_sql=DB::select("SELECT COUNT(*) as num
+                              FROM usuario
+                              WHERE (tipo_usuario = '2' || tipo_usuario = '3') AND habilitado = '0'");    
+    return $consulta_sql[0]->num;
+  }
+  public function GetNumeroGrupoEmpresas()
+  {
+    $consulta_sql=DB::select("SELECT COUNT(*) as num
+                              FROM usuario
+                              WHERE tipo_usuario = '4' AND habilitado = '0'");
+    return $consulta_sql[0]->num;
+  }        
 }
 ?>

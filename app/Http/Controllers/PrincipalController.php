@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Gestion;
 use App\funcionLogin;
 use App\noticias;
+use App\Actividades;
 class PrincipalController extends Controller
 {
     public function principal()
@@ -30,9 +31,8 @@ class PrincipalController extends Controller
     public function inicio()
     {
         $gestion = new Gestion;
-        $gestion->ConsultaGestion();
+        $resultado=$gestion->ConsultaGestion();        
         $id_gestion=-1;
-        $resultado=$gestion->GetGestion();        
         $gestion_valida=false;
         $nombre_gestion="no definida";        
         $gestion_espera=false;
@@ -78,16 +78,34 @@ class PrincipalController extends Controller
         }
         $noticia = new Noticias;
         $resultado_noticias= $noticia->GetNoticias($id_gestion);
-        $num = $noticia->GetNumero($id_gestion);
+        $num = $noticia->GetNumeroDocumentos($id_gestion);
+        $num_consultores= $noticia->GetNumeroConsultores();
+        $num_grupo_empresa= $noticia->GetNumeroGrupoEmpresas();        
         
+        $actividad = new Actividades;
+        $actividad->Actividad1($id_gestion);
+        $actividad->Actividad2($id_gestion);
+        $actividad->Actividad3($id_gestion);
+        $actividad->Actividad4($id_gestion);
+        $actividad->Actividad5($id_gestion);
+        $actividad->Actividad6($id_gestion);
+        $actividad->Actividad7($id_gestion);
+
         return view('index')->with([
         'titulo' => 'Sistema de Apoyo a la Empresa TIS',
         'sesion_valida' => false,
         'tipo_usuario'=>0,            
         'gestion_valida'=> $gestion_valida,
         'nombre_gestion'=>$nombre_gestion,
+        'fecha_ini'=>$fecha_ini,
+        'fecha_fin'=>$fecha_fin,
         'resultado' => $resultado_noticias,
-        'num' => $num]);  
+        'num' => $num,
+        'men'=>0,
+        'num_grupo_empresa'=>$num_grupo_empresa,
+        'num_consultor'=>$num_consultores,
+        'actividad'=>$actividad,
+        'id_gestion'=>$id_gestion]);
     }
     public function tabla()
     {
@@ -101,7 +119,15 @@ class PrincipalController extends Controller
     }
     public function paso()    
     {
-       return view('master');
+        $actividad = new Actividades;
+        $actividad->Actividad1(3);
+        $actividad->Actividad2(3);
+        $actividad->Actividad3(3);
+        $actividad->Actividad4(3);
+        $actividad->Actividad5(3);
+        $actividad->Actividad6(3);
+        $actividad->Actividad7(3);
+       return view('master')->with('actividad',$actividad);
     }    
     public function mostrar($id)    
     {

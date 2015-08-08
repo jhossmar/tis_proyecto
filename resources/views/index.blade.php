@@ -1,6 +1,6 @@
 @extends('header')
 @section('contenido')
-	<ul class="breadcrumb">
+	<ul class="breadcrumb"><!-- $gestion_valida,$nombre_gestion-->
    		<li>
 			<a href="index">Inicio</a>			
 		</li>
@@ -21,5 +21,5 @@
    	        </div>
             @endif
 	    </div>
-    </div>
+    </div>   
 @stop

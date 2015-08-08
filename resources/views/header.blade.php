@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!--$titulo, $sesion_valida ,$nombre_usuario,$tipo_usuario -->
 <html lang="es">
 <head>
 	<meta charset="utf-8">
@@ -306,13 +306,14 @@
         </div>
         </div>
        <div class="span2">   
-       @yield('nav-derecha')
-       
-       <h2>hola</h2>
+       @include('nav-derecha')       
        </div>   
    </div>
 </div>
+@include('footer')
+ <footer>
+	<p class="pull-left">&copy; <a href="#" target="_blank">Derechos Reservados </a> <?php echo date('Y') ?></p>
+	<p class="pull-right">Powered by: <a href="mailto:unisoft.srl.2014@gmail.com">Unisoft S.R.L</a></p>
+</footer>
 </body>
-</html>	    
-<!--
-	        <	    	    	    -->
+</html>

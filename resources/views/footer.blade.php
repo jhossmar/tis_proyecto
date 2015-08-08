@@ -1,33 +1,4 @@
-	<?php
-		if(!isset($titulo)){
-			header('Location: index.php');
-		}
-		 if(!isset($no_visible_elements) || !$no_visible_elements)	{ ?>
-				<!-- content ends  final del conenido-->
-				</div>
-				<?php 
-					include('nav-derecha.php');
-				?>	
-		<?php } ?>
-		</div><!--/fluid-row-->
-		<?php if(!isset($no_visible_elements) || !$no_visible_elements)	{ ?>
-		
-		<hr>
-
-		<footer>
-			<p class="pull-left">&copy; <a href="#" target="_blank">Derechos Reservados </a> <?php echo date('Y') ?></p>
-			<p class="pull-right">Powered by: <a href="mailto:unisoft.srl.2014@gmail.com">Unisoft S.R.L</a></p>
-		</footer>
-		<?php } ?>
-
-	</div><!--/.fluid-container-->
-
-	<!-- external javascript
-	================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<!-- jQuery -->
 	<script src="js/jquery-1.7.2.min.js"></script>
-
 	<script src="js/script.js"></script>
 	<!-- jQuery UI -->
 	<script src="js/jquery-ui-1.8.21.custom.min.js"></script>
@@ -360,44 +331,24 @@ $(document).ready(function() {
 	<!-- application script for Charisma demo -->
 	<script src="js/charisma.js"></script>
 	<script src="js/noticias.js"></script>
-	 
-    <?php
           
-          $verificarG = new VerificarGestion();
-          $gestionValida = $verificarG->VerificarFechasGestion();
-          if ($gestionValida && (strcmp($titulo,"Sistema de Apoyo a la Empresa TIS")==0)) {
-               $consulta = "SELECT COUNT(*) as numero
-                            FROM documento_consultor
-                            WHERE  documento_jefe= '1' AND gestion=$verificarG->id_gestion";
-               $resultado = mysql_query($consulta);
-               $res = mysql_fetch_array( $resultado);
-               $num=  $res['numero'];
-               if($res['numero']>3){
-                                       ?>
-                <script language="JavaScript" type="text/javascript">
-						    var nume='<?php  echo $num;  ?>'
-
-							 setTamAviso( 130 );
-							 setNumAvisos( nume );
-							 timerID = setTimeout("moverAvisos()", 1000);
-						    </script>
-             <?php
-                }
-            }
-     ?>
+    @if($gestion_valida && (strcmp($titulo,"Sistema de Apoyo a la Empresa TIS")==0))       
+        @if($num>3)
+            <script language="JavaScript" type="text/javascript">
+			    var nume={{$num}}
+				setTamAviso( 130 );
+				 setNumAvisos( nume );
+				 timerID = setTimeout("moverAvisos()", 1000);
+		    </script>
+        @endif
+    @endif
         <!-- Inicio Calendario de tareas -->
 <script type="text/javascript" src="js/colorpicker/colorpicker.js"></script>
 <script type="text/javascript" src="js/jquery-qtip-1.0.0-rc3140944/jquery.qtip-1.0.js"></script>
 <script type="text/javascript" src="js/lib/jshashtable-2.1.js"></script>
 <script type="text/javascript" src="js/frontierCalendar/jquery-frontier-cal-1.3.2.min.js"></script>
 <!--<script type="text/javascript" src="js/manipulacion.js"></script> -->
- <?php
- if(strcmp($titulo,"Planificar Tareas Grupo Empresa")==0){
- 	include ('jsr/calendarfooter.php');
-	}
-     // include ('jsr/calendariofooter.php');
- ?>
-
+ @if(strcmp($titulo,"Planificar Tareas Grupo Empresa")==0)
+ 	@include ('jsr/calendarfooter.php')
+ @endif
 <!--  fin Calendario de tareas -->
-</body>
-</html>
