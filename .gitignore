@@ -1,0 +1,8 @@
+/vendor
+/node_modules
+.env
+/etc
+.vagrant
+/node_modules
+.idea/
+.DS_Store

@@ -1,0 +1,49 @@
+
+
+/* Estilos para los avisos moviles del index */
+.caja_aviso{
+   border-radius: 5px;
+  border:1px solid #DDDDDD;
+  
+   padding: 4px;
+    
+}
+
+.titulo_aviso{
+   /*background-color: ; */
+
+   font-weight: bold;
+   margin-bottom: 1px;
+   margin-left: 1px;
+   margin-right: 1px;
+   margin-top: 1px;
+   padding:4px;
+   text-align: left;
+}
+
+.subtitulo_aviso{
+   text-align: left;
+   background-color: #EDEBE1;
+   margin-bottom: 1px;
+   margin-left: 1px;
+   margin-right: 1px;
+   margin-top: 1px;
+   padding:4px;
+}
+
+.letra_aviso{
+   margin-bottom: 2px;
+   margin-left: 2px;
+   margin-right: 2px;
+   margin-top: 2px;
+   padding: 4px;
+   
+    text-align: left  ;
+}
+
+.pie_aviso{
+   border-top: 1px solid #DDDDDD;
+   padding: 4px 4px 0px 4px;
+   color: #317EAC;
+}
+
