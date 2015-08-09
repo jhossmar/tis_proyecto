@@ -113,21 +113,12 @@ class PrincipalController extends Controller
     }
     public function loginAdministrador()
     {
-       return view('loginAdministrador')>with([
+       return view('loginAdministrador')->with([
         'titulo' => 'Iniciar sesi&oacute;n Administrador del Sistema',
         'sesion_valida' => false,
         'tipo_usuario'=>0,
-        'gestion_valida'=> $this->gestion_valida,
-        'nombre_gestion'=>$this->nombre_gestion,
-        'fecha_ini'=>$this->fecha_ini,
-        'fecha_fin'=>$this->fecha_fin,
-        'resultado' => $this->resultado_noticias,
-        'num' => $this->num,
-        'men'=>0,
-        'num_grupo_empresa'=>$this->num_grupo_empresa,
-        'num_consultor'=>$this->num_consultores,
-        'actividad'=>$this->actividad,
-        'id_gestion'=>$this->id_gestion]);
+        'gestion'=>$this->gestion,
+        'datos'=>$this->datos]);
     }   
     public function principal()
     {

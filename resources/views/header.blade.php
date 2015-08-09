@@ -302,8 +302,7 @@
 				 <p>Necesitas tener habilitado <a href="http://es.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> para utilizar el sistema.</p>
 			  </div>
 		  </noscript>                
-       	  @yield('contenido')
-        </div>
+       	  @yield('contenido')        
         </div>
        <div class="span2">   
        @include('nav-derecha')       
