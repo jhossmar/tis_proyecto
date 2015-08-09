@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Request;
+use Session;
 use App\functionLogin;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -10,6 +11,8 @@ use App\Gestion;
 use App\funcionLogin;
 use App\noticias;
 use App\Actividades;
+use App\Http\Controllers\FormularioController;
+use App\Usuario;
 class PrincipalController extends Controller
 {
   private $gestion;
@@ -28,7 +31,7 @@ class PrincipalController extends Controller
       $fin_gestion=0;
 
       $gest = new Gestion;
-      $resultado=$gest->ConsultaGestion();        
+      $resultado=$gest->ConsultaGestion();
             
       $date = date("Y-m-d");
       $hora=date("H:i:s");
@@ -119,23 +122,42 @@ class PrincipalController extends Controller
         'tipo_usuario'=>0,
         'gestion'=>$this->gestion,
         'datos'=>$this->datos]);
-    }   
-    public function principal()
+    } 
+    public function verificarAdministrador()
     {
-    	$variable ='hola si controla';
-        $p = new funcionLogin;
-        $resultado= $p->consulta();
-
-
-    	return view('hola', ['resultado' => $resultado]);
-    	//return view('hola',$variable); solo para arreglos
-    	
-    	/*return view('hola')->with([
-    	'variable'=>'jhon'
-    	]);
-        return view('hola',compact('variable','variable2'));
-    	*/    	
-    }        
+      $nombre = $_POST['username'];
+      $pass = $_POST['password'];
+      //$nom = Request::get('password');
+      if(isset($nombre) && isset($pass))
+      {             
+        $user = new Usuario;
+        $usuario = $user->GetUsuario($nombre,$pass,1);
+  
+        if($usuario!=null)
+        {       
+          Session::put('id',$usuario[0]->id_usuario);
+          Session::put('tipo',$usuario[0]->tipo_usuario);
+          Session::put('nombre_usuario',$usuario[0]->nombre_usuario);  
+          Session::put('foto',$usuario[0]->foto);
+      
+          $user->SetBitacora($usuario[0]->id_usuario);
+          //header("Location: index");
+          return view('loginAdministrador')->with([
+        'titulo' => 'Administrador del Sistema',
+        'sesion_valida' => true,
+        'tipo_usuario'=> 1,
+        'gestion'=>$this->gestion,
+        'datos'=>$this->datos]);
+        }
+        else
+        {
+           return
+            "<center><h1>Acceso denegado</h1></center><br>
+             <center><h3>Por favor espera 3 segundos mientras te redirigimos al inicio</h3></center><br>
+            <META HTTP-EQUIV='Refresh' CONTENT='3; URL=index'>";
+        }
+      }       
+    }          
     public function tabla()
     {
        $condicional=false;
@@ -161,20 +183,17 @@ class PrincipalController extends Controller
     public function mostrar($id)    
     {
        return view('prueba')->with('id',$id);
-    }
-    public function header()    
-    {
-       return view('header')->with([
-        'titulo' => 'Sistema de Apoyo a la Empresa TIS',
-        'sesion_valida' => false,
-        'gestion_valida'=>true,
-        'nombre_foto' => '',
-        'tipo_usuario'=> 0 ]);
-    }
+    }   
     public function padre()
     {
         return view('padre')->with([
         'hola'=>'jhon'
         ]);;
+    }
+    public function principal()
+    {
+      $aux = new Usuario;
+      $b = $aux->GetUsuario('admin','admin',1);
+      return $b[0]->clave;
     }
 }

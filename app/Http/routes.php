@@ -2,6 +2,7 @@
 
 Route::get('index','PrincipalController@inicio');
 Route::get('login_administrador','PrincipalController@loginAdministrador');
+Route::post('login_administrador','PrincipalController@verificarAdministrador');
 
 Route::get('contacto','WelcomeController@contacto');
 Route::get('hola','PrincipalController@principal');

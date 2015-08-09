@@ -286,7 +286,7 @@
 			@else
 				<ul class="nav nav-tabs nav-stacked main-menu">
 					<li class="nav-header box-header"><h5>Men&uacute principal</h5></li>
-					<li><a href="index.php"><i class="icon-home"></i><span class="hidden-tablet"> Inicio</span></a></li>
+					<li><a href="index"><i class="icon-home"></i><span class="hidden-tablet"> Inicio</span></a></li>
 					<li><a href="iniciar_sesion.php"><i class="icon-check"></i><span class="hidden-tablet"> Grupo Empresa</span></a></li>
 					<li><a href="iniciar_sesion.php"><i class="icon-briefcase"></i><span class="hidden-tablet"> Consultor TIS</span></a></li>
 					<li><a href="ayuda.php"><i class="icon-question-sign"></i><span class="hidden-tablet"> Ayuda</span></a></li>
@@ -295,7 +295,7 @@
 			</div>
 	    </div>
 		    @endif	       
-       <div class="span8" id="content">
+        <div class="span8" id="content">
           <noscript>
 		 	  <div class="alert alert-block">
 			  	 <h4 class="alert-heading">Alerta!</h4>
