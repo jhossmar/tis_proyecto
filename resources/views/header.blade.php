@@ -1,4 +1,4 @@
-<!DOCTYPE html><!--$titulo, $sesion_valida ,$nombre_usuario,$tipo_usuario -->
+<!DOCTYPE html><!--$titulo, $sesion_valida ,$nombre_usuario,$tipo_usuario,$foto_usuario -->
 <html lang="es">
 <head>
 	<meta charset="utf-8">
@@ -290,7 +290,7 @@
 					<li><a href="iniciar_sesion.php"><i class="icon-check"></i><span class="hidden-tablet"> Grupo Empresa</span></a></li>
 					<li><a href="iniciar_sesion.php"><i class="icon-briefcase"></i><span class="hidden-tablet"> Consultor TIS</span></a></li>
 					<li><a href="ayuda.php"><i class="icon-question-sign"></i><span class="hidden-tablet"> Ayuda</span></a></li>
-					<li><a href="login.php"><i class="icon-lock"></i></i><span class="hidden-tablet"> Administrar Sistema</span></a></li>
+					<li><a href="login_administrador"><i class="icon-lock"></i></i><span class="hidden-tablet"> Administrar Sistema</span></a></li>
 				</ul>
 			</div>
 	    </div>

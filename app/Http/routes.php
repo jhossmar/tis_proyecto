@@ -1,6 +1,7 @@
 <?php
 
 Route::get('index','PrincipalController@inicio');
+Route::get('login_administrador','PrincipalController@loginAdministrador');
 
 Route::get('contacto','WelcomeController@contacto');
 Route::get('hola','PrincipalController@principal');

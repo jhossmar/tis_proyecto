@@ -9,10 +9,10 @@
 <div class="row-fluid">
 	<div class="box span12">
 		<div class="box-header well">
-			<h2><i class="icon-bullhorn"></i> Avisos: Gesti&oacute;n {{$nombre_gestion}}</h2>
+			<h2><i class="icon-bullhorn"></i> Avisos: Gesti&oacute;n {{$gestion['nombre_gestion']}}</h2>
      	</div>
 		<div class="box-content alerts">
-		    @if($gestion_valida)		        
+		    @if($gestion['gestion_valida'])		        
 		        @include('noticias')
             @else
             <div align=\"center\">

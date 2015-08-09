@@ -1,19 +1,19 @@
 <script src="js/noticias.js"></script>
 <script language="JavaScript" type="text/javascript">
-    var nume={{$num}}
+    var nume={{$datos['numdoc']}}
         setTamAviso( 130 );
         setNumAvisos( nume );
         timerID = setTimeout("moverAvisos()", 1000);
 </script> 
-@if($num == 0)     
+@if($datos['numdoc'] == 0)     
   <div align="center">
     <h4><i class="icon-info-sign"></i>
         No existe ning&uacute;n aviso para esta gesti&oacute;n.</h4>
   </div>    
 @else   
-  @if($num < 4)      
+  @if($datos['numdoc'] < 4)
     <table style="position:relative; overflow:hidden; width:100%; max-height=390px">
-      @foreach($resultado as $row)
+      @foreach($datos['resultado_noticias'] as $row)
         <tr>
           <td>
             <div class="caja_aviso">
@@ -39,7 +39,7 @@
       <tr>
         <td style="width: 96%" onmouseover="normal()">
           <div style="position:relative overflow:hidden width:100% height:390px">                                             
-            @foreach($resultado as $row)
+            @foreach($datos['resultado_noticias'] as $row)
               <div class="caja_aviso" align="center" style="position:absolute  width: 95% left: 2.5% margin-bottom:50px">
                 <div class="subtitulo_aviso">
                   <h4>{{"Por : ".$row->nombre." ". $row->apellido }}</h4>
