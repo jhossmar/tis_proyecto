@@ -1,4 +1,4 @@
-<!DOCTYPE html><!--$titulo, $sesion_valida ,$nombre_usuario,$tipo_usuario -->
+<!DOCTYPE html><!--$titulo, $sesion_valida ,$nombre_usuario,$tipo_usuario,$foto_usuario -->
 <html lang="es">
 <head>
 	<meta charset="utf-8">
@@ -286,24 +286,23 @@
 			@else
 				<ul class="nav nav-tabs nav-stacked main-menu">
 					<li class="nav-header box-header"><h5>Men&uacute principal</h5></li>
-					<li><a href="index.php"><i class="icon-home"></i><span class="hidden-tablet"> Inicio</span></a></li>
+					<li><a href="index"><i class="icon-home"></i><span class="hidden-tablet"> Inicio</span></a></li>
 					<li><a href="iniciar_sesion.php"><i class="icon-check"></i><span class="hidden-tablet"> Grupo Empresa</span></a></li>
 					<li><a href="iniciar_sesion.php"><i class="icon-briefcase"></i><span class="hidden-tablet"> Consultor TIS</span></a></li>
 					<li><a href="ayuda.php"><i class="icon-question-sign"></i><span class="hidden-tablet"> Ayuda</span></a></li>
-					<li><a href="login.php"><i class="icon-lock"></i></i><span class="hidden-tablet"> Administrar Sistema</span></a></li>
+					<li><a href="login_administrador"><i class="icon-lock"></i></i><span class="hidden-tablet"> Administrar Sistema</span></a></li>
 				</ul>
 			</div>
 	    </div>
 		    @endif	       
-       <div class="span8" id="content">
+        <div class="span8" id="content">
           <noscript>
 		 	  <div class="alert alert-block">
 			  	 <h4 class="alert-heading">Alerta!</h4>
 				 <p>Necesitas tener habilitado <a href="http://es.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> para utilizar el sistema.</p>
 			  </div>
 		  </noscript>                
-       	  @yield('contenido')
-        </div>
+       	  @yield('contenido')        
         </div>
        <div class="span2">   
        @include('nav-derecha')       

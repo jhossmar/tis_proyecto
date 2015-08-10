@@ -332,10 +332,10 @@ $(document).ready(function() {
 	<script src="js/charisma.js"></script>
 	<script src="js/noticias.js"></script>
           
-    @if($gestion_valida && (strcmp($titulo,"Sistema de Apoyo a la Empresa TIS")==0))       
-        @if($num>3)
+    @if($gestion['gestion_valida'] && (strcmp($titulo,"Sistema de Apoyo a la Empresa TIS")==0))       
+        @if($datos['numdoc']>3)
             <script language="JavaScript" type="text/javascript">
-			    var nume={{$num}}
+			    var nume={{$datos['numdoc']}}
 				setTamAviso( 130 );
 				 setNumAvisos( nume );
 				 timerID = setTimeout("moverAvisos()", 1000);

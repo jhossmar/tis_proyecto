@@ -7,19 +7,19 @@
 		  </div>          
 	  </div>
 	  <div class="box-content">  
-		@if($gestion_valida)
+		@if($gestion['gestion_valida'])
 			@if($tipo_usuario==1)
-			  @if($num_consultor>0)
+			  @if($datos['num_consultores']>0)
 					<ul class="dashboard-list">
-						<li>{{ "Hay ".$num_consultor." nuevo(s) Consultore(s)" }}</li>
+						<li>{{ "Hay ".$datos['num_consultores']." nuevo(s) Consultore(s)" }}</li>
 					</ul>
 				@endif
-				@if($num_grupo_empresa>0)
+				@if($datos['num_grupo_empresa']>0)
 					<ul class="dashboard-list">
-						<li>{{"Hay ".$num_grupo_empresa." nuevo(s) Grupo(s) Empresa"}}</li>
+						<li>{{"Hay ".$datos['num_grupo_empresa']." nuevo(s) Grupo(s) Empresa"}}</li>
 					</ul>
 				@endif
-				@if($men==1)
+				@if($datos['men']==1)
 					<ul class="dashboard-list">
 						<li>No hay notificaciones </li>
 					</ul>
@@ -62,28 +62,28 @@
 	</div>
 	<div class="box-content">
 		<ul class="dashboard-list">
-			@if($gestion_valida)
-				<li><b>{{"Gesti&oacute;n ".$nombre_gestion." :"}}</b>{{" Del ".strftime("%d/%m/%y",$fecha_ini)." hasta ".strftime("%d/%m/%y",$fecha_fin)}}</li>
-				  @if($actividad->activo_1==1)
-				    <li><b>Inicio convocatoria:</b>{{"Del ".$actividad->fecha_ini_1." hasta ".$actividad->fecha_fin_1 }}</li>
+			@if($gestion['gestion_valida'])
+				<li><b>{{"Gesti&oacute;n ".$gestion['nombre_gestion']." :"}}</b>{{" Del ".strftime("%d/%m/%y",$gestion['fecha_ini'])." hasta ".strftime("%d/%m/%y",$gestion['fecha_fin'])}}</li>
+				  @if($datos['actividad']->activo_1==1)
+				    <li><b>Inicio convocatoria:</b>{{"Del ".$datos['actividad']->fecha_ini_1." hasta ".$datos['actividad']->fecha_fin_1 }}</li>
 				  @endif
-				  @if($actividad->activo_2==1)
-					  <li><b>Registro de Grupo Empresas:</b>{{" Del ".$actividad->fecha_ini_2." hasta ".$actividad->fecha_fin_2 }}</li>
+				  @if($datos['actividad']->activo_2==1)
+					  <li><b>Registro de Grupo Empresas:</b>{{" Del ".$datos['actividad']->fecha_ini_2." hasta ".$datos['actividad']->fecha_fin_2 }}</li>
 				  @endif
-				  @if($actividad->activo_3==1)
-					  <li><b>Entrega de Documentos:</b>{{" Del ".$actividad->fecha_ini_3." hasta ".$actividad->fecha_fin_3 }}</li>
+				  @if($datos['actividad']->activo_3==1)
+					  <li><b>Entrega de Documentos:</b>{{" Del ".$datos['actividad']->fecha_ini_3." hasta ".$datos['actividad']->fecha_fin_3 }}</li>
 				  @endif
-				  @if($actividad->activo_4==1)
- 					  <li><b>Firma de Contratos:</b>{{" Del ".$actividad->fecha_ini_4." hasta ".$actividad->fecha_fin_4}}</li>
+				  @if($datos['actividad']->activo_4==1)
+ 					  <li><b>Firma de Contratos:</b>{{" Del ".$datos['actividad']->fecha_ini_4." hasta ".$datos['actividad']->fecha_fin_4}}</li>
 				  @endif
-				  @if($actividad->activo_5==1)
-					  <li><b>Proceso de Desarrollo:</b>{{" Del ".$actividad->fecha_ini_5." hasta ".$actividad->fecha_fin_5}}</li>
+				  @if($datos['actividad']->activo_5==1)
+					  <li><b>Proceso de Desarrollo:</b>{{" Del ".$datos['actividad']->fecha_ini_5." hasta ".$datos['actividad']->fecha_fin_5}}</li>
 				  @endif
-				  @if($actividad->activo_6==1)
-					  <li><b>Entrega de Productos:</b>{{" Del ".$actividad->fecha_ini_6." hasta ".$actividad->fecha_fin_6}}</li>
+				  @if($datos['actividad']->activo_6==1)
+					  <li><b>Entrega de Productos:</b>{{" Del ".$datos['actividad']->fecha_ini_6." hasta ".$datos['actividad-']->fecha_fin_6}}</li>
 				  @endif
-				  @if($actividad->activo_7==1)
-  					<li><b>Cierre de la Convocatoria:</b>{{" Del ".$actividad->fecha_ini_7." hasta ".$actividad->fecha_fin_7}}</li>
+				  @if($datos['actividad']->activo_7==1)
+  					<li><b>Cierre de la Convocatoria:</b>{{" Del ".$datos['actividad']->fecha_ini_7." hasta ".$datos['actividad']->fecha_fin_7}}</li>
 				  @endif
 			@else
 				<li><b>No existe ninguna fecha definida</b></li>
