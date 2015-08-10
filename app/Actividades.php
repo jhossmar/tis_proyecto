@@ -62,7 +62,7 @@ class Actividades extends Model
     public function Actividad1($id_gestion)
 	{               
         $res_1 = $this->ConsultarActividad(1,$id_gestion);
-		//$this->activo_1 = $res_1[0]->activo; // OJO lo borre por que no jalava con esto 
+		$this->activo_1 = $res_1[0]->activo; // OJO lo borre por que no jalava con esto 
 		$this->act_1_espera = false;
 		$this->fecha_ini_1 = $res_1[0]->fecha_inicio;
 		$this->fecha_fin_1 = $res_1[0]->fecha_fin;

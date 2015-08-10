@@ -80,7 +80,7 @@
 					  <li><b>Proceso de Desarrollo:</b>{{" Del ".$datos['actividad']->fecha_ini_5." hasta ".$datos['actividad']->fecha_fin_5}}</li>
 				  @endif
 				  @if($datos['actividad']->activo_6==1)
-					  <li><b>Entrega de Productos:</b>{{" Del ".$datos['actividad']->fecha_ini_6." hasta ".$datos['actividad-']->fecha_fin_6}}</li>
+					  <li><b>Entrega de Productos:</b>{{" Del ".$datos['actividad']->fecha_ini_6." hasta ".$datos['actividad']->fecha_fin_6}}</li>
 				  @endif
 				  @if($datos['actividad']->activo_7==1)
   					<li><b>Cierre de la Convocatoria:</b>{{" Del ".$datos['actividad']->fecha_ini_7." hasta ".$datos['actividad']->fecha_fin_7}}</li>

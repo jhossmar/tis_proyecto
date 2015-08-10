@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 class Usuario extends Model
 {
-    public function GetUsuario($nombre,$clave,$tipo)
+    public function GetUsuario($nombre,$clave)
     {
     	$consulta_sql = DB::select('select * 
     		                        from usuario
-    		                        where nombre_usuario = :nombre and clave = :clave and tipo_usuario = :tipo',['nombre' => $nombre,'clave'=> $clave,'tipo' => $tipo]);
+    		                        where nombre_usuario = :nombre and clave = :clave ',['nombre' => $nombre,'clave'=> $clave]);
         return $consulta_sql;
     }
     public function SetBitacora($id)

@@ -154,12 +154,12 @@
                     <div class="span2 usuarios">          
 		                <div class="btn-group pull-right">
 			                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">				  
-			                    <img src= {{asset($nombre_foto)}} WIDTH=60 HEIGHT=60><span class="hidden-phone"> {{ $nombre_usuario }}</span>
+			                   <img src= {{asset($nombre_foto)}} WIDTH=60 HEIGHT=60><span class="hidden-phone"> {{ $nombre_usuario }}</span>
 		                        <span class="caret"></span>
 			                </a>
 			                <ul class="dropdown-menu">
 	                            <li><a href="#modal2"><i  class="icon-edit"></i>cambiar foto</a></li>
-	                            <li><a href="#salir.php"><i class= "icon-off"></i>Salir</a></li>	                        
+	                            <li><a href="salir"><i class= "icon-off"></i>Salir</a></li>	                        
 	                        </ul>
 			            </div>
     	            </div>
@@ -215,13 +215,13 @@
   		        @if($tipo_usuario==1)
                 <ul class="nav nav-tabs nav-stacked main-menu">
                     <li class="nav-header box-header"><h5>Men&uacute; </h5></li>
-                    <li><a href="home_admin.php"><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
-                    <li><a href="info_admin.php"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del Administrador</span></a></li>
-                    <li><a href="administrar_consultor.php"><i class="icon-briefcase"></i><span class="hidden-tablet"> Administrar Consultores TIS</span></a></li>
-                    <li><a href="administrar_grupo_empresa.php"><i class="icon-edit"></i><span class="hidden-tablet"> Administrar Grupo Empresas</span></a></li>
-                    <li><a href="bitacoras_usuario.php"><i class="icon-eye-open"></i><span class="hidden-tablet"> Bit&aacute;coras de usuario</span></a></li>
-                    <li><a href="backup.php"><i class="icon-hdd"></i><span class="hidden-tablet"> Respaldo y Restauraci&oacute;n de la Base de Datos</span></a></li>
-                    <li><a href="administrar_mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Administrar espacio de Discuci&oacute;n</span></a></li>						
+                    <li><a href="paginas/administrador/home_admin"><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
+                    <li><a href="paginas/administrador/info_admin.php"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del Administrador</span></a></li>
+                    <li><a href="paginas/administrador/administrar_consultor.php"><i class="icon-briefcase"></i><span class="hidden-tablet"> Administrar Consultores TIS</span></a></li>
+                    <li><a href="paginas/administrador/administrar_grupo_empresa.php"><i class="icon-edit"></i><span class="hidden-tablet"> Administrar Grupo Empresas</span></a></li>
+                    <li><a href="paginas/administrador/bitacoras_usuario.php"><i class="icon-eye-open"></i><span class="hidden-tablet"> Bit&aacute;coras de usuario</span></a></li>
+                    <li><a href="paginas/administrador/backup.php"><i class="icon-hdd"></i><span class="hidden-tablet"> Respaldo y Restauraci&oacute;n de la Base de Datos</span></a></li>
+                    <li><a href="paginas/administrador/administrar_mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Administrar espacio de Discuci&oacute;n</span></a></li>						
                 </ul>
             </div>
         </div>	        
@@ -287,8 +287,8 @@
 				<ul class="nav nav-tabs nav-stacked main-menu">
 					<li class="nav-header box-header"><h5>Men&uacute principal</h5></li>
 					<li><a href="index"><i class="icon-home"></i><span class="hidden-tablet"> Inicio</span></a></li>
-					<li><a href="iniciar_sesion.php"><i class="icon-check"></i><span class="hidden-tablet"> Grupo Empresa</span></a></li>
-					<li><a href="iniciar_sesion.php"><i class="icon-briefcase"></i><span class="hidden-tablet"> Consultor TIS</span></a></li>
+					<li><a href="iniciar_sesion"><i class="icon-check"></i><span class="hidden-tablet"> Grupo Empresa</span></a></li>
+					<li><a href="iniciar_sesion"><i class="icon-briefcase"></i><span class="hidden-tablet"> Consultor TIS</span></a></li>
 					<li><a href="ayuda.php"><i class="icon-question-sign"></i><span class="hidden-tablet"> Ayuda</span></a></li>
 					<li><a href="login_administrador"><i class="icon-lock"></i></i><span class="hidden-tablet"> Administrar Sistema</span></a></li>
 				</ul>
