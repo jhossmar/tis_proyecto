@@ -116,6 +116,7 @@ class PrincipalController extends Controller
     }
     public function loginAdministrador()
     {
+       
        return view('loginAdministrador')->with([
         'titulo' => 'Iniciar sesi&oacute;n Administrador del Sistema',
         'sesion_valida' => false,
@@ -159,15 +160,13 @@ class PrincipalController extends Controller
       if(isset($nombre) && isset($pass))
       { 
         if( $this->existeUsuario($nombre,$pass)){
-          //header("Location: index");
-          return view('loginAdministrador')->with([
-        'titulo' => 'Administrador del Sistema',
-        'sesion_valida' => true,
-        'tipo_usuario'=> 1,
+             return view('/paginas/administrador/home_admin')->with([
+        'titulo' => 'Iniciar sesi&oacute;n Administrador del Sistema',
+        'sesion_valida' => false,
+        'tipo_usuario'=>1,
         'gestion'=>$this->gestion,
-        'datos'=>$this->datos,
-        'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario') ]);//------>>>?????
+        'datos'=>$this->datos]);
+            
          }
       else
         {
@@ -306,6 +305,18 @@ class PrincipalController extends Controller
         'datos'=>$this->datos,
         'error_sesion'=>$error_sesion]);//------>>>?????
        }
+
+    }
+
+    public function mostrarVista(){
+
+       return view('index')->with([
+        'titulo' => 'Administrador del Sistema',
+        'sesion_valida' => true,
+        'tipo_usuario'=> 0,
+        'gestion'=>$this->gestion,
+        'datos'=>$this->datos]);
+        
 
     }
    
