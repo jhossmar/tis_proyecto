@@ -44,7 +44,7 @@ class Noticias extends Model
   {
     $consulta = DB::select("SELECT COUNT(*) as numer
                             FROM notificacion
-                            WHERE usuario_destino = :'usuario' AND fecha <= 'fecha_fin_gestion 23:59:59' AND fecha>='fecha_ini_gestion 00:00:01' AND leido=0",['usuario'=>$usuario,'fecha_ini_gestion'=>$fecha_ini_gestion,'fecha_fin_gestion'=>$fecha_fin_gestion]);
+                            WHERE usuario_destino = :usuario AND fecha <= :fecha_fin_gestion AND fecha>=:fecha_ini_gestion AND leido=0",['usuario'=>$usuario,'fecha_ini_gestion'=>$fecha_ini_gestion,'fecha_fin_gestion'=>$fecha_fin_gestion]);
     return $consulta;
   }
   public function GetNumeroConsultores()

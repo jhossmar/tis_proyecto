@@ -11,8 +11,9 @@ use App\Gestion;
 use App\funcionLogin;
 use App\noticias;
 use App\Actividades;
-use App\Http\Controllers\FormularioController;
 use App\Usuario;
+use App\Http\Controllers\FormularioController;
+
 class PrincipalController extends Controller
 {
   private $gestion;
@@ -62,9 +63,9 @@ class PrincipalController extends Controller
         }
         elseif($fecha_actual > $fecha_fin)
         {
-          $this->id_gestion =- 1;
-          $this->nombre_gestion = "no definida";
-          $this->gestion_valida = false;
+          $id_gestion =- 1;
+          $nombre_gestion = "no definida";
+          $gestion_valida = false;
           $gestion_espera = false;
           $gestion->SetGestion($id_gestion);             
         }
@@ -72,20 +73,25 @@ class PrincipalController extends Controller
       $this->gestion = array('id_gestion' => $id_gestion,
                              'nombre_gestion'=> $nombre_gestion,
                              'gestion_valida'=> $gestion_valida,
-                             'fecha_ini' => $fecha_ini,
-                             'fecha_fin' => $fecha_fin);
+                             'gestion_espera'=> $gestion_espera,
+                             'fecha_ini' => $ini_gestion,
+                             'fecha_fin' => $fin_gestion);
     }              
-    private function controlActividades()
+    private function controlActividades($id_usuario)
     {
       $numdoc=0;        
       $num_grupo_empresa=0;
       $num_consultor=0;
-
+      $num_notificaciones=0;
       $noticia = new Noticias;
       $resultado_noticias= $noticia->GetNoticias($this->gestion['id_gestion']);
       $numdoc = $noticia->GetNumeroDocumentos($this->gestion['id_gestion']);
       $num_consultores= $noticia->GetNumeroConsultores();
-      $num_grupo_empresa= $noticia->GetNumeroGrupoEmpresas(); 
+      $num_grupo_empresa= $noticia->GetNumeroGrupoEmpresas();
+      if($id_usuario!=0)
+      {
+        $num_notificaciones = (int) $noticia->GetNotificaciones($id_usuario,$this->gestion['fecha_fin'],$this->gestion['fecha_ini']);
+      }
 
       $actividad = new Actividades;
       $actividad->Actividad1($this->gestion['id_gestion']);
@@ -95,24 +101,41 @@ class PrincipalController extends Controller
       $actividad->Actividad5($this->gestion['id_gestion']);
       $actividad->Actividad6($this->gestion['id_gestion']);
       $actividad->Actividad7($this->gestion['id_gestion']);
-
+      
       $this->datos = array('resultado_noticias' => $resultado_noticias,
                            'numdoc' => $numdoc,
                            'num_consultores'=>$num_consultores,
                            'num_grupo_empresa'=>$num_grupo_empresa,
+                           'num_notificaciones'=>$num_notificaciones,
                            'men'=>0,
                            'actividad' => $actividad);
     } 
     public function inicio()
     {        
       $this->controlGestion();
-      $this->controlActividades();
-        return view('index')->with([
-        'titulo' => 'Sistema de Apoyo a la Empresa TIS',
-        'sesion_valida' => false,
-        'tipo_usuario'=>0,        
-        'gestion'=>$this->gestion,
-        'datos'=>$this->datos]);
+         
+        if(Session::get('id')!=null)
+        {
+          $this->controlActividades(Session::get('id')); 
+          return view('index')->with([
+          'titulo' => 'Jefe Consultor',
+          'sesion_valida' => true,
+          'tipo_usuario'=>Session::get('tipo'),
+          'gestion'=>$this->gestion,
+          'datos'=>$this->datos,         
+          'nombre_foto' => Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+        }
+        else
+        { 
+          $this->controlActividades(0); 
+          return view('index')->with([
+          'titulo' => 'Sistema de Apoyo a la Empresa TIS',
+          'sesion_valida' => false,
+          'tipo_usuario'=>0,        
+          'gestion'=>$this->gestion,
+          'datos'=>$this->datos]);
+        }
     }
     public function loginAdministrador()
     {
@@ -122,9 +145,7 @@ class PrincipalController extends Controller
         'tipo_usuario'=>0,
         'gestion'=>$this->gestion,
         'datos'=>$this->datos]);
-    } 
-  
-
+    }   
     /**
     * Verifica si el Usuario Existe en la Base de Datos
     *  retorna true si existe o false  si no. 
@@ -132,23 +153,22 @@ class PrincipalController extends Controller
     * si existe EL usuario. inisia las variables de session
     *  e inseta en la base de datos la operacion??
     */
-    private function existeUsuario($nombre,$pass){
-
+    private function existeUsuario($nombre,$pass)
+    {
         $user = new Usuario;
         $usuario = $user->GetUsuario($nombre,$pass);
-  
+        $respuesta = false;        
         if($usuario!=null)
         {       
-          Session::put('id',$usuario[0]->id_usuario);
-          Session::put('tipo',$usuario[0]->tipo_usuario);
+          Session::put('id',(int)$usuario[0]->id_usuario);
+          Session::put('tipo',(int)$usuario[0]->tipo_usuario);
           Session::put('nombre_usuario',$usuario[0]->nombre_usuario);  
           Session::put('nombre_foto',$usuario[0]->foto);// OJO
           
           $user->SetBitacora($usuario[0]->id_usuario);
-        return true;
-        }else{
-          return false;
+          $respuesta = true;
         }
+        return $respuesta;
     }
 
     public function verificarAdministrador()
@@ -168,8 +188,8 @@ class PrincipalController extends Controller
         'datos'=>$this->datos,
         'nombre_foto'=>Session::get('nombre_foto'),
         'nombre_usuario'=>Session::get('nombre_usuario') ]);//------>>>?????
-         }
-      else
+        }
+        else
         {
            return
             "<center><h1>Acceso denegado</h1></center><br>
@@ -178,136 +198,186 @@ class PrincipalController extends Controller
         }
       }       
     }          
-    
-
-
-
-    public function tabla()
-    {
-       $condicional=false;
-       return view('tabla')->with('condicional',$condicional);
-    }
-    public function modelo()    
-    {
-       $modelo = new App\functionLogin;
-       $modelo->consulta();
-    }
-    public function paso()    
-    {
-        $actividad = new Actividades;
-        $actividad->Actividad1(3);
-        $actividad->Actividad2(3);
-        $actividad->Actividad3(3);
-        $actividad->Actividad4(3);
-        $actividad->Actividad5(3);
-        $actividad->Actividad6(3);
-        $actividad->Actividad7(3);
-       return view('master')->with('actividad',$actividad);
-    }    
-    public function mostrar($id)    
-    {
-       return view('prueba')->with('id',$id);
-    }   
-    public function padre()
-    {
-        return view('padre')->with([
-        'hola'=>'jhon'
-        ]);;
-    }
-    public function principal()
-    {
-      $aux = new Usuario;
-      $b = $aux->GetUsuario('admin','admin',1);
-      return $b[0]->clave;
-    }
-
-    public function iniciarSesion(){
-
-     $this->controlGestion();
-      $this->controlActividades();
-
-     return view('iniciar_cesion')->with([
+    public function iniciarSesion()
+    {     
+        return view('iniciar_sesion')->with([
         'titulo' => 'Iniciar sesi&oacute;n Administrador del Sistema',
         'sesion_valida' => false,
         'tipo_usuario'=>0,
         'error_sesion'=>"",
         'gestion'=>$this->gestion,
         'datos'=>$this->datos]);
+    }  
+    public function verificarUsuario()
+    {          
+      $nombre = $_POST['username'];
+      $pass = $_POST['password'];
+      $error_sesion="";
+      if($this->existeUsuario($nombre,$pass))
+      {      
+        $this->controlGestion();
+        $this->controlActividades(Session::get('id'));
+        if(Session::get('tipo')==2)
+        {
 
-    }
-  
-    public function verificarUsuario(){
-       $nombre = $_POST['username'];
-       $pass = $_POST['password'];
-       $error_sesion="";
-      if( $this->existeUsuario($nombre,$pass)){
-      
-      if(Session::get('tipo')==2)
-      {
-
-          return view('/paginas/consultor/home_consultor')->with([
-        'titulo' => 'Jefe Consultor',
-        'sesion_valida' => true,
-        'tipo_usuario'=> 2,
-        'gestion'=>$this->gestion,
-        'datos'=>$this->datos,
-        'error_sesion'=>$error_sesion,
-        'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario') ]);//------>>>?????
+          return view('/paginas/consultor/homeJefeConsultor')->with([
+          'titulo' => 'Jefe Consultor',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$this->gestion,
+          'datos'=>$this->datos,         
+          'nombre_foto' => Session::get('nombre_foto'),
+          'nombre_usuario' => Session::get('nombre_usuario')]);
        } 
-        if(Session::get('tipo')==3)
-      {
-
+       if(Session::get('tipo')==3)
+       {
           return view('/paginas/consultor/home_consultor')->with([
-        'titulo' => 'Jefe Consultor',
-        'sesion_valida' => true,
-        'tipo_usuario'=> 3,
-        'gestion'=>$this->gestion,
-        'datos'=>$this->datos,
-        'error_sesion'=>$error_sesion,
-        'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario') ]);//------>>>?????
+          'titulo' => 'Consultor',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 3,
+          'gestion'=>$this->gestion,
+          'datos'=>$this->datos,          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
        }
-        if(Session::get('tipo')==4)
-      {
-
+       if(Session::get('tipo')==4)
+       {
           return view('/paginas/grupo_Empresa/home_grupo_empresa')->with([
-        'titulo' => 'Jefe Consultor',
-        'sesion_valida' => true,
-        'tipo_usuario'=> 4,
-        'gestion'=>$this->gestion,
-        'datos'=>$this->datos,
-        'error_sesion'=>$error_sesion,
-        'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario') ]);//------>>>?????
+          'titulo' => 'home del representate de la grupo empresa',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 4,
+          'gestion'=>$this->gestion,
+          'datos'=>$this->datos,          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
        } 
-        if(Session::get('tipo')==5)
-      {
-
+       if(Session::get('tipo')==5)
+       {
           return view('/paginas/grupo_Empresa/home_integrante')->with([
-        'titulo' => 'Jefe Consultor',
-        'sesion_valida' => true,
-        'tipo_usuario'=> 5,
-        'gestion'=>$this->gestion,
-        'datos'=>$this->datos,
-        'error_sesion'=>$error_sesion,
-        'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario') ]);//------>>>?????
+          'titulo' => 'home del integrante de la grupo empresa',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 5,
+          'gestion'=>$this->gestion,
+          'datos'=>$this->datos,          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
        }  
       }
       else
        {
         $error_sesion="Los datos incorrectos o usted no esta habilitado para esta gesti&oacute;n";
-        return view('iniciar_cesion')->with([
+        return view('iniciar_sesion')->with([
         'titulo' => 'Jefe Consultor',
-        'sesion_valida' => true,
+        'sesion_valida' => false,
         'tipo_usuario'=> 0,
         'gestion'=>$this->gestion,
         'datos'=>$this->datos,
-        'error_sesion'=>$error_sesion]);//------>>>?????
+        'error_sesion'=>$error_sesion]);
        }
 
     }
-   
-    }//fin metodo verificarUsuario
-
+    public function homeJefeConsultor()
+    {
+      $this->controlGestion();
+      $this->controlActividades(Session::get('id'));
+      return view('/paginas/consultor/homeJefeConsultor')->with([
+          'titulo' => 'home Jefe Consultor',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$this->gestion,
+          'datos'=>$this->datos,          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
+    }
+    public function informacionJefeConsultor()
+    {
+      $this->controlGestion();
+      $this->controlActividades(Session::get('id'));
+      $user = new Usuario;       
+      $infUser = $user->GetInformacionConsultor(Session::get('id'));
+      
+      return view('/paginas/consultor/informacionJefeConsultor')->with([
+          'titulo' => 'Informacion del Jefe Consultor TIS',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$this->gestion,
+          'datos'=>$this->datos,
+          'infUser'=>$infUser,          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+      
+    }
+    public function modificarJefeConsultor()
+    {
+      $this->controlGestion();
+      $this->controlActividades(Session::get('id'));
+      $user = new Usuario;       
+      $infUser = $user->GetInformacionConsultor(Session::get('id'));
+      return view('/paginas/consultor/modificarJefeConsultor')->with([
+          'titulo' => 'Modificar datos Jefe Consultor TIS',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$this->gestion,
+          'datos'=>$this->datos,
+          'infUser'=>$infUser,          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+    }
+    public function validarCambiosJefeConsultor()
+    {
+      $username=trim($_POST['username']);    
+      $apellido=$_POST['lastname'];
+      $nombre=$_POST['firstname'];
+      $telf=trim($_POST['telf']);
+      $email=trim($_POST['email']);
+      $error=false;
+      $error_email='';
+      $error_usuario='';
+      $this->controlGestion();
+      $user = new Usuario;
+      $infUser = $user->GetInformacionConsultor(Session::get('id'));
+      $this->controlGestion();
+      $this->controlActividades(Session::get('id'));
+      if(strcmp($email,$infUser[0]->email)!=0)
+      {
+        $correo = $user->verificarEmail($email,$this->gestion['id_gestion']);
+        if(!empty($correo))
+        {
+          $error=true;
+          $error_email="El e-mail ya esta registrado";
+        }        
+      }
+      if(strcmp($username,$infUser[0]->nombre_usuario)!=0)
+      {
+        $usuario = $user->verificarEmail($email,$this->gestion['id_gestion']);
+        if(!empty($usuario))
+        {
+          $error=true;
+          $error_usuario="El nombre de usuario ya esta registrado";
+        }        
+      }
+      if(!$error)
+      {
+        $user->actualizarDatos(Session::get('id'), $username, $nombre, $apellido, $telf, $email);
+          
+        echo "<script type='text/javascript'>
+              alert('Tus datos se han modificado de forma exitosa!')
+              </script>
+              <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'> ";
+     }
+     else
+     {
+      return view('/paginas/consultor/modificarJefeConsultor')->with([
+          'titulo' => 'Modificar datos Jefe Consultor TIS',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$this->gestion,
+          'datos'=>$this->datos,          
+          'error_email'=>$error_email,
+          'error_usuarior'=>$error_usuario,
+          'infUser'=>$infUser,
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+     }
+    }
+}
