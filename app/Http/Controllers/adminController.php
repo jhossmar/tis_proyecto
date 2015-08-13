@@ -23,8 +23,6 @@ class adminController extends Controller
 
    public function home_admin()
    {
-      
-     
      if( $this->verSesion==true)
      {
         //$principalController->mostrarVista("/paginas/administrador/home_admin",0); no funciona(???)
