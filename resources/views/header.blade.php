@@ -176,7 +176,7 @@
                                 <a href="iniciar_sesion.php?value=4" data-toggle="dropdown" class="dropdown-toggle" id="link_grupo">Grupo Empresa <b class="caret"></b></a>
                                     <ul class="dropdown-menu" id="menu1">
                                         <li>
-                                            <a href="iniciar_sesion.php" id="link_grupo_ingresar">Ingresar </a>
+                                            <a href="iniciar_sesion" id="link_grupo_ingresar">Ingresar </a>
                                         </li>
                                         <li>
                                             <a href="registro_grupo.php" id="link_grupo_registro">Registrarse</a>
@@ -187,7 +187,7 @@
                                 <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown" id="link_consultor">Consultor TIS <i class="caret"></i></a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a tabindex="-1" href="iniciar_sesion.php" id="link_consultor_ingresar">Ingresar</a>
+                                            <a tabindex="-1" href="iniciar_sesion" id="link_consultor_ingresar">Ingresar</a>
                                         </li>
                                         <li>
                                             <a tabindex="-1" href="registro_consultor.php" id="link_consultor_registro">Registrarse</a>
@@ -228,8 +228,8 @@
 		        @elseif($tipo_usuario==2)
 		    	<ul class="nav nav-tabs nav-stacked main-menu">
 					<li class="nav-header box-header"><h5>Men&uacute; </h5></li>
-					<li><a href="home_consultor_jefe.php"><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
-					<li><a href="info_consultor.php"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
+					<li><a href="home_jefe_consultor"><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
+					<li><a href="informacion_jefe_consultor"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
 					<li><a href="subir_consultor_jefe.php"><i class="icon-pencil"></i><span class="hidden-tablet"> Publicar Avisos</span></a></li>
 					<li><a href="subir_contrato.php"><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
 					<li><a href="administrar_archivos.php"><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
