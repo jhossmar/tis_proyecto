@@ -16,9 +16,9 @@ use App\Http\Controllers\FormularioController;
 
 class PrincipalController extends Controller
 {
-  private $gestion;
-  private $datos;
-    private function controlGestion()
+  public $gestion;
+  public $datos;
+    public function controlGestion()
     {   
       $id_gestion=-1;
       $nombre_gestion='no definida';
@@ -77,7 +77,7 @@ class PrincipalController extends Controller
                              'fecha_ini' => $ini_gestion,
                              'fecha_fin' => $fin_gestion);
     }              
-    private function controlActividades($id_usuario)
+    public function controlActividades($id_usuario)
     {
       $numdoc=0;        
       $num_grupo_empresa=0;
@@ -264,7 +264,7 @@ class PrincipalController extends Controller
        }  
       }
       else
-       {
+      {
         $error_sesion="Los datos incorrectos o usted no esta habilitado para esta gesti&oacute;n";
         return view('iniciar_sesion')->with([
         'titulo' => 'Jefe Consultor',
@@ -273,111 +273,6 @@ class PrincipalController extends Controller
         'gestion'=>$this->gestion,
         'datos'=>$this->datos,
         'error_sesion'=>$error_sesion]);
-       }
-
-    }
-    public function homeJefeConsultor()
-    {
-      $this->controlGestion();
-      $this->controlActividades(Session::get('id'));
-      return view('/paginas/consultor/homeJefeConsultor')->with([
-          'titulo' => 'home Jefe Consultor',
-          'sesion_valida' => true,
-          'tipo_usuario'=> 2,
-          'gestion'=>$this->gestion,
-          'datos'=>$this->datos,          
-          'nombre_foto'=>Session::get('nombre_foto'),
-          'nombre_usuario'=>Session::get('nombre_usuario') ]);
-    }
-    public function informacionJefeConsultor()
-    {
-      $this->controlGestion();
-      $this->controlActividades(Session::get('id'));
-      $user = new Usuario;       
-      $infUser = $user->GetInformacionConsultor(Session::get('id'));
-      
-      return view('/paginas/consultor/informacionJefeConsultor')->with([
-          'titulo' => 'Informacion del Jefe Consultor TIS',
-          'sesion_valida' => true,
-          'tipo_usuario'=> 2,
-          'gestion'=>$this->gestion,
-          'datos'=>$this->datos,
-          'infUser'=>$infUser,          
-          'nombre_foto'=>Session::get('nombre_foto'),
-          'nombre_usuario'=>Session::get('nombre_usuario')]);
-      
-    }
-    public function modificarJefeConsultor()
-    {
-      $this->controlGestion();
-      $this->controlActividades(Session::get('id'));
-      $user = new Usuario;       
-      $infUser = $user->GetInformacionConsultor(Session::get('id'));
-      return view('/paginas/consultor/modificarJefeConsultor')->with([
-          'titulo' => 'Modificar datos Jefe Consultor TIS',
-          'sesion_valida' => true,
-          'tipo_usuario'=> 2,
-          'gestion'=>$this->gestion,
-          'datos'=>$this->datos,
-          'infUser'=>$infUser,          
-          'nombre_foto'=>Session::get('nombre_foto'),
-          'nombre_usuario'=>Session::get('nombre_usuario')]);
-    }
-    public function validarCambiosJefeConsultor()
-    {
-      $username=trim($_POST['username']);    
-      $apellido=$_POST['lastname'];
-      $nombre=$_POST['firstname'];
-      $telf=trim($_POST['telf']);
-      $email=trim($_POST['email']);
-      $error=false;
-      $error_email='';
-      $error_usuario='';
-      $this->controlGestion();
-      $user = new Usuario;
-      $infUser = $user->GetInformacionConsultor(Session::get('id'));
-      $this->controlGestion();
-      $this->controlActividades(Session::get('id'));
-      if(strcmp($email,$infUser[0]->email)!=0)
-      {
-        $correo = $user->verificarEmail($email,$this->gestion['id_gestion']);
-        if(!empty($correo))
-        {
-          $error=true;
-          $error_email="El e-mail ya esta registrado";
-        }        
       }
-      if(strcmp($username,$infUser[0]->nombre_usuario)!=0)
-      {
-        $usuario = $user->verificarEmail($email,$this->gestion['id_gestion']);
-        if(!empty($usuario))
-        {
-          $error=true;
-          $error_usuario="El nombre de usuario ya esta registrado";
-        }        
-      }
-      if(!$error)
-      {
-        $user->actualizarDatos(Session::get('id'), $username, $nombre, $apellido, $telf, $email);
-          
-        echo "<script type='text/javascript'>
-              alert('Tus datos se han modificado de forma exitosa!')
-              </script>
-              <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'> ";
-     }
-     else
-     {
-      return view('/paginas/consultor/modificarJefeConsultor')->with([
-          'titulo' => 'Modificar datos Jefe Consultor TIS',
-          'sesion_valida' => true,
-          'tipo_usuario'=> 2,
-          'gestion'=>$this->gestion,
-          'datos'=>$this->datos,          
-          'error_email'=>$error_email,
-          'error_usuarior'=>$error_usuario,
-          'infUser'=>$infUser,
-          'nombre_foto'=>Session::get('nombre_foto'),
-          'nombre_usuario'=>Session::get('nombre_usuario')]);
-     }
-    }
+    }    
 }
