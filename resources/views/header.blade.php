@@ -215,13 +215,13 @@
   		        @if($tipo_usuario==1)
                 <ul class="nav nav-tabs nav-stacked main-menu">
                     <li class="nav-header box-header"><h5>Men&uacute; </h5></li>
-                    <li><a href="paginas/administrador/home_admin"><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
-                    <li><a href="paginas/administrador/info_admin.php"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del Administrador</span></a></li>
-                    <li><a href="paginas/administrador/administrar_consultor.php"><i class="icon-briefcase"></i><span class="hidden-tablet"> Administrar Consultores TIS</span></a></li>
-                    <li><a href="paginas/administrador/administrar_grupo_empresa.php"><i class="icon-edit"></i><span class="hidden-tablet"> Administrar Grupo Empresas</span></a></li>
-                    <li><a href="paginas/administrador/bitacoras_usuario.php"><i class="icon-eye-open"></i><span class="hidden-tablet"> Bit&aacute;coras de usuario</span></a></li>
-                    <li><a href="paginas/administrador/backup.php"><i class="icon-hdd"></i><span class="hidden-tablet"> Respaldo y Restauraci&oacute;n de la Base de Datos</span></a></li>
-                    <li><a href="paginas/administrador/administrar_mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Administrar espacio de Discuci&oacute;n</span></a></li>						
+                    <li><a href="home_admin"><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
+                    <li><a href="info_admin"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del Administrador</span></a></li>
+                    <li><a href="administrar_consultor"><i class="icon-briefcase"></i><span class="hidden-tablet"> Administrar Consultores TIS</span></a></li>
+                    <li><a href="administrar_grupo_empresa"><i class="icon-edit"></i><span class="hidden-tablet"> Administrar Grupo Empresas</span></a></li>
+                    <li><a href="bitacoras_usuario"><i class="icon-eye-open"></i><span class="hidden-tablet"> Bit&aacute;coras de usuario</span></a></li>
+                    <li><a href="backup"><i class="icon-hdd"></i><span class="hidden-tablet"> Respaldo y Restauraci&oacute;n de la Base de Datos</span></a></li>
+                    <li><a href="administrar_mensajes"><i class="icon-comment"></i><span class="hidden-tablet"> Administrar espacio de Discuci&oacute;n</span></a></li>						
                 </ul>
             </div>
         </div>	        
