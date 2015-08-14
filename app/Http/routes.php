@@ -15,6 +15,10 @@ Route::get('subir_consultor_jefe','JefeConsultorController@subirJefeConsultor');
 Route::post('subir_consultor_jefe','JefeConsultorController@validarAvisoJefeConsultor');
 Route::get('subir_contrato','JefeConsultorController@subirContrato');
 Route::post('subir_contrato','JefeConsultorController@validarContrato');
+Route::get('administrar_archivos','JefeConsultorController@administrarArchivos');
+Route::post('administrar_archivos','JefeConsultorController@validarArchivos');
+Route::get('planificacion_actividades','JefeConsultorController@planificarActividades');
+Route::post('planificacion_actividades/{id}','JefeConsultorController@validarActividades');
 
 Route::get('salir',function(){
   // por ahora para borrar variables de session
