@@ -113,7 +113,7 @@ class PrincipalController extends Controller
     public function inicio()
     {        
       $this->controlGestion();
-         
+         // MEjorar este if. no funciona correctamente
         if(Session::get('id')!=null)
         {
           $this->controlActividades(Session::get('id')); 

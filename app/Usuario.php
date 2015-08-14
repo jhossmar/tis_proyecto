@@ -49,4 +49,11 @@ class Usuario extends Model
                     set nombre_usuario = :usuario, nombre = :nombre, apellido = :apellido, telefono = :telf, email = :email
                            where u.id_usuario = :id_usuario",['id_usuario'=>$id_usuario,'usuario'=>$nombre_usuario,'nombre'=>$nombre,'apellido'=>$apellido,'telf'=>$telefono,'email'=>$email]);
     }
+     public function getInformacionAdministrador($id)
+    {
+        $consulta_usuario = DB::select("select id_usuario, nombre_usuario,clave,nombre,apellido,telefono,email,habilitado
+                                        from usuario u
+                                        where u.id_usuario=:id",['id'=>$id]);
+        return $consulta_usuario;
+    }
 }

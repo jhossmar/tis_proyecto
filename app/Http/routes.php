@@ -15,6 +15,8 @@ Route::get('administrar_grupo_empresa','adminController@administrar_grupo_empres
 Route::get('bitacoras_usuario','adminController@bitacoras_usuario');
 Route::get('backup','adminController@backup');
 Route::get('administrar_mensajes','adminController@administrar_mensajes');
+Route::get('modificar_registro_admin','adminController@modificar_registro_admin');
+
 
 
 Route::get('home_jefe_consultor','PrincipalController@homeJefeConsultor');
