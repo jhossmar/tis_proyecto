@@ -23,7 +23,7 @@
 			<br>
      	<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" action="modificar_registro_jefe_consultor" accept-charset="utf-8">
 			<fieldset>
-			<input type="hidden" name="_token" value="{{csrf_token()}}">
+			<input type="hidden" name="_token" value="{{csrf_token()}}"></input>
 			<div class="control-group">
 			  <label class="control-label" for="pass">Nombre: </label>
 				  <div class="controls">

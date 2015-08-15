@@ -230,10 +230,10 @@
 					<li class="nav-header box-header"><h5>Men&uacute; </h5></li>
 					<li><a href="home_jefe_consultor"><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
 					<li><a href="informacion_jefe_consultor"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
-					<li><a href="subir_consultor_jefe.php"><i class="icon-pencil"></i><span class="hidden-tablet"> Publicar Avisos</span></a></li>
-					<li><a href="subir_contrato.php"><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
-					<li><a href="administrar_archivos.php"><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
-					<li><a href="planificacion.php"><i class="icon-calendar"></i><span class="hidden-tablet"> Planificar actividades</span></a></li>
+					<li><a href="subir_consultor_jefe"><i class="icon-pencil"></i><span class="hidden-tablet"> Publicar Avisos</span></a></li>
+					<li><a href="subir_contrato"><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
+					<li><a href="administrar_archivos"><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
+					<li><a href="planificacion_actividades"><i class="icon-calendar"></i><span class="hidden-tablet"> Planificar actividades</span></a></li>
 					<li><a href="calificar_grupo_empresa.php"><i class="icon-edit"></i><span class="hidden-tablet"> calificar actividades</span></a></li>
 					<li><a href="administrar_grupo.php"><i class="icon-check"></i><span class="hidden-tablet"> Administrar mis Grupo Empresas</span></a></li>
 					<li><a href="notificaciones.php"><i class="icon-globe"></i><span class="hidden-tablet"> Notificaciones</span></a></li>

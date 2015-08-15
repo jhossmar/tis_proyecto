@@ -42,14 +42,18 @@ class Usuario extends Model
         return $sql_user;
     }
     public function actualizarDatos($id_usuario, $nombre_usuario, $nombre, $apellido, $telefono, $email)
-    {
-        DB::statement("CALL iniciar_sesion(:id_usuario)",['id_usuario'=>$id_usuario]);
-        
+    {       
         DB::update("update usuario as u
                     set nombre_usuario = :usuario, nombre = :nombre, apellido = :apellido, telefono = :telf, email = :email
                            where u.id_usuario = :id_usuario",['id_usuario'=>$id_usuario,'usuario'=>$nombre_usuario,'nombre'=>$nombre,'apellido'=>$apellido,'telf'=>$telefono,'email'=>$email]);
     }
-     public function getInformacionAdministrador($id)
+
+    public function iniciarSesion($id_usuario)
+    {
+        DB::statement("CALL iniciar_sesion(:id_usuario)",['id_usuario'=>$id_usuario]);
+
+    }
+    public function getInformacionAdministrador($id)
     {
         $consulta_usuario = DB::select("select id_usuario, nombre_usuario,clave,nombre,apellido,telefono,email,habilitado
                                         from usuario u

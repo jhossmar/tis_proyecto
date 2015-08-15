@@ -8,6 +8,7 @@ Route::get('iniciar_sesion','PrincipalController@iniciarSesion');
 Route::post('iniciar_sesion', 'PrincipalController@verificarUsuario');
 
 
+
 Route::get('home_admin','adminController@home_admin');
 Route::get('info_admin','adminController@info_admin');
 Route::get('administrar_consultor','adminController@administrar_consultor');
@@ -19,10 +20,19 @@ Route::get('modificar_registro_admin','adminController@modificar_registro_admin'
 
 
 
-Route::get('home_jefe_consultor','PrincipalController@homeJefeConsultor');
-Route::get('informacion_jefe_consultor','PrincipalController@informacionJefeConsultor');
-Route::get('modificar_registro_jefe_consultor','PrincipalController@modificarJefeConsultor');
-Route::post('modificar_registro_jefe_consultor','PrincipalController@validarCambiosJefeConsultor');
+Route::get('home_jefe_consultor','JefeConsultorController@homeJefeConsultor');
+Route::get('informacion_jefe_consultor','JefeConsultorController@informacionJefeConsultor');
+Route::get('modificar_registro_jefe_consultor','JefeConsultorController@modificarJefeConsultor');
+Route::post('modificar_registro_jefe_consultor','JefeConsultorController@validarCambiosJefeConsultor');
+Route::get('subir_consultor_jefe','JefeConsultorController@subirJefeConsultor');
+Route::post('subir_consultor_jefe','JefeConsultorController@validarAvisoJefeConsultor');
+Route::get('subir_contrato','JefeConsultorController@subirContrato');
+Route::post('subir_contrato','JefeConsultorController@validarContrato');
+Route::get('administrar_archivos','JefeConsultorController@administrarArchivos');
+Route::post('administrar_archivos','JefeConsultorController@validarArchivos');
+Route::get('planificacion_actividades','JefeConsultorController@planificarActividades');
+Route::post('planificacion_actividades/{id}','JefeConsultorController@validarActividades');
+
 
 
 Route::get('salir',function(){

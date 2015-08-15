@@ -45,7 +45,6 @@ class Actividades extends Model
 		$this->date = date("Y-m-d");
 	    $this->fecha_actual=strtotime($this->date);
 	}
-
 	private function ActualizarActividad($fase,$id_gestion)
 	{		
 		$consulta_sql = DB::update("UPDATE fase_convocatoria
@@ -257,6 +256,12 @@ class Actividades extends Model
 			$this->activo_7=0;
 			$this->act_7_espera=false;
 		}
+	}
+	public function setFaseConvocatoria($inicio,$fin,$id_gestion,$fase)
+	{
+		DB::update("update fase_convocatoria
+                    set fecha_inicio = :inicio, fecha_fin = :fin, activo=1
+                    where gestion = :id_gestion AND tipo_fase_convocatoria= :fase",['inicio'=>$inicio,'fin'=>$fin,'id_gestion'=>$id_gestion,'fase'=>$fase]);
 	}
 }					
 ?>
