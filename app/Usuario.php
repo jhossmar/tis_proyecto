@@ -60,4 +60,21 @@ class Usuario extends Model
                                         where u.id_usuario=:id",['id'=>$id]);
         return $consulta_usuario;
     }
+
+      public function actualizarDatosAdmin($id_usuario, $nombre_usuario, $nombre, $apellido, $telefono, $email,$clave)
+    {       
+        DB::update("update usuario as u
+                    set nombre_usuario = :usuario, nombre = :nombre, apellido = :apellido, telefono = :telf, email = :email,clave = :clave
+                           where u.id_usuario = :id_usuario",['id_usuario'=>$id_usuario,'usuario'=>$nombre_usuario,'nombre'=>$nombre,'apellido'=>$apellido,'telf'=>$telefono,'email'=>$email,'clave'=>$clave]);
+    }
+
+     public function getConsultoresTis()
+     {
+
+        $consulta_usuario = DB::select("select id_usuario, nombre_usuario,clave,nombre,apellido,telefono,email,habilitado,curriculum,tipo_usuario
+                                        from usuario u, consultor_tis c
+                                        where u.id_usuario = c.usuario ");
+        return $consulta_usuario;
+
+     }
 }

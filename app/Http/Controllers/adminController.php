@@ -71,6 +71,7 @@ class adminController extends Controller
         } 
 
          $this->verSesion->sesionIniciado();
+
      if( $this->verSesion==true)
      {
       return view('/paginas/administrador/info_admin')->with([
@@ -90,21 +91,36 @@ class adminController extends Controller
         'quien_ingresa'=>"Administrador del sistema"]);
        }
        else{
-
+           return redirect('index');
 
        }
   }
  
   public function administrar_consultor(){
-      return view('/paginas/administrador/administrar_consultor')->with([
+     
+     $titulo="Administrar Consultores TIS";
+     $usuario= new Usuario;
+     $lista_consultores=$usuario->getConsultoresTis(); // $consulta
+      $num_res=count($lista_consultores);
+
+    if( $this->verSesion==true)
+     {
+        return view('/paginas/administrador/administrar_consultor')->with([
         'titulo' => 'Administrador',
         'sesion_valida' => true,
         'tipo_usuario'=> 1,
         'gestion'=>$this->verSesion->getGestion(),
         'datos'=>$this->verSesion->getDatos(),
         'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario') ]);
+        'nombre_usuario'=>Session::get('nombre_usuario'),
+        'lista_consultores'=>  $lista_consultores,
+        'num_res'=>$num_res ]);
+        
+        }
+       else{
 
+
+       }
 
   }
 
@@ -158,16 +174,18 @@ class adminController extends Controller
 
   public function modificar_registro_admin()
   {
-         
-    
-
-
-
-
-
-
-
-
+  
+        $quien_ingresa="Administrador del sistema";
+        $pag_ini="home_admin";
+        $quien=1;
+        $titulo="Modificar datos ".$quien_ingresa;
+        $user = new Usuario;       
+        $infUser = $user->getInformacionAdministrador(Session::get('id'));
+     
+        $nom=$infUser[0]->nombre;
+        $ape=$infUser[0]->apellido;
+        $telf=$infUser[0]->telefono;
+        $mail=$infUser[0]->email;
 
        if( $this->verSesion==true)
        {
@@ -178,13 +196,96 @@ class adminController extends Controller
           'gestion'=>$this->verSesion->getGestion(),
           'datos'=>$this->verSesion->getDatos(),
           'nombre_foto'=>Session::get('nombre_foto'),
-          'nombre_usuario'=>Session::get('nombre_usuario') ]);
-        }else{
-       
-         return redirect('index');
-         }
+          'nombre_usuario'=>Session::get('nombre_usuario'), 
+          'nom'=>$nom,
+          'ape'=>$ape,
+          'telf'=>$telf,
+          'mail'=>$mail,
+          'error_email'=>'' ]);
 
-}
+        }else{
+           return redirect('index');
+         }
+ }
+
+
+function modificar_registro_admin_guardar(){
+    /*VALORES DE FORMULARIO*/
+  $apellido=$_POST['lastname'];
+  $nombre=$_POST['firstname'];
+  $telfFijo=trim($_POST['telf']);
+  $eMail=trim($_POST['email']);
+  $contrasena=$_POST['contrasenia'];
+  $error=false;
+   
+  $usuario = new Usuario;
+  $datos_admin=$usuario->getInformacionAdministrador(Session::get('id'));
+   
+  $mail=$datos_admin[0]->email; 
+
+   
+  if (strcmp($mail,$eMail)!=0) { 
+    $result=$usuario->verificarEmail($eMail,$this->verSesion->getGestion());
+    if(is_array($result) && !empty($result))//ya existe usuario o email
+    {     $mail_aux=$result[0]->email;
+
+      if (strcmp($mail_aux,$eMail)==0) { //volvemos a comparar?
+              $error_email="El e-mail ya esta registrado";
+              $mail=$eMail;
+              $error=true;
+       
+         $nom=$datos_admin[0]->nombre;
+        $ape=$datos_admin[0]->apellido;
+        $telf=$datos_admin[0]->telefono;
+        $mail=$datos_admin[0]->email;
+
+        return view('/paginas/administrador/modificar_registro_admin')->with([
+          'titulo' => 'Administrador',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 1,
+          'gestion'=>$this->verSesion->getGestion(),
+          'datos'=>$this->verSesion->getDatos(),
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario'), 
+          'nom'=>$nom,
+          'ape'=>$ape,
+          'telf'=>$telf,
+          'mail'=>$mail,
+          'error_email'=>$error_email ]);
+
+      }   
+        
+    }
+  }
+    if(!$error){/*SI NO HAY NINGUN ERROR REGISTRO*/
+     
+    
+
+    if($contrasena!=""){
+     $usuario ->iniciarSesion(Session::get('id'));
+     $usuario ->actualizarDatosAdmin(Session::get('id'), 'admin', $nombre, $apellido,  $telfFijo,  $eMail,$contrasena);
+     
+     echo "<script type='text/javascript'>
+            alert('Tus datos se han modificado de forma exitosa!')
+            </script>
+            <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'> ";
+    }else{
+
+       $usuario ->iniciarSesion(Session::get('id'));
+     $usuario ->actualizarDatos(Session::get('id'), 'admin', $nombre, $apellido,  $telfFijo, $eMail);
+     
+     echo "<script type='text/javascript'>
+            alert('Tus datos se han modificado de forma exitosa!')
+            </script>
+            <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'> ";
+    }
+
+      
+    }
+  }
+  /*----------------------FIN VALIDAR REGISTRO------------------------*/
+     
+
 
 
 }// fin class adminController

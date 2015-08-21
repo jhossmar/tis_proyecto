@@ -17,7 +17,7 @@ Route::get('bitacoras_usuario','adminController@bitacoras_usuario');
 Route::get('backup','adminController@backup');
 Route::get('administrar_mensajes','adminController@administrar_mensajes');
 Route::get('modificar_registro_admin','adminController@modificar_registro_admin');
-
+Route::post('modificar_registro_admin','adminController@modificar_registro_admin_guardar');
 
 
 Route::get('home_jefe_consultor','JefeConsultorController@homeJefeConsultor');
