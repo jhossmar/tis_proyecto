@@ -8,11 +8,11 @@ class Usuario extends Model
 {
     public function GetUsuario($nombre,$clave)
     {
-        //$salt="$2x$07$./f4af7kJi1jdaxlswE34$";
-        //$pass=crypt($clave, $salt);
+        $salt="$2x$07$./f4af7kJi1jdaxlswE34$";
+        $pass=crypt($clave, $salt);
     	$consulta_sql = DB::select('select * 
     		                        from usuario
-    		                        where nombre_usuario = :nombre and clave = :clave ',['nombre' => $nombre,'clave'=> $clave]);
+    		                        where nombre_usuario = :nombre and clave = :clave ',['nombre' => $nombre,'clave'=> $pass]);
         return $consulta_sql;
     }
     public function SetBitacora($id)
@@ -59,5 +59,18 @@ class Usuario extends Model
                                         from usuario u
                                         where u.id_usuario=:id",['id'=>$id]);
         return $consulta_usuario;
+    }
+    public function getGrupoEmpresas($id_usuario)
+    {
+        $consulta = DB::select("select nombre_largo,id_grupo_empresa, habilitado
+                                from grupo_empresa           
+                                where consultor_tis=:id_consultor",['id_consultor'=>$id_usuario]);
+        return $consulta;
+    }
+    public function GetNombreUsuario($id_usuario)
+    {
+        $consulta = DB::select("select nombre,apellido
+                                from usuario
+                                where id_usuario=:usr",['usr'=>$id_usuario]);
     }
 }

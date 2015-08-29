@@ -15,8 +15,8 @@
 		    @if($gestion['gestion_valida'])		        
 		        @include('noticias')
             @else
-            <div align=\"center\">
-	            <h4><i class=\"icon-info-sign\"></i>
+            <div align="center">
+	            <h4><i class="icon-info-sign"></i>
  	            No existe ning&uacute;n aviso para esta gesti&oacute;n.</h4>
    	        </div>
             @endif

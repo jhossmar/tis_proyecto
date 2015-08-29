@@ -35,7 +35,7 @@
 				  </ul>                  
 				@endif         
 			@elseif($tipo_usuario==4)
-				@if($num_notificaciones>0)
+				@if($datos['num_notificaciones'] > 0)
 					<ul class="dashboard-list">
 						<li>Jefe Grupo Empresa tiene ".$datos['num_notificaciones']." notificacion(es) no le&iacute;da(s). Puede ver sus notificaciones <b><a href='notificaciones.php'>aqu&iacute;</a></b></li>
 					</ul>
@@ -63,7 +63,7 @@
 	<div class="box-content">
 		<ul class="dashboard-list">
 			@if($gestion['gestion_valida'])
-				<li><b>{{"Gesti&oacute;n ".$gestion['nombre_gestion']." :"}}</b>{{" Del ".$gestion['fecha_ini']." hasta ".$gestion['fecha_fin']}}</li>
+				<li><b>{{"Gesti&oacute;n ".$gestion['nombre_gestion']." :"}}</b>{{" Del ".strftime("%d/%m/%y",$gestion['fecha_ini'])." hasta ".strftime("%d/%m/%y",$gestion['fecha_fin'])}}</li>
 				  @if($datos['actividad']->activo_1==1)
 				    <li><b>Inicio convocatoria:</b>{{"Del ".$datos['actividad']->fecha_ini_1." hasta ".$datos['actividad']->fecha_fin_1 }}</li>
 				  @endif

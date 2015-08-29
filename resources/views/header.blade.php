@@ -6,33 +6,34 @@
 	<meta name="description" content="Sistema de Apoyo a la Empresa TIS">
 	<meta name="author" content="TIS">
  
-	 <link id="bs-css" href="css/bootstrap-cerulean.css" rel="stylesheet">
-     <link rel="stylesheet" type="text/css" href="css/letras.css">
-	 <link href="css/bootstrap-responsive.css" rel="stylesheet">
-	 <link href="css/charisma-app.css" rel="stylesheet">
-	 <link href="css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
-	 <link href='css/fullcalendar.css' rel='stylesheet'>
-	 <link href='css/fullcalendar.print.css' rel='stylesheet'  media='print'>
-	 <link href='css/chosen.css' rel='stylesheet'>
-	 <link href='css/uniform.default.css' rel='stylesheet'>
-	 <link href='css/colorbox.css' rel='stylesheet'>
-	 <link href='css/jquery.cleditor.css' rel='stylesheet'>
-	 <link href='css/jquery.noty.css' rel='stylesheet'>
-	 <link href='css/noty_theme_default.css' rel='stylesheet'>
-	 <link href='css/elfinder.min.css' rel='stylesheet'>
-	 <link href='css/elfinder.theme.css' rel='stylesheet'>
-	 <link href='css/jquery.iphone.toggle.css' rel='stylesheet'>
-	 <link href='css/opa-icons.css' rel='stylesheet'>
-	 <link href='css/uploadify.css' rel='stylesheet'>
-	 <link href='css/style2.css' rel='stylesheet'>	
-	 <link href='css/noticias.css' rel='stylesheet'>
-	 <link href='css/ayuda_indice.css' rel='stylesheet'>
+     {!! Html::style('css/bootstrap-cerulean.css') !!}
+	 
+     <link rel="stylesheet" href={{asset("/css/letras.css")}} type="text/css"/>
+	 <link href={{asset("/css/bootstrap-responsive.css")}} rel="stylesheet" type="text/css"/>
+	 <link href={{asset("/css/charisma-app.css")}} rel="stylesheet"/>
+	 <link href={{asset("/css/jquery-ui-1.8.21.custom.css")}} rel="stylesheet" type="text/css"/>
+	 <link href={{asset("/css/fullcalendar.css")}} rel='stylesheet'/>
+	 <link href={{asset("/css/fullcalendar.print.css")}} rel='stylesheet' media='print'/>
+	 <link href={{asset("/css/chosen.css")}} rel='stylesheet' type="text/css"/>
+	 <link href={{asset("/css/uniform.default.css")}}rel='stylesheet'/>
+	 <link href={{asset("/css/colorbox.css")}} rel='stylesheet'/>
+	 <link href={{asset("/css/jquery.cleditor.css")}} rel='stylesheet'/>
+	 <link href={{asset("/css/jquery.noty.css")}} rel='stylesheet'/>
+	 <link href={{asset("/css/noty_theme_default.css")}} rel='stylesheet'/>
+	 <link href={{asset("/css/elfinder.min.css")}} rel='stylesheet'/>	 
+	 <link href={{asset("/css/elfinder.theme.css")}} rel='stylesheet'>
+	 <link href={{asset("/css/jquery.iphone.toggle.css")}} rel='stylesheet'/>
+	 <link href={{asset("/css/opa-icons.css")}} rel='stylesheet'/>
+	 <link href={{asset("/css/uploadify.css")}} rel='stylesheet'/>
+	 <link href={{asset("/css/style2.css")}} rel='stylesheet'/>	
+	 <link href={{asset("/css/noticias.css")}} rel='stylesheet'/>
+	 <link href={{asset("/css/ayuda_indice.css")}} rel='stylesheet'/>
      <!-- calendario -->
-     <link rel="stylesheet" type="text/css" href="css/frontierCalendar/jquery-frontier-cal-1.3.2.css" />
-     <link rel="stylesheet" type="text/css" href="css/colorpicker/colorpicker.css" />
-     <link href="css/jquery.alerts.css" rel="stylesheet" type="text/css">
+     <link rel="stylesheet" type="text/css" href={{asset("/css/frontierCalendar/jquery-frontier-cal-1.3.2.css")}} />
+     <link rel="stylesheet" type="text/css" href={{asset("/css/colorpicker/colorpicker.css")}} />
+     <link href={{asset("/css/jquery.alerts.css")}} rel="stylesheet" type="text/css">
 	
-     <link rel="shortcut icon" href="img/favicon.png">
+     <link rel="shortcut icon" href={{asset("img/favicon.png")}}>
 	
   <style type="text/css">
   
@@ -143,7 +144,7 @@
     <div class="navbar">
         <div class="row-fluid navegacion">
             <div class="span2 logo">	                
-       	        <img class="logo" alt="Logo Sistema de Apoyo a la Empresa TIS" src="img/umssd.png" height="120px"/>
+       	        <img class="logo" alt="Logo Sistema de Apoyo a la Empresa TIS" src={{asset("img/umssd.png")}} height="120px"/>
             </div>
             <div class="span10">
                 <div class="row-fluid contenido-navegacion">
@@ -159,7 +160,7 @@
 			                </a>
 			                <ul class="dropdown-menu">
 	                            <li><a href="#modal2"><i  class="icon-edit"></i>cambiar foto</a></li>
-	                            <li><a href="salir"><i class= "icon-off"></i>Salir</a></li>	                        
+	                            <li><a href="{{URL('salir')}}"><i class= "icon-off"></i>Salir</a></li>	                        
 	                        </ul>
 			            </div>
     	            </div>
@@ -169,7 +170,7 @@
                     <div class="menu">
                         <ul class="nav">
                             <li class="hidden-tablet">
-                                <a href="index" id="link_inicio">Inicio</a>
+                                <a href="{{url('index')}}" id="link_inicio">Inicio</a>
                             </li>
                             @if(!isset($nombre_usuario))
                             <li class="dropdown">
@@ -228,13 +229,13 @@
 		        @elseif($tipo_usuario==2)
 		    	<ul class="nav nav-tabs nav-stacked main-menu">
 					<li class="nav-header box-header"><h5>Men&uacute; </h5></li>
-					<li><a href="home_jefe_consultor"><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
-					<li><a href="informacion_jefe_consultor"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
-					<li><a href="subir_consultor_jefe"><i class="icon-pencil"></i><span class="hidden-tablet"> Publicar Avisos</span></a></li>
-					<li><a href="subir_contrato"><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
-					<li><a href="administrar_archivos"><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
-					<li><a href="planificacion_actividades"><i class="icon-calendar"></i><span class="hidden-tablet"> Planificar actividades</span></a></li>
-					<li><a href="calificar_grupo_empresa.php"><i class="icon-edit"></i><span class="hidden-tablet"> calificar actividades</span></a></li>
+					<li><a href={{url('home_jefe_consultor')}}><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
+					<li><a href={{url('informacion_jefe_consultor')}}><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
+					<li><a href={{url('subir_consultor_jefe')}}><i class="icon-pencil"></i><span class="hidden-tablet"> Publicar Avisos</span></a></li>
+					<li><a href={{url('subir_contrato')}}><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
+					<li><a href={{url('administrar_archivos')}}><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
+					<li><a href={{url('planificacion_actividades')}}><i class="icon-calendar"></i><span class="hidden-tablet"> Planificar actividades</span></a></li>
+					<li><a href={{url('calificar_grupo_empresa')}}><i class="icon-edit"></i><span class="hidden-tablet"> calificar actividades</span></a></li>
 					<li><a href="administrar_grupo.php"><i class="icon-check"></i><span class="hidden-tablet"> Administrar mis Grupo Empresas</span></a></li>
 					<li><a href="notificaciones.php"><i class="icon-globe"></i><span class="hidden-tablet"> Notificaciones</span></a></li>
 					<li><a href="mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Espacio de Discuci&oacute;n</span></a></li>

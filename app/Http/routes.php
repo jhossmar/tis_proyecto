@@ -32,8 +32,11 @@ Route::get('administrar_archivos','JefeConsultorController@administrarArchivos')
 Route::post('administrar_archivos','JefeConsultorController@validarArchivos');
 Route::get('planificacion_actividades','JefeConsultorController@planificarActividades');
 Route::post('planificacion_actividades/{id}','JefeConsultorController@validarActividades');
-
-
+Route::get('calificar_grupo_empresa','JefeConsultorController@calificarGrupoEmpresa');
+Route::get('evaluar_grupo_empresa/{id}','JefeConsultorController@actualizarCalificacion');
+Route::get('evaluar_grupo_empresa/{id}/{id_actividad}','JefeConsultorController@mostrarTareas');
+Route::post('modificar_entrega_producto','JefeConsultorController@modificarEntregaProducto');
+Route::post('actualizar_entrega_producto','JefeConsultorController@actualizarEntregaProducto');
 
 Route::get('salir',function(){
   // por ahora para borrar variables de session
