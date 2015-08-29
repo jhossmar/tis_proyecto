@@ -1,4 +1,4 @@
-<script src="js/noticias.js"></script>
+<script src={{asset("js/noticias.js")}}></script>
 <script language="JavaScript" type="text/javascript">
     var nume={{$datos['numdoc']}}
         setTamAviso( 130 );
@@ -12,7 +12,7 @@
   </div>    
 @else   
   @if($datos['numdoc'] < 4)
-    <table style="position:relative; overflow:hidden; width:100%; max-height=390px">
+    <table style="position:relative; overflow:hidden; width:100%; max-height=390px;">
       @foreach($datos['resultado_noticias'] as $row)
         <tr>
           <td>
@@ -38,7 +38,7 @@
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td style="width: 96%" onmouseover="normal()">
-          <div style="position:relative overflow:hidden width:100% height:390px">                                             
+          <div style="position:relative; overflow:hidden; width:100%; height:390px;">                                             
             @foreach($datos['resultado_noticias'] as $row)
               <div class="caja_aviso" align="center" style="position:absolute  width: 95% left: 2.5% margin-bottom:50px">
                 <div class="subtitulo_aviso">
@@ -58,13 +58,13 @@
           </div>
         </td>
         <td style="width: 2%">
-          <table style="height: 390px" border="0" cellpadding="0" cellspacing="0">
+          <table style="height:390px" border="0" cellpadding="0" cellspacing="0">
             <tbody>
-              <tr style="height: 20%"><td><img id="masarriba" alt="Arriba Rapido" src="img/masarriba.jpg" style="opacity:0.3 filter:alpha(opacity=29)" onmouseover="control_aviso(&#39 masarriba&#39)" onmousedown="control_aviso(&#39 masarriba&#39)" onmouseout="control_salir_aviso(&#39 masarriba&#39)"></td></tr>
-              <tr style="height: 20%"><td><img id="arriba" alt="Arriba" src="img/arriba.jpg" style="opacity:0.3 filter:alpha(opacity=29)" onmouseover="control_aviso(&#39 arriba&#39)" onmousedown="control_aviso(&#39 arriba&#39 )" onmouseout="control_salir_aviso(&#39 arriba&#39)"></td></tr>
-              <tr style="height: 20%"><td><img id="alto" alt="Detener" src="img/alto.jpg" style="opacity:0.3 filter:alpha(opacity=29)" onmouseover="control_aviso(&#39 alto&#39)" onmousedown="control_aviso(&#39 alto&#39 )" onmouseout="control_salir_aviso(&#39 alto&#39 )"></td></tr>
-              <tr style="height: 20%"><td><img id="abajo" alt="Abajo" src="img/abajo.jpg" style="opacity:0.3 filter:alpha(opacity=29)" onmouseover="control_aviso(&#39 abajo&#39)" onmousedown="control_aviso(&#39 abajo&#39 )" onmouseout="control_salir_aviso(&#39 abajo&#39)"></td></tr>
-              <tr style="height: 20%"><td><img id="masabajo" alt="Abajo Rapido" src="img/masabajo.jpg" style="opacity:0.3 filter:alpha(opacity=29)" onmouseover="control_aviso(&#39 masabajo&#39)" onmousedown="control_aviso(&#39 masabajo&#39 )" onmouseout="control_salir_aviso(&#39 masabajo&#39 )"></td></tr>
+              <tr style="height: 20%"><td><img id="masarriba" alt="Arriba Rapido" src={{asset("img/masarriba.jpg")}} style="opacity:0.3 filter:alpha(opacity=29)" onmouseover="control_aviso(&#39 masarriba&#39)" onmousedown="control_aviso(&#39 masarriba&#39)" onmouseout="control_salir_aviso(&#39 masarriba&#39)"></td></tr>
+              <tr style="height: 20%"><td><img id="arriba" alt="Arriba" src={{asset("img/arriba.jpg")}} style="opacity:0.3 filter:alpha(opacity=29)" onmouseover="control_aviso(&#39 arriba&#39)" onmousedown="control_aviso(&#39 arriba&#39 )" onmouseout="control_salir_aviso(&#39 arriba&#39)"></td></tr>
+              <tr style="height: 20%"><td><img id="alto" alt="Detener" src={{asset("img/alto.jpg")}} style="opacity:0.3 filter:alpha(opacity=29)" onmouseover="control_aviso(&#39 alto&#39)" onmousedown="control_aviso(&#39 alto&#39 )" onmouseout="control_salir_aviso(&#39 alto&#39 )"></td></tr>
+              <tr style="height: 20%"><td><img id="abajo" alt="Abajo" src={{asset("img/abajo.jpg")}} style="opacity:0.3 filter:alpha(opacity=29)" onmouseover="control_aviso(&#39 abajo&#39)" onmousedown="control_aviso(&#39 abajo&#39 )" onmouseout="control_salir_aviso(&#39 abajo&#39)"></td></tr>
+              <tr style="height: 20%"><td><img id="masabajo" alt="Abajo Rapido" src={{asset("img/masabajo.jpg")}} style="opacity:0.3 filter:alpha(opacity=29)" onmouseover="control_aviso(&#39 masabajo&#39)" onmousedown="control_aviso(&#39 masabajo&#39 )" onmouseout="control_salir_aviso(&#39 masabajo&#39 )"></td></tr>
             </tbody>
           </table>
         </td>

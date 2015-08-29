@@ -11,54 +11,51 @@ use App\noticias;
 use App\Actividades;
 use App\Usuario;
 use App\Archivos;
-use App\Http\Controllers\PrincipalController;
+use App\GrupoEmpresa;
+use App\Http\Controllers\VerificadorDeSesiones;
 use Response;
 class JefeConsultorController extends Controller
 {
 	public function homeJefeConsultor()
   {
-    $principal= new PrincipalController;
-    $principal->controlGestion();
-    $principal->controlActividades(Session::get('id'));
+
+    $principal = new VerificadorDeSesiones;
+    
     return view('/paginas/consultor/homeJefeConsultor')->with([
           'titulo' => 'home Jefe Consultor',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,
-          'gestion'=>$principal->gestion,
-          'datos'=>$principal->datos,          
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario') ]);
   }
   public function informacionJefeConsultor()
   {
-    $principal= new PrincipalController;
-    $principal->controlGestion();
-    $principal->controlActividades(Session::get('id'));
+    $principal = new VerificadorDeSesiones;
     $user = new Usuario;       
     $infUser = $user->GetInformacionConsultor(Session::get('id'));   
     return view('/paginas/consultor/informacionJefeConsultor')->with([
           'titulo' => 'Informacion del Jefe Consultor TIS',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,
-          'gestion'=>$principal->gestion,
-          'datos'=>$principal->datos,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
           'infUser'=>$infUser,          
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario')]);     
   }
   public function modificarJefeConsultor()
   {
-    $principal= new PrincipalController;
-    $principal->controlGestion();
-    $principal->controlActividades(Session::get('id'));
+    $principal = new VerificadorDeSesiones;
     $user = new Usuario;       
     $infUser = $user->GetInformacionConsultor(Session::get('id'));
     return view('/paginas/consultor/modificarJefeConsultor')->with([
           'titulo' => 'Modificar datos Jefe Consultor TIS',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,
-          'gestion'=>$principal->gestion,
-          'datos'=>$principal->datos,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
           'infUser'=>$infUser,          
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario')]);
@@ -73,15 +70,13 @@ class JefeConsultorController extends Controller
     $error=false;
     $error_email='';
     $error_usuario='';
-    $this->controlGestion();
     $user = new Usuario;
     $infUser = $user->GetInformacionConsultor(Session::get('id'));
-    $principal= new PrincipalController;
-    $principal->controlGestion();
-    $principal->controlActividades(Session::get('id'));
+    $principal = new VerificadorDeSesiones;
+    $aux = $principal->GetGestion();
     if(strcmp($email,$infUser[0]->email)!=0)
     {
-      $correo = $user->verificarEmail($email,$this->gestion['id_gestion']);
+      $correo = $user->verificarEmail($email,$aux['id_gestion']);
       if(!empty($correo))
       {
         $error=true;
@@ -90,7 +85,7 @@ class JefeConsultorController extends Controller
     }
     if(strcmp($username,$infUser[0]->nombre_usuario)!=0)
     {
-      $usuario = $user->verificarEmail($email,$this->gestion['id_gestion']);
+      $usuario = $user->verificarEmail($email,$aux['id_gestion']);
       if(!empty($usuario))
       {
         $error=true;
@@ -112,8 +107,8 @@ class JefeConsultorController extends Controller
           'titulo' => 'Modificar datos Jefe Consultor TIS',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,
-          'gestion'=>$principal->gestion,
-          'datos'=>$principal->datos,          
+          'gestion'=>$aux,
+          'datos'=>$principal->GetDatos(),
           'error_email'=>$error_email,
           'error_usuarior'=>$error_usuario,
           'infUser'=>$infUser,
@@ -123,15 +118,13 @@ class JefeConsultorController extends Controller
   }
   public function subirJefeConsultor()
   {
-    $principal= new PrincipalController;
-    $principal->controlGestion();
-    $principal->controlActividades(Session::get('id'));
+    $principal = new VerificadorDeSesiones;
     return view('/paginas/consultor/subirJefeConsultor')->with([
           'titulo' => 'Publicar avisos Jefe Consultor TIS',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,
-          'gestion'=>$principal->gestion,
-          'datos'=>$principal->datos,          
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario')]);
   }
@@ -192,10 +185,10 @@ class JefeConsultorController extends Controller
     }
     if(!$error)
     {
-      $principal= new PrincipalController;
-      $principal->controlGestion();
-      $archivo = new Archivos;
-      $archivo->setArchivo($tituloD,$descripcion,$documento,Session::get('id'),$principal->gestion['id_gestion']);
+      $principal = new VerificadorDeSesiones;
+      $aux = $principal->GetGestion();
+      $archivo = new Archivos;                
+      $archivo->setArchivo($tituloD,$descripcion,$documento,Session::get('id'),$aux['id_gestion']);
       echo "<script type='text/javascript'>
             alert('Se ha subido el archivo de forma exitosa!')
             </script>
@@ -203,15 +196,13 @@ class JefeConsultorController extends Controller
     }
     else
     {
-      $principal= new PrincipalController;
-      $principal->controlGestion();
-      $principal->controlActividades(Session::get('id'));
+      $principal = new VerificadorDeSesiones;
       return view('/paginas/consultor/subirJefeConsultor')->with([
         'titulo' => 'Publicar avisos Jefe Consultor TIS',
         'sesion_valida' => true,
         'tipo_usuario'=> 2,
-        'gestion'=>$principal->gestion,
-        'datos'=>$principal->datos,
+        'gestion'=>$principal->GetGestion(),
+        'datos'=>$principal->GetDatos(),
         'error'=>$error,
         'error_doc'=>$error_doc,
         'nombre_foto'=>Session::get('nombre_foto'),
@@ -220,15 +211,13 @@ class JefeConsultorController extends Controller
   }
   public function subirContrato()
   {
-    $principal= new PrincipalController;
-    $principal->controlGestion();
-    $principal->controlActividades(Session::get('id'));
+    $principal = new VerificadorDeSesiones;
     return view('/paginas/consultor/subirContratoJefeConsultor')->with([
           'titulo' => 'Publicar contrato',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,
-          'gestion'=>$principal->gestion,
-          'datos'=>$principal->datos,          
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario')]);
   }
@@ -298,26 +287,24 @@ class JefeConsultorController extends Controller
       
       if(!$errorA)
       {
-          $principal= new PrincipalController;
-          $principal->controlGestion();
-          $archivo = new Archivos;
-          $archivo->setContrato($tituloD,$descripcionA,$contrato,Session::get('id'),$principal->gestion['id_gestion']);
-          echo "<script type='text/javascript'>
-               alert('Se ha subido el contrato de forma exitosa!')
-               </script>
-               <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'> ";
+        $principal = new VerificadorDeSesiones;
+        $aux = $principal->GetGestion();
+        $archivo = new Archivos;
+        $archivo->setContrato($tituloD,$descripcionA,$contrato,Session::get('id'),$aux['id_gestion']);
+        echo "<script type='text/javascript'>
+             alert('Se ha subido el contrato de forma exitosa!')
+             </script>
+             <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'> ";
       }
       else
       {
-        $principal= new PrincipalController;
-        $principal->controlGestion();
-        $principal->controlActividades(Session::get('id'));
+        $principal = new VerificadorDeSesiones;
         return view('/paginas/consultor/subirContratoJefeConsultor')->with([
             'titulo' => 'Publicar contrato',
             'sesion_valida' => true,
             'tipo_usuario'=> 2,
-            'gestion'=>$principal->gestion,
-            'datos'=>$principal->datos,
+            'gestion'=>$principal->GetGestion(),
+            'datos'=>$principal->GetDatos(),
             'errorA'=>$errorA,
             'error_docA'=>$error_docA,
             'nombre_foto'=>Session::get('nombre_foto'),
@@ -327,17 +314,15 @@ class JefeConsultorController extends Controller
   }
   public function administrarArchivos()
   {
-    $principal= new PrincipalController;
-    $principal->controlGestion();
-    $principal->controlActividades(Session::get('id'));
+    $principal = new VerificadorDeSesiones;
     $archivo = new Archivos;
     $archivos = $archivo->getArchivos(Session::get('id'));
     return view('/paginas/consultor/AdministrarJefeConsultor')->with([
        'titulo' => 'Administrar archivos',
        'sesion_valida' => true,
        'tipo_usuario'=> 2,
-       'gestion'=>$principal->gestion,
-       'datos'=>$principal->datos,       
+       'gestion'=>$principal->GetGestion(),
+       'datos'=>$principal->GetDatos(),
        'nombre_foto'=>Session::get('nombre_foto'),
        'nombre_usuario'=>Session::get('nombre_usuario'),       
        'identi'=>0,
@@ -364,26 +349,24 @@ class JefeConsultorController extends Controller
   }
   public function planificarActividades()
   {
-    $principal= new PrincipalController;
-    $principal->controlGestion();
-    $principal->controlActividades(Session::get('id'));
+    $principal = new VerificadorDeSesiones;
     $fase = array(1=>'lanzamiento',2=>'registro',3=>'documentos',4=>'contratos',5=>'desarrollo',6=>'productos',7=>'cierre');
     $titulos = array(1=>' 1. Lanzamiento de la Convocatoria P&uacute;blica' ,2=>' 2. Habilitar registro de Grupo Empresas e Integrantes',3=>' 3. Entrega de Documentos',4=>' 4. Firma de Contratos',5=>' 5. Proceso de Desarrollo',6=>' 6. Entrega de Producto Final',7=>' 7. Cierre de la Convocatoria');
     return view('/paginas/consultor/PlanificaActividadesJefeConsultor')->with([
        'titulo' => 'Planificar actividades',
        'sesion_valida' => true,
        'tipo_usuario'=> 2,
-       'gestion'=>$principal->gestion,
-       'datos'=>$principal->datos,
+       'gestion'=>$principal->GetGestion(),
+       'datos'=>$principal->GetDatos(),
        'fase'=>$fase,
        'subtitulo'=>$titulos,
        'nombre_foto'=>Session::get('nombre_foto'),
        'nombre_usuario'=>Session::get('nombre_usuario')]);    
   }
   public function validarActividades($id)
-  {
-    return $id;  
+  {    
     $fase = array(1=>'lanzamiento',2=>'registro',3=>'documentos',4=>'contratos',5=>'desarrollo',6=>'productos',7=>'cierre');   
+    $error=false;
     if(isset($_POST['enviar_'.$id]))
     {           
       if(isset($_POST['inicio_'.$id]) && isset($_POST['fin_'.$id]) && isset($_POST['newsletter_'.$id]))
@@ -392,25 +375,21 @@ class JefeConsultorController extends Controller
         $fin = $_POST['fin_'.$id];
         $fecha = date("Y-m-d");
         $actividad="checked";
-        $principal= new PrincipalController;
-        $principal->controlGestion();  
-        $gestion = $principal->gestion;
-        if($inicio >= $fecha && $fin >= $inicio)
+        $principal = new VerificadorDeSesiones; 
+        $gestion = $principal->GetGestion();
+        if($inicio >= $fecha && $fin > $inicio)
         {         
-          if(strtotime($fin) <= $gestion['fecha_fin'])
+          if( strtotime($fin) <= $gestion['fecha_fin'])
           {
             $actividad = new Actividades;
             $actividad->setFaseConvocatoria($inicio,$fin,$gestion['id_gestion'],$id);
-            echo "<script type='text/javascript'>
-                  alert('la actividad $fase[$id] se ha actualizado correctamente')
-                  </script>
-                  <META HTTP-EQUIV='Refresh' CONTENT='1; URL=planificacion.php'> ";
+
           }
           else
           {
             $error = true;
             $error_fecha = "La gesti&oacute;n termina la fecha ".$gestion['fecha_fin'];
-          }                   
+          }               
         }
         else
         {
@@ -423,6 +402,150 @@ class JefeConsultorController extends Controller
         $error = true;
         $error_fecha = "La fecha de inicio o de finalizacion no es v&aacute;lida";
       }      
-    }     
+    }
+    if($error == true)
+    {
+      return "error";
+    }
+    else
+    {
+      $principal = new VerificadorDeSesiones;
+
+    return view('/paginas/consultor/prueba')->with([
+          'titulo' => 'evaluar a la grupo empresa',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+    }   
+  }
+  public function calificarGrupoEmpresa()
+  {
+    $principal = new VerificadorDeSesiones;
+    $user = new Usuario;
+    $grupoEmpresa = $user->getGrupoEmpresas(Session::get('id'));
+    return view('/paginas/consultor/CalificarGrupoEmpresa')->with([
+          'titulo' => 'calificar actividades',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
+          'grupoEmpresa'=>$grupoEmpresa,
+          'aux'=>0,
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+  }
+  public function actualizarCalificacion($id)
+  {
+    //return redirect('index');
+    $principal = new VerificadorDeSesiones;
+
+    $grupo = new GrupoEmpresa;
+    $nombreGrupo = $grupo->getNombreEmpresa($id)[0]->nombre_largo;
+    $entregaProducto = $grupo->getEntregaProducto($id);
+    $responsables = array();
+    $actividades = array();
+    foreach ($entregaProducto as $entrega) 
+    {
+      $aux=$grupo->getResponsable($entrega->id_responsable);
+      $responsables[] = $aux[0]->nombre." ".$aux[0]->apellido;      
+      $actividades[] = $grupo->getActividad($entrega->id_entrega_producto);
+    }
+    
+    return view('/paginas/consultor/evaluacionGrupoEmpresa')->with([
+          'titulo' => 'evaluar a la grupo empresa',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
+          'id_grupo'=>$id,
+          'nombreGrupo'=>$nombreGrupo,
+          'entregaProducto'=>$entregaProducto,          
+          'responsables_entrega'=>$responsables,
+          'contador'=>0,
+          'actividades'=>$actividades,
+          'aux'=>0,        
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+
+  }
+  public function mostrarTareas($idG,$idActividad)
+  {
+    $principal = new VerificadorDeSesiones;
+    $grupo = new GrupoEmpresa;    
+    $tareas = $grupo->getTareas($idActividad);
+
+    return view('/paginas/consultor/mostrarTareas')->with([
+          'titulo' => 'tareas de la actividad'.$idActividad,
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
+          'id_grupo'=>$idG,
+          'tareas'=>$tareas,
+          'id_actividad'=>$idActividad,
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
+  }
+  public function modificarEntregaProducto()
+  {
+     $principal = new VerificadorDeSesiones;
+     $id_grupo = $_POST['id_grupo'];
+     $establecido = $_POST['pago_e'];
+     $recibido = $_POST['pago_r'];
+     $id_entrega_p = $_POST['id_entrega_p'];
+     
+    if(isset($_POST['enviar_1']))
+    {
+      return view('/paginas/consultor/modificarEntregaProducto')->with([
+          'titulo' => 'actualizar datos de la entrega de producto',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$principal->getGestion(),
+          'opcion'=>0,
+          'establecido'=> $establecido,
+          'recibido'=> $recibido,
+          'id_grupo'=>$id_grupo,
+          'id_entrega_p'=>$id_entrega_p,
+          'datos'=>$principal->getDatos(),          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
+    }
+    elseif (isset($_POST['enviar_2'])) 
+    {
+      return view('/paginas/consultor/modificarEntregaProducto')->with([
+          'titulo' => 'actualizar datos de la entrega de producto',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$principal->getGestion(),
+          'opcion'=>1,
+          'id_grupo'=>$id_grupo,
+          'id_entrega_p'=>$id_entrega_p,
+          'datos'=>$principal->getDatos(),          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
+    }
+  }
+  public function actualizarEntregaProducto()
+  {
+    $idG = (int)$_POST['idgrupo'];
+    $idE = (int)$_POST['identrega'];
+    $grupo = new GrupoEmpresa;       
+    if($_POST['opcion']==0)
+    {
+      $dinero=$_POST['dinero'];     
+      $grupo->setDinero($dinero,$idE,$idG);
+      return redirect('evaluar_grupo_empresa/'.$idG);
+           //<META HTTP-EQUIV='Refresh' CONTENT='1; URL=calificar_grupo_empresa.php'>     
+    }
+    elseif ($_POST['opcion']==1)
+    {
+      $obs=$_POST['observaciones'];
+      $grupo->setObservaciones($obs,$idE,$idG);
+      return redirect('evaluar_grupo_empresa/'.$idG);    
+    }
+    
   }
 }
