@@ -77,4 +77,42 @@ class Usuario extends Model
         return $consulta_usuario;
 
      }
+
+     public function getGrupoEmpresas(){
+
+        $consulta_usuario = DB::select("SELECT u.nombre_usuario,u.habilitado,ge.nombre_corto,ge.nombre_largo,s.descripcion,u.id_usuario,u.clave
+                FROM usuario u,integrante i,grupo_empresa ge,sociedad s
+                WHERE  u.tipo_usuario = 4 and u.id_usuario=i.usuario and i.grupo_empresa=ge.id_grupo_empresa and ge.sociedad= s.id_sociedad");
+           return $consulta_usuario;
+     }
+  
+    public function getBitacorasSesion(){
+
+         $consulta_usuario = DB::select("SELECT id_bitacora_sesion, fecha_hora, operacion, nombre_usuario,g.gestion,descripcion
+                                         FROM bitacora_sesion b, usuario u, gestion_empresa_tis g,tipo_usuario
+                                         WHERE id_usuario=usuario AND u.gestion=g.id_gestion  AND tipo_usuario=id_tipo_usuario");
+         return $consulta_usuario;
+    }
+
+    public function getBitacorasBD(){
+
+         $consulta_usuario = DB::select("SELECT id_bitacora,fecha_hora,u.nombre_usuario,viejo,nuevo,g.gestion, t.descripcion,tabla
+                                         FROM bitacora_bd b, usuario u, gestion_empresa_tis g, tipo_usuario t
+                                         WHERE u.id_usuario=b.usuario AND g.id_gestion=u.gestion AND u.tipo_usuario=t.id_tipo_usuario");
+         return $consulta_usuario;
+    }
+  
+    public function getListadeGestiones(){
+         $consulta_usuario = DB::select("SELECT id_gestion,gestion FROM gestion_empresa_tis");
+         return $consulta_usuario;
+
+    }
+
+    public function getListadeUsuarios(){
+         $consulta_usuario = DB::select("SELECT id_tipo_usuario,descripcion from tipo_usuario");
+         return $consulta_usuario;
+
+    }
+
+
 }

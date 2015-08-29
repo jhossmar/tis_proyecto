@@ -23,7 +23,7 @@ use App\Actividades;
  public function sesionIniciado()
  {
      
-   if(Session::get('id')=="")
+   if(Session::get('id')==NULL)
    {
      	return false;
     }else{

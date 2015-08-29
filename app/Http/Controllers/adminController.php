@@ -101,7 +101,7 @@ class adminController extends Controller
      $titulo="Administrar Consultores TIS";
      $usuario= new Usuario;
      $lista_consultores=$usuario->getConsultoresTis(); // $consulta
-      $num_res=count($lista_consultores);
+     $num_res=count($lista_consultores);
 
     if( $this->verSesion==true)
      {
@@ -119,12 +119,24 @@ class adminController extends Controller
         }
        else{
 
-
-       }
+           return redirect('index');
+          }
 
   }
 
   public function administrar_grupo_empresa(){
+     
+    $titulo="Administrar Consultores TIS";
+ 
+     $usuario= new Usuario;
+     $lista_grupo_empresas=$usuario->getGrupoEmpresas(); // $consulta
+     $num_res=count($lista_grupo_empresas);
+
+    
+   
+    if( $this->verSesion==true)
+     {
+
       return view('/paginas/administrador/administrar_grupo_empresa')->with([
         'titulo' => 'Administrador',
         'sesion_valida' => true,
@@ -132,11 +144,31 @@ class adminController extends Controller
         'gestion'=>$this->verSesion->getGestion(),
         'datos'=>$this->verSesion->getDatos(),
         'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario') ]);
+        'nombre_usuario'=>Session::get('nombre_usuario'),
+        'lista_grupo_empresas'=> $lista_grupo_empresas,
+        'num_res'=>$num_res ]);
+     
+     }else{
+
+           return redirect('index');
+          }
+  
 
   }
 
   public function bitacoras_usuario(){
+
+    $titulo="Bit&aacute;coras de usuario";
+    $usuario = new Usuario;
+    $bitacoras_sesion= $usuario->getBitacorasSesion();
+    $bitacoras_bd=$usuario->getBitacorasBD();
+    $listaDeGestiones=$usuario->getListadeGestiones();
+    $listaDeUsuarios=$usuario->getListadeUsuarios();
+
+
+    
+     if( $this->verSesion==true)
+      {
       return view('/paginas/administrador/bitacoras_usuario')->with([
         'titulo' => 'Administrador',
         'sesion_valida' => true,
@@ -144,7 +176,18 @@ class adminController extends Controller
         'gestion'=>$this->verSesion->getGestion(),
         'datos'=>$this->verSesion->getDatos(),
         'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario') ]);
+        'nombre_usuario'=>Session::get('nombre_usuario'),
+        'ini_filtro'=>"",
+        'fin_filtro'=>"",
+        'listaDeGestiones'=>$listaDeGestiones,
+        'listaDeUsuarios'=>$listaDeUsuarios, 
+        'error_fecha_ini'=>"",
+        'error_fecha_fin'=>""]);
+      }else
+      {
+
+           return redirect('index');
+      }
 
   }
 
@@ -283,9 +326,6 @@ function modificar_registro_admin_guardar(){
       
     }
   }
-  /*----------------------FIN VALIDAR REGISTRO------------------------*/
+ 
      
-
-
-
 }// fin class adminController
