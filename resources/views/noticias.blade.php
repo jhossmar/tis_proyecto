@@ -1,4 +1,4 @@
-<script src={{asset("js/noticias.js")}}></script>
+{!! Html::script('js/noticias.js')!!}
 <script language="JavaScript" type="text/javascript">
     var nume={{$datos['numdoc']}}
         setTamAviso( 130 );

@@ -24,9 +24,9 @@
         <br>        
         <label> escriba el monto que se le pagara por la actividad:</label>
         <br>
-          <form action={{url('actualizar_entrega_producto')}} method=post> 
+          <form action={{url('actualizar_entrega_producto')}} method='post'> 
             <div class='input-append'>
-            <input type="hidden" name="_token" value="{{csrf_token()}}"></input>
+              <input type="hidden" name="_token" value="{{csrf_token()}}"></input>
               <input type='hidden' name='opcion' value=0></input>
               <input type='hidden' name='idgrupo' value='{{$id_grupo}}'></input>
               <input type='hidden' name='identrega' value='{{$id_entrega_p}}'></input>

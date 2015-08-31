@@ -7,31 +7,30 @@
 	<meta name="author" content="TIS">
  
      {!! Html::style('css/bootstrap-cerulean.css') !!}
-	 
-     <link rel="stylesheet" href={{asset("/css/letras.css")}} type="text/css"/>
-	 <link href={{asset("/css/bootstrap-responsive.css")}} rel="stylesheet" type="text/css"/>
-	 <link href={{asset("/css/charisma-app.css")}} rel="stylesheet"/>
-	 <link href={{asset("/css/jquery-ui-1.8.21.custom.css")}} rel="stylesheet" type="text/css"/>
-	 <link href={{asset("/css/fullcalendar.css")}} rel='stylesheet'/>
-	 <link href={{asset("/css/fullcalendar.print.css")}} rel='stylesheet' media='print'/>
-	 <link href={{asset("/css/chosen.css")}} rel='stylesheet' type="text/css"/>
-	 <link href={{asset("/css/uniform.default.css")}}rel='stylesheet'/>
-	 <link href={{asset("/css/colorbox.css")}} rel='stylesheet'/>
-	 <link href={{asset("/css/jquery.cleditor.css")}} rel='stylesheet'/>
-	 <link href={{asset("/css/jquery.noty.css")}} rel='stylesheet'/>
-	 <link href={{asset("/css/noty_theme_default.css")}} rel='stylesheet'/>
-	 <link href={{asset("/css/elfinder.min.css")}} rel='stylesheet'/>	 
-	 <link href={{asset("/css/elfinder.theme.css")}} rel='stylesheet'>
-	 <link href={{asset("/css/jquery.iphone.toggle.css")}} rel='stylesheet'/>
-	 <link href={{asset("/css/opa-icons.css")}} rel='stylesheet'/>
-	 <link href={{asset("/css/uploadify.css")}} rel='stylesheet'/>
-	 <link href={{asset("/css/style2.css")}} rel='stylesheet'/>	
-	 <link href={{asset("/css/noticias.css")}} rel='stylesheet'/>
-	 <link href={{asset("/css/ayuda_indice.css")}} rel='stylesheet'/>
+	 {!! Html::style('/css/bootstrap-responsive.css')!!}
+     {!! Html::style('/css/letras.css')!!}
+	 {!! Html::style('/css/charisma-app.css')!!}
+	 {!! Html::style('/css/jquery-ui-1.8.21.custom.css')!!}
+	 {!! Html::style('/css/fullcalendar.css')!!}
+	 {!! Html::style('/css/fullcalendar.print.css')!!}
+	 {!! Html::style('/css/chosen.css')!!}
+	 {!! Html::style('/css/uniform.default.css')!!}
+	 {!! Html::style('/css/colorbox.css')!!}
+	 {!! Html::style('/css/jquery.cleditor.css')!!}
+	 {!! Html::style('/css/jquery.noty.css')!!}
+	 {!! Html::style('/css/noty_theme_default.css')!!}
+	 {!! Html::style('/css/elfinder.min.css')!!}
+	 {!! Html::style('/css/elfinder.theme.css')!!}
+	 {!! Html::style('/css/jquery.iphone.toggle.css')!!}
+	 {!! Html::style('/css/opa-icons.css')!!}
+	 {!! Html::style('/css/uploadify.css')!!}
+	 {!! Html::style('/css/style2.css')!!}
+	 {!! Html::style('/css/noticias.css')!!}
+	 {!! Html::style('/css/ayuda_indice.css')!!}
      <!-- calendario -->
-     <link rel="stylesheet" type="text/css" href={{asset("/css/frontierCalendar/jquery-frontier-cal-1.3.2.css")}} />
-     <link rel="stylesheet" type="text/css" href={{asset("/css/colorpicker/colorpicker.css")}} />
-     <link href={{asset("/css/jquery.alerts.css")}} rel="stylesheet" type="text/css">
+     {!! Html::style('/css/frontierCalendar/jquery-frontier-cal-1.3.2.css')!!}
+     {!! Html::style('/css/colorpicker/colorpicker.css')!!}
+     {!! Html::style('/css/jquery.alerts.css')!!}
 	
      <link rel="shortcut icon" href={{asset("img/favicon.png")}}>
 	
@@ -236,9 +235,9 @@
 					<li><a href={{url('administrar_archivos')}}><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
 					<li><a href={{url('planificacion_actividades')}}><i class="icon-calendar"></i><span class="hidden-tablet"> Planificar actividades</span></a></li>
 					<li><a href={{url('calificar_grupo_empresa')}}><i class="icon-edit"></i><span class="hidden-tablet"> calificar actividades</span></a></li>
-					<li><a href="administrar_grupo.php"><i class="icon-check"></i><span class="hidden-tablet"> Administrar mis Grupo Empresas</span></a></li>
-					<li><a href="notificaciones.php"><i class="icon-globe"></i><span class="hidden-tablet"> Notificaciones</span></a></li>
-					<li><a href="mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Espacio de Discuci&oacute;n</span></a></li>
+					<li><a href={{url("administrar_grupo")}}><i class="icon-check"></i><span class="hidden-tablet"> Administrar mis Grupo Empresas</span></a></li>
+					<li><a href={{url("notificaciones")}}><i class="icon-globe"></i><span class="hidden-tablet"> Notificaciones</span></a></li>
+					<li><a href={{url("mensajes")}}><i class="icon-comment"></i><span class="hidden-tablet"> Espacio de Discuci&oacute;n</span></a></li>
 				</ul>
 			</div>
 		</div>				
