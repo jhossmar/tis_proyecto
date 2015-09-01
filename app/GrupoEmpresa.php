@@ -91,4 +91,41 @@ class GrupoEmpresa extends Model
                  SET observacion= :obs
                  WHERE id_entrega_producto= :idEntrega AND grupo_empresa= :idGrupo',['obs'=>$obs,'idEntrega'=>$idE,'idGrupo'=>$idG]);
    }
+   public function getGrupoEmpresas($idU,$idG)
+   {
+     $grupos = DB::select('SELECT id_usuario,nombre_largo,nombre_corto,nombre,apellido,u.habilitado, u.nombre_usuario,g.id_grupo_empresa
+                               FROM grupo_empresa g, usuario u, integrante i
+                               WHERE g.consultor_tis= :id_usuario AND i.grupo_empresa=g.id_grupo_empresa AND
+                               i.usuario=u.id_usuario AND u.tipo_usuario=4 AND u.gestion = :id_gestion',['id_usuario'=>$idU,'id_gestion'=>$idG]);
+     return $grupos;
+   }
+   public function getNumeroUsuarios($idGestion,$idConsultor)
+   {                
+      $c =DB::select("SELECT COUNT(u.id_usuario) as numer
+                      FROM grupo_empresa g, usuario u, integrante i
+                      WHERE g.consultor_tis=:usuario AND i.grupo_empresa=g.id_grupo_empresa AND 
+                      i.usuario=u.id_usuario AND u.tipo_usuario=4 AND u.gestion=:gestion",['gestion'=>$idGestion,'usuario'=>$idConsultor]);
+      return $c;
+   }
+   public function setHabilitado($habilitado,$idU)
+   {
+      DB::update("UPDATE usuario
+                 SET habilitado = :b
+                 WHERE id_usuario = :idU",['b'=>$habilitado,'idU'=>$idU]);      
+   }
+   public function getDatoIntegrantes($id_grupo)
+   {
+    $integrantes =DB::select("SELECT *
+                              FROM integrante i, usuario u, carrera c
+                              WHERE grupo_empresa= :id_grupo and  u.id_usuario=i.usuario AND i.carrera=c.id_carrera",['id_grupo'=>$id_grupo]);
+    return $integrantes;
+   }
+   public function getHabilitado($idGrupo)
+   {
+     $consulta= DB::select("SELECT count(*) as numer
+                            from integrante i, usuario u, carrera c
+                            where grupo_empresa=:u and  u.id_usuario=i.usuario AND i.carrera=c.id_carrera",['u'=>$idGrupo]);
+     return $consulta;
+   }
+
 }

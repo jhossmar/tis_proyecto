@@ -1,41 +1,41 @@
-	<script src={{asset("js/jquery-1.7.2.min.js")}}></script>
-	<script src={{asset("js/script.js")}}></script>
+   {!! Html::script('js/jquery-1.7.2.min.js')!!}
+	{!! Html::script('js/script.js')!!}
 	<!-- jQuery UI -->
-	<script src={{asset("js/jquery-ui-1.8.21.custom.min.js")}}></script>
+	{!! Html::script('js/jquery-ui-1.8.21.custom.min.js')!!}
 	<!-- transition / effect library -->
-	<script src={{asset("js/bootstrap-transition.js")}}></script>
+	{!! Html::script('js/bootstrap-transition.js')!!}
 	<!-- alert enhancer library -->
-	<script src={{asset("js/bootstrap-alert.js")}}></script>
+	{!! Html::script('js/bootstrap-alert.js')!!}
 	<!-- modal / dialog library -->
-	<script src={{asset("js/bootstrap-modal.js")}}></script>
+	{!! Html::script('js/bootstrap-modal.js')!!}
 	<!-- custom dropdown library -->
-	<script src={{asset("js/bootstrap-dropdown.js")}}></script>
+	{!! Html::script('js/bootstrap-dropdown.js')!!}
 	<!-- scrolspy library -->
-	<script src={{asset("js/bootstrap-scrollspy.js")}}></script>
+	{!! Html::script('js/bootstrap-scrollspy.js')!!}
 	<!-- library for creating tabs -->
-	<script src={{asset("js/bootstrap-tab.js")}}></script>
+	{!! Html::script('js/bootstrap-tab.js')!!}
 	<!-- library for advanced tooltip -->
-	<script src={{asset("js/bootstrap-tooltip.js")}}></script>
+	{!! Html::script('js/bootstrap-tooltip.js')!!}
 	<!-- popover effect library -->
-	<script src={{asset("js/bootstrap-popover.js")}}></script>
+	{!! Html::script('js/bootstrap-popover.js')!!}
 	<!-- button enhancer library -->
-	<script src={{asset("js/bootstrap-button.js")}}></script>
+	{!! Html::script('js/bootstrap-button.js')!!}
 	<!-- accordion library (optional, not used in demo) -->
-	<script src={{asset("js/bootstrap-collapse.js")}}></script>
+	{!! Html::script('js/bootstrap-collapse.js')!!}
 	<!-- carousel slideshow library (optional, not used in demo) -->
-	<script src={{asset("js/bootstrap-carousel.js")}}></script>
+	{!! Html::script('js/bootstrap-carousel.js')!!}
 	<!-- autocomplete library -->
-	<script src={{asset("js/bootstrap-typeahead.js")}}></script>
+	{!! Html::script('js/bootstrap-typeahead.js')!!}
 	<!-- tour library -->
-	<script src={{asset("js/bootstrap-tour.js")}}></script>
+	{!! Html::script('js/bootstrap-tour.js')!!}
 	<!-- library for cookie management -->
-	<script src={{asset("js/jquery.cookie.js")}}></script>
+	{!! Html::script('js/jquery.cookie.js')!!}
 	<!-- calander plugin -->
-	<script src={{asset('js/fullcalendar.min.js')}}></script>
+	{!! Html::script('js/fullcalendar.min.js')!!}
 	<!-- data table plugin -->
-	<script src={{asset('js/jquery.dataTables.min.js')}}></script>
+	{!! Html::script('js/jquery.dataTables.min.js')!!}
 	<!-- validation plugin -->	
-	<script src={{asset("js/jquery.validate.js")}}></script>
+	{!! Html::script('js/jquery.validate.js')!!}
 	<script>
 
 $(document).ready(function() {
@@ -299,38 +299,38 @@ $(document).ready(function() {
 </script>
 	
 	<!-- chart libraries start -->
-	<script src={{asset("js/excanvas.js")}}></script>
-	<script src={{asset("js/jquery.flot.min.js")}}></script>
-	<script src={{asset("js/jquery.flot.pie.min.js")}}></script>
-	<script src={{asset("js/jquery.flot.stack.js")}}></script>
-	<script src={{asset("js/jquery.flot.resize.min.js")}}></script>
+	{!! Html::script('js/excanvas.js')!!}
+	{!! Html::script('js/jquery.flot.min.js')!!}
+	{!! Html::script('js/jquery.flot.pie.min.js')!!}
+	{!! Html::script('js/jquery.flot.stack.js')!!}
+	{!! Html::script('js/jquery.flot.resize.min.js')!!}
 	<!-- subir archivo -->
-	<script src={{asset("js/jquery.uploadify.min.js")}} type="text/javascript"></script>
+	{!! Html::script('js/jquery.uploadify.min.js')!!}
 	<!-- select or dropdown enhancer -->
-	<script src={{asset("js/jquery.chosen.min.js")}}></script>
+	{!! Html::script('js/jquery.chosen.min.js')!!}
 	<!-- checkbox, radio, and file input styler -->
-	<script src={{asset("js/jquery.uniform.min.js")}}></script>
+	{!! Html::script('js/jquery.uniform.min.js')!!}
 	<!-- plugin for gallery image view -->
-	<script src={{asset("js/jquery.colorbox.min.js")}}></script>
+	{!! Html::script('js/jquery.colorbox.min.js')!!}
 	<!-- rich text editor library -->
-	<script src={{asset("js/jquery.cleditor.min.js")}}></script>
+	{!! Html::script('js/jquery.cleditor.min.js')!!}
 	<!-- notification plugin -->
-	<script src={{asset("js/jquery.noty.js")}}></script>
+	{!! Html::script('js/jquery.noty.js')!!}
 	<!-- file manager library -->
-	<script src={{asset("js/jquery.elfinder.min.js")}}></script>
+	{!! Html::script('js/jquery.elfinder.min.js')!!}
 	<!-- star rating plugin -->
-	<script src={{asset("js/jquery.raty.min.js")}}></script>
+	{!! Html::script('js/jquery.raty.min.js')!!}
 	<!-- for iOS style toggle switch -->
-	<script src={{asset("js/jquery.iphone.toggle.js")}}></script>
+	{!! Html::script('js/jquery.iphone.toggle.js')!!}
 	<!-- autogrowing textarea plugin -->
-	<script src={{asset("js/jquery.autogrow-textarea.js")}}></script>
+	{!! Html::script('js/jquery.autogrow-textarea.js')!!}
 	<!-- multiple file upload plugin -->
-	<script src={{asset("js/jquery.uploadify-3.1.min.js")}}></script>
+	{!! Html::script('js/jquery.uploadify-3.1.min.js')!!}
 	<!-- history.js for cross-browser state change on ajax -->
-	<script src={{asset("js/jquery.history.js")}}></script>
+	{!! Html::script('js/jquery.history.js')!!}
 	<!-- application script for Charisma demo -->
-	<script src={{asset("js/charisma.js")}}></script>
-	<script src={{asset("js/noticias.js")}}></script>
+	{!! Html::script('js/charisma.js')!!}
+	{!! Html::script('js/noticias.js')!!}
           
     @if($gestion['gestion_valida'] && (strcmp($titulo,"Sistema de Apoyo a la Empresa TIS")==0))       
         @if($datos['numdoc']>3)
@@ -343,11 +343,11 @@ $(document).ready(function() {
         @endif
     @endif
         <!-- Inicio Calendario de tareas -->
-<script type="text/javascript" src={{asset("js/colorpicker/colorpicker.js")}}></script>
-<script type="text/javascript" src={{asset("js/jquery-qtip-1.0.0-rc3140944/jquery.qtip-1.0.js")}}></script>
-<script type="text/javascript" src={{asset("js/lib/jshashtable-2.1.js")}}></script>
-<script type="text/javascript" src={{asset("js/frontierCalendar/jquery-frontier-cal-1.3.2.min.js")}}></script>
-<script type="text/javascript" src={{asset("js/manipulacion.js")}}></script>
+{!! Html::script('js/colorpicker/colorpicker.js')!!}
+{!! Html::script('js/jquery-qtip-1.0.0-rc3140944/jquery.qtip-1.0.js')!!}
+{!! Html::script('js/lib/jshashtable-2.1.js')!!}
+{!! Html::script('js/frontierCalendar/jquery-frontier-cal-1.3.2.min.js')!!}
+{!! Html::script('js/manipulacion.js')!!}
  @if(strcmp($titulo,"Planificar Tareas Grupo Empresa")==0)
  	@include(asset("jsr/calendarfooter.php"))
  @endif

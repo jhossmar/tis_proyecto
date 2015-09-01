@@ -14,6 +14,7 @@ use App\Archivos;
 use App\GrupoEmpresa;
 use App\Http\Controllers\VerificadorDeSesiones;
 use Response;
+
 class JefeConsultorController extends Controller
 {
 	public function homeJefeConsultor()
@@ -547,5 +548,171 @@ class JefeConsultorController extends Controller
       return redirect('evaluar_grupo_empresa/'.$idG);    
     }
     
+  }
+  public function administrarGrupo()
+  {
+    $principal = new VerificadorDeSesiones;
+    $grupo = new GrupoEmpresa;
+    $grupos = $grupo->getGrupoEmpresas(session::get('id'),$principal->GetGestion()['id_gestion']);
+    return view('/paginas/consultor/administrarGrupoEmpresa')->with([
+        'titulo' => 'Administrar Grupo Empresas',
+        'sesion_valida' => true,
+        'tipo_usuario'=> 2,
+        'gestion'=>$principal->GetGestion(),
+        'datos'=>$principal->GetDatos(),
+        'grupos'=>$grupos,
+        'contador'=>0,
+        'nombre_foto'=>Session::get('nombre_foto'),
+        'nombre_usuario'=>Session::get('nombre_usuario')]);
+      
+  }
+  public function validarCambiosGrupo()
+  {
+    $principal = new VerificadorDeSesiones;
+    $grupo = new GrupoEmpresa;
+    $consulta = $grupo->getNumeroUsuarios($principal->GetGestion()['id_gestion'],session::get('id'));
+
+      $num = $consulta[0]->numer;
+      $counta = 0;
+      while($counta < $num)
+      {
+        $a = $_POST["a".$counta];//{{$grupo->id_usuario}}
+        $b = 0;
+        if(isset($_POST["b".$counta]))//$grupo->habilitado==1
+        {
+          $b=1;
+        }
+        $grupo->setHabilitado($b,$a); 
+        $counta++;
+      }
+      return redirect('administrar_grupo');   
+  }
+  public function reporteGrupoEmpresa($igGrupo)
+  {
+  }
+  public function habilitarIntegrantes($idGrupo)
+  {
+    $principal = new VerificadorDeSesiones;
+    $grupo = new GrupoEmpresa;
+    $grupos = $grupo->getNombreEmpresa($idGrupo);
+    $nombre_grupo = $grupos[0]->nombre_largo;
+    $integrantes = $grupo->getDatoIntegrantes($idGrupo);
+    $cantidad = count($integrantes);
+    return view('/paginas/consultor/habilitarIntegrantes')->with([
+        'titulo' => 'Habilitar Integrantes',
+        'sesion_valida' => true,
+        'tipo_usuario'=> 2,
+        'gestion'=>$principal->GetGestion(),
+        'datos'=>$principal->GetDatos(),
+        'id_grupo'=>$idGrupo,
+        'cantidad'=>$cantidad,
+        'integrantes'=>$integrantes,
+        'contador'=>0,
+        'nombre_grupo'=>$nombre_grupo,
+        'nombre_foto'=>Session::get('nombre_foto'),
+        'nombre_usuario'=>Session::get('nombre_usuario')]);
+  }
+  public function validarCambiosIntegrantes()
+  {
+    $u=$_POST["grupo"];
+    $grupo = new GrupoEmpresa;
+    $consulta = $grupo->getHabilitado($u);
+    $num=$consulta[0]->numer;
+    $counta=0;
+    while($counta < $num)
+    {    
+      $a=$_POST["a".$counta];
+      $b=0;
+      if(isset($_POST["b".$counta]))
+      {
+        $b=1;
+      }
+      $grupo->setHabilitado($b,$a);                                             
+      $counta++;
+    }
+     return redirect('habilitar_integrantes/'.$u);
+  }
+  public function notificaciones()
+  {
+    
+    $principal = new VerificadorDeSesiones;
+    $user = new Usuario;       
+    
+    $num = $user->getNumeroNotificaciones(Session::get('id'),strftime("%y/%m/%d",$principal->getGestion()['fecha_fin']),strftime("%y/%m/%d",$principal->getGestion()['fecha_ini']));
+    
+    $notificaciones = $user->getNotificaciones(Session::get('id'),strftime("%y/%m/%d",$principal->getGestion()['fecha_fin']),strftime("%y/%m/%d",$principal->getGestion()['fecha_ini']));
+    $nombres = array();
+    $tipos_usuarios = array();
+    foreach ($notificaciones as $notificacion) 
+    {
+       $aux = $user->GetNombreUsuario($notificacion->usuario);
+       $nombres[] = $aux[0]->nombre." ".$aux[0]->apellido;
+       $aux2 = $user->getTipoUsuario($notificacion->usuario);
+       $tipos_usuarios[] = $aux2[0]->descripcion;
+    }   
+   return view('/paginas/consultor/notificacionesJefeConsultor')->with([
+          'titulo' => 'Notificaciones del Jefe Consultor TIS',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 2,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
+          'num'=>$num[0]->numer,
+          'notificaciones'=>$notificaciones,
+          'id_usuario'=>Session::get('id'),
+          'contador'=>0,
+          'nombres'=>$nombres,
+          'tipos_usuarios'=> $tipos_usuarios,
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+  }
+  public function administrarNotificaciones()
+  {
+    $usuario=$_POST['id_usuario'];
+    $num=$_POST['numero'];
+    $user = new Usuario; 
+    $counta=0;
+    while($counta < $num)
+    {                  
+      $c=0;
+      $a= $_POST["a".$counta];
+      if(!isset($_POST["c".$counta]))
+      {
+        $c=  1;
+      }
+      $user->setNotificaciones($c,$a);
+      $counta++;
+    }
+    return redirect('notificaciones');
+  }
+  public function mensajes()
+  {
+    $principal = new VerificadorDeSesiones;
+    
+    return view('/paginas/consultor/mensajes')->with([
+        'titulo' => 'Sistema de Apoyo a la Empresa TIS',
+        'sesion_valida' => true,
+        'tipo_usuario'=> 2,
+        'gestion'=>$principal->GetGestion(),
+        'datos'=>$principal->GetDatos(),        
+        'nombre_foto'=>Session::get('nombre_foto'),
+        'nombre_usuario'=>Session::get('nombre_usuario')]);
+  }
+  public function insertarMensajes()
+  {
+    if(isset($_POST['enviar']))
+    {
+      $mensaje=$_POST['mensaje'];
+      $asunto=$_POST['tituloD'];
+      $usuario=Session::get('nombre_usuario');
+      $id_usuario=Session::get('id');
+      $user = new Usuario;
+      $user->setMensaje($mensaje,$id_usuario,$asunto);
+    }
+    else
+    {
+      $mensaje=NULL;
+      $asunto= NULL;
+    }
+     return redirect('mensajes');
   }
 }

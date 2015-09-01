@@ -127,6 +127,41 @@ class Usuario extends Model
         $consulta = DB::select("select nombre,apellido
                                 from usuario
                                 where id_usuario=:usr",['usr'=>$id_usuario]);
+        return $consulta;
+    }
+    public function getNumeroNotificaciones($id_usuario,$fin_gestion,$ini_gestion)
+    {
+        $c=DB::select("SELECT COUNT(*) as numer
+                       FROM notificacion
+                       WHERE usuario_destino = :usuario AND fecha <= :fin_gestion AND fecha>= :ini_gestion AND leido=0",['usuario'=>$id_usuario,'ini_gestion'=>$ini_gestion,'fin_gestion'=>$fin_gestion]);
+        return $c;
+    }
+    public function getNotificaciones($id_usuario,$fin_gestion,$ini_gestion)
+    {
+        $consulta = DB::select("SELECT  id_notificacion,usuario, descripcion, enlace, fecha, leido
+                                FROM notificacion, tipo_notificacion
+                                WHERE (tipo_notificacion = id_tipo_notificacion
+                                AND usuario_destino = :usuario) AND fecha <= :fin_gestion AND fecha>=:ini_gestion AND leido=0
+                                ORDER BY fecha DESC",['usuario'=>$id_usuario,'ini_gestion'=>$ini_gestion,'fin_gestion'=>$fin_gestion]);
+        return $consulta;
+    }
+    public function getTipoUsuario($id_usuario)
+    {
+        $consulta = DB::select("SELECT i.descripcion
+                                FROM usuario u, tipo_usuario i
+                                WHERE u.id_usuario = :id
+                                AND u.tipo_usuario = i.id_tipo_usuario",['id'=>$id_usuario]);
+        return $consulta;
+    }
+    public function setNotificaciones($leido,$id_notificacion)
+    {
+        DB::update("UPDATE notificacion 
+                    SET  leido=:c WHERE id_notificacion =:a",['c'=>$leido,'a'=>$id_notificacion]);
+    }
+    public function setMensaje($mensaje,$id_usuario,$asunto)
+    {
+        DB::insert("INSERT INTO mensaje(fecha_hora, contenido, leido, de_usuario, asunto, visible)
+                    VALUES (NOW(),:mensaje,0,:id_usuario,:asunto,1)",['mensaje'=>$mensaje,'id_usuario'=>$id_usuario,'asunto'=>$asunto]);
     }
 
 

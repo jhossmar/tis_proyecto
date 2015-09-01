@@ -37,6 +37,16 @@ Route::get('evaluar_grupo_empresa/{id}','JefeConsultorController@actualizarCalif
 Route::get('evaluar_grupo_empresa/{id}/{id_actividad}','JefeConsultorController@mostrarTareas');
 Route::post('modificar_entrega_producto','JefeConsultorController@modificarEntregaProducto');
 Route::post('actualizar_entrega_producto','JefeConsultorController@actualizarEntregaProducto');
+Route::get('administrar_grupo','JefeConsultorController@administrarGrupo');
+Route::post('administrar_grupo','JefeConsultorController@validarCambiosGrupo');
+Route::get('reporte/{id_grupo}','JefeConsultorController@reporteGrupoEmpresa');
+Route::get('habilitar_integrantes/{id_grupo}','JefeConsultorController@habilitarIntegrantes');
+Route::post('validar_habilitar_integrante','JefeConsultorController@validarCambiosIntegrantes');
+Route::get('notificaciones','JefeConsultorController@notificaciones');
+Route::post('administrar_notificacion','JefeConsultorController@administrarNotificaciones');
+Route::get('mensajes','JefeConsultorController@mensajes');
+Route::post('insert','JefeConsultorController@insertarMensajes');
+
 
 Route::get('salir',function(){
   // por ahora para borrar variables de session
