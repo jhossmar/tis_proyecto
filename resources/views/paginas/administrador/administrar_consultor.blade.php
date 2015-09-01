@@ -12,6 +12,7 @@
 	</li>
    </ul>
 </div>
+
 <center><h3>Administrar Consultores TIS</h3></center>
    <div class="row-fluid">
       <div class="box span12">
@@ -77,6 +78,10 @@
            </div> 
      @endif
 
+    <div>
+      <h1>ESTO ES UN INPUT-type-checkbox</h1>
+      <center> <input type="checkbox" id="" name=""></center>
+    </div>
 
     </div>
 	</div><!--/span-->

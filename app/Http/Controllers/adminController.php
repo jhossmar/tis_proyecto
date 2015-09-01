@@ -129,7 +129,7 @@ class adminController extends Controller
     $titulo="Administrar Consultores TIS";
  
      $usuario= new Usuario;
-     $lista_grupo_empresas=$usuario->getGrupoEmpresas(); // $consulta
+     $lista_grupo_empresas=$usuario->getListaGrupoEmpresas(); // $consulta
      $num_res=count($lista_grupo_empresas);
 
     
@@ -160,15 +160,15 @@ class adminController extends Controller
 
     $titulo="Bit&aacute;coras de usuario";
     $usuario = new Usuario;
-    $bitacoras_sesion= $usuario->getBitacorasSesion();
-    $bitacoras_bd=$usuario->getBitacorasBD();
+    //$bitacoras_sesion= $usuario->getBitacorasSesion();
+    //$bitacoras_bd=$usuario->getBitacorasBD();
     $listaDeGestiones=$usuario->getListadeGestiones();
     $listaDeUsuarios=$usuario->getListadeUsuarios();
-
-
+    $datos_bitacora1=$usuario->getBitacorasSesion();
+    $datos_bitacora2=$usuario->getBitacorasBD();
     
-     if( $this->verSesion==true)
-      {
+   if( $this->verSesion==true)
+    {
       return view('/paginas/administrador/bitacoras_usuario')->with([
         'titulo' => 'Administrador',
         'sesion_valida' => true,
@@ -179,10 +179,16 @@ class adminController extends Controller
         'nombre_usuario'=>Session::get('nombre_usuario'),
         'ini_filtro'=>"",
         'fin_filtro'=>"",
+        'ini_filtro_2'=>"",
+        'fin_filtro_2'=>"",
         'listaDeGestiones'=>$listaDeGestiones,
         'listaDeUsuarios'=>$listaDeUsuarios, 
         'error_fecha_ini'=>"",
-        'error_fecha_fin'=>""]);
+        'error_fecha_fin'=>"",
+        'error_fecha_ini2'=>"",
+        'error_fecha_fin2'=>"",
+        'datos_bitacora1'=>$datos_bitacora1,
+        'datos_bitacora2'=>$datos_bitacora2 ]);
       }else
       {
 
@@ -192,16 +198,27 @@ class adminController extends Controller
   }
 
   public function backup(){
+    $titulo="Respaldo y Restauraci&oacute;n de la Base de Datos";
+    $mensaje="";
 
+
+
+   if( $this->verSesion==true)
+    {
      return view('/paginas/administrador/backup')->with([
-        'titulo' => 'Administrador',
+        'titulo' =>$titulo,
         'sesion_valida' => true,
         'tipo_usuario'=> 1,
         'gestion'=>$this->verSesion->getGestion(),
         'datos'=>$this->verSesion->getDatos(),
         'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario') ]);
+        'nombre_usuario'=>Session::get('nombre_usuario'),
+         'mensaje'=>$mensaje  ]);
+    }else
+    {
 
+           return redirect('index');
+    }
   }
 
   public function administrar_mensajes(){

@@ -85,10 +85,10 @@ class PrincipalController extends Controller
       {
         return view('/paginas/administrador/home_admin')->with([
         'titulo' => 'Iniciar sesi&oacute;n Administrador del Sistema',
-        'sesion_valida' => false,
+        'sesion_valida' => true,
         'tipo_usuario'=>1,
         'gestion'=>$principal->GetGestion(),
-        'datos'=>$principal->GetGestion(),
+        'datos'=>$principal->GetDatos(),
         'nombre_foto'=>Session::get('nombre_foto'),
         'nombre_usuario'=>Session::get('nombre_usuario') ]);//------>>>?????
       }

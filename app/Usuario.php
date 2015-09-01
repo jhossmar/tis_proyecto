@@ -8,11 +8,11 @@ class Usuario extends Model
 {
     public function GetUsuario($nombre,$clave)
     {
-        $salt="$2x$07$./f4af7kJi1jdaxlswE34$";
-        $pass=crypt($clave, $salt);
+        //$salt="$2x$07$./f4af7kJi1jdaxlswE34$"; Marcelo:  borre por que aun no tengo my base de datos cifrada 
+       // $pass=crypt($clave, $salt);
     	$consulta_sql = DB::select('select * 
     		                        from usuario
-    		                        where nombre_usuario = :nombre and clave = :clave ',['nombre' => $nombre,'clave'=> $pass]);
+    		                        where nombre_usuario = :nombre and clave = :clave ',['nombre' => $nombre,'clave'=> $clave]);
         return $consulta_sql;
     }
     public function SetBitacora($id)
@@ -78,7 +78,7 @@ class Usuario extends Model
 
      }
 
-     public function getGrupoEmpresas(){
+     public function getListaGrupoEmpresas(){
 
         $consulta_usuario = DB::select("SELECT u.nombre_usuario,u.habilitado,ge.nombre_corto,ge.nombre_largo,s.descripcion,u.id_usuario,u.clave
                 FROM usuario u,integrante i,grupo_empresa ge,sociedad s
