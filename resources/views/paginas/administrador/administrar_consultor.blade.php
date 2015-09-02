@@ -22,9 +22,11 @@
       <div class="box-content">
  
     @if($num_res>0)
-     <form method="post" action="conexion/admin_consultor.php" accept-charset="utf-8">
-		<table class="table table-striped table-bordered  datatable">
-	     <thead >
+     <form method="post" action="administrar_consultor" accept-charset="utf-8">
+		    <input type="hidden" name="_token" value="{{csrf_token()}}"></input>
+      <table class="table table-striped table-bordered  datatable">
+	    
+       <thead >
           <tr>
 		    <th>Usuario</th>
 		    <th>Contrase&ntilde;a</th>
@@ -48,15 +50,15 @@
               @endif
              
               @if($consultor->tipo_usuario=="2")
-                <td class="center"><center> <input type="checkbox" id={{$consultor->id_usuario}} name={{$consultor->id_usuario}} checked="checked"></center></td>
+                <td class="center"><center> <input type="checkbox" id={{$consultor->id_usuario}} name={{"tipo".$consultor->id_usuario}} checked="checked"></center></td>
               @else
-                <td class="center"><center> <input type="checkbox" id={{$consultor->id_usuario}} name={{$consultor->id_usuario}}        ></center></td>
+                <td class="center"><center> <input type="checkbox" id={{$consultor->id_usuario}} name={{"tipo".$consultor->id_usuario}}        ></center></td>
               @endif
 
               @if($consultor->habilitado=="1")
-                <td class="center"><center> <input type="checkbox" id={{$consultor->id_usuario}} name={{$consultor->id_usuario}} checked="checked"></center></td>
+                <td class="center"><center> <input type="checkbox" id={{$consultor->id_usuario}} name={{"habilitado".$consultor->id_usuario}} checked="checked"></center></td>
               @else
-               <td class="center"><center> <input type="checkbox" id={{$consultor->id_usuario}} name={{$consultor->id_usuario}}></center></td>
+               <td class="center"><center> <input type="checkbox" id={{$consultor->id_usuario}} name={{"habilitado".$consultor->id_usuario}}></center></td>
               @endif
              </tr>      
           @endforeach
@@ -72,17 +74,13 @@
   </form>
 
      @else
-           <div align=\"center\">
-             <h4><i class=\"icon-info-sign\"></i>
+           <div align="center">
+             <h4><i class="icon-info-sign"></i>
                No existe ning&uacute;n Consultor TIS registrado.</h4>
            </div> 
      @endif
 
-    <div>
-      <h1>ESTO ES UN INPUT-type-checkbox</h1>
-      <center> <input type="checkbox" id="" name=""></center>
-    </div>
-
+   
     </div>
 	</div><!--/span-->
 </div>

@@ -12,6 +12,7 @@ Route::post('iniciar_sesion', 'PrincipalController@verificarUsuario');
 Route::get('home_admin','adminController@home_admin');
 Route::get('info_admin','adminController@info_admin');
 Route::get('administrar_consultor','adminController@administrar_consultor');
+Route::post('administrar_consultor','adminController@guardarCambios_consultor');
 Route::get('administrar_grupo_empresa','adminController@administrar_grupo_empresa');
 Route::get('bitacoras_usuario','adminController@bitacoras_usuario');
 Route::get('backup','adminController@backup');

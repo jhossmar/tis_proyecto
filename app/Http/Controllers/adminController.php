@@ -123,6 +123,62 @@ class adminController extends Controller
           }
 
   }
+   function guardarCambios_consultor(){
+     $usuario= new Usuario;
+     $lista_consultores=$usuario->getConsultoresTis(); // $consulta
+     $hubo_cambios=false;
+     foreach ( $lista_consultores as $consultor) {
+         $id_consultor=$consultor->id_usuario;
+         $nombre_usuario=$consultor->nombre_usuario;
+        
+        /******cambios del la casilla "jefeConsultor" ******/
+         if(!(empty($_POST['tipo'.$id_consultor]))){
+         echo " checkbox tipo del usuario: ".$nombre_usuario." valor: ".$_POST['tipo'.$id_consultor];
+           if($consultor->tipo_usuario==3){
+              $hubo_cambios=true;
+             $usuario->cambiarAJefeConsultor($id_consultor);
+           }
+         }else{
+           echo " checkbox tipo del usuario: ".$nombre_usuario." valor: "."off";
+            if($consultor->tipo_usuario==2){
+               $hubo_cambios=true;
+             $usuario->cambiarAConsultor($id_consultor);
+            }
+         }
+  
+       /******cambios del la casilla "habilitado" ******/
+         if(!(empty($_POST['habilitado'.$id_consultor]))){
+         echo " HABILITADO: ".$_POST['habilitado'.$id_consultor]."<br>";
+           if($consultor->habilitado==0){
+                  $hubo_cambios=true;
+              $usuario->habilitarConsultor($id_consultor);
+           }
+         }else{
+           echo " HABILITADO: "."off"."<br>";
+            if($consultor->habilitado==1){
+                   $hubo_cambios=true;
+               $usuario->desabilitarConsultor($id_consultor);
+            }
+         }
+
+       
+
+     } // endforeach
+
+        if($hubo_cambios){
+          echo "<script type='text/javascript'>
+            alert('Tus datos se han modificado de forma exitosa!. ')
+            </script>
+            <META HTTP-EQUIV='Refresh' CONTENT='1; URL=administrar_consultor'> ";
+
+        }else{
+          echo "<script type='text/javascript'>
+            alert('No has hecho ningun cambio!')
+            </script>
+            <META HTTP-EQUIV='Refresh' CONTENT='1; URL=administrar_consultor'> ";
+        }
+   
+  }
 
   public function administrar_grupo_empresa(){
      
@@ -160,8 +216,7 @@ class adminController extends Controller
 
     $titulo="Bit&aacute;coras de usuario";
     $usuario = new Usuario;
-    //$bitacoras_sesion= $usuario->getBitacorasSesion();
-    //$bitacoras_bd=$usuario->getBitacorasBD();
+   
     $listaDeGestiones=$usuario->getListadeGestiones();
     $listaDeUsuarios=$usuario->getListadeUsuarios();
     $datos_bitacora1=$usuario->getBitacorasSesion();
@@ -200,7 +255,8 @@ class adminController extends Controller
   public function backup(){
     $titulo="Respaldo y Restauraci&oacute;n de la Base de Datos";
     $mensaje="";
-
+    $archivos=array(); //array de los archivos en el directorio /backup
+    $cantidadCambios=0;
 
 
    if( $this->verSesion==true)
@@ -213,7 +269,9 @@ class adminController extends Controller
         'datos'=>$this->verSesion->getDatos(),
         'nombre_foto'=>Session::get('nombre_foto'),
         'nombre_usuario'=>Session::get('nombre_usuario'),
-         'mensaje'=>$mensaje  ]);
+        'mensaje'=>$mensaje,
+        'archivos'=>$archivos,
+        'cantidadCambios'=>$cantidadCambios  ]);
     }else
     {
 
@@ -222,14 +280,23 @@ class adminController extends Controller
   }
 
   public function administrar_mensajes(){
-      return view('/paginas/administrador/administrar_mensajes')->with([
+      $num_mensajes=0;
+      if( $this->verSesion==true)
+      {
+        return view('/paginas/administrador/administrar_mensajes')->with([
         'titulo' => 'Administrador',
         'sesion_valida' => true,
         'tipo_usuario'=> 1,
         'gestion'=>$this->verSesion->getGestion(),
         'datos'=>$this->verSesion->getDatos(),
         'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario') ]);
+        'nombre_usuario'=>Session::get('nombre_usuario'),
+        'num_mensajes'=>$num_mensajes ]);
+      }else
+       {
+
+           return redirect('index');
+        }
   }
 
   public function modificar_registro_admin()
@@ -343,6 +410,10 @@ function modificar_registro_admin_guardar(){
       
     }
   }
+   
+
+  
+
  
      
 }// fin class adminController

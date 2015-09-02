@@ -164,5 +164,32 @@ class Usuario extends Model
                     VALUES (NOW(),:mensaje,0,:id_usuario,:asunto,1)",['mensaje'=>$mensaje,'id_usuario'=>$id_usuario,'asunto'=>$asunto]);
     }
 
+    public function cambiarAJefeConsultor($id_consultor)
+    {
+    DB::update("UPDATE usuario 
+                  SET  tipo_usuario= 2 WHERE id_usuario =:id",['id'=>$id_consultor]);
+
+    }
+     
+    public function cambiarAConsultor($id_consultor)
+    {
+       DB::update("UPDATE usuario 
+                  SET  tipo_usuario= 3 WHERE id_usuario =:id",['id'=>$id_consultor]);
+
+    } 
+       
+    public function habilitarConsultor($id_consultor)
+    {
+        DB::update("UPDATE usuario 
+                  SET  habilitado= 1 WHERE id_usuario =:id",['id'=>$id_consultor]);
+
+    }
+    
+    public function desabilitarConsultor($id_consultor)
+    {
+       DB::update("UPDATE usuario 
+                  SET  habilitado= 0 WHERE id_usuario =:id",['id'=>$id_consultor]);
+    }
+
 
 }

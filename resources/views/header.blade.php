@@ -12,7 +12,7 @@
 	 {!! Html::style('/css/charisma-app.css')!!}
 	 {!! Html::style('/css/jquery-ui-1.8.21.custom.css')!!}
 	 {!! Html::style('/css/fullcalendar.css')!!}
-	 {!! Html::style('/css/fullcalendar.print.css')!!}
+	 {!! Html::style('/css/fu●●●●●●●●●●●llcalendar.print.css')!!}
 	 {!! Html::style('/css/chosen.css')!!}
 	 {!! Html::style('/css/uniform.default.css')!!}
 	 {!! Html::style('/css/colorbox.css')!!}
