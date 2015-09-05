@@ -48,6 +48,12 @@ Route::get('mensajes','JefeConsultorController@mensajes');
 Route::post('insert','JefeConsultorController@insertarMensajes');
 
 
+
+Route::get('home_grupo','GrupoEmpresaController@homeGrupo');
+Route::get('formulario_entrega_producto','GrupoEmpresaController@entregaSubSistema');
+Route::get('info_grupo','GrupoEmpresaController@informacionGrupo');
+
+
 Route::get('salir',function(){
   // por ahora para borrar variables de session
    Session::flush();

@@ -13,9 +13,10 @@
 		</li>		
 	</ul>
 </div>
-<center><h3>notas de las actividades de la grupo empresa: {{$nombreGrupo}}</h3></center>
+@foreach($entregaProducto as $entrega) 
 <div class="row-fluid">
-	<div class="box span12">
+	<div class="box span12">	  
+    <center><h3>calificar la entrega del producto de la grupo empresa: {{$nombreGrupo}}</h3></center>
 	  <table class='table table-bordered  table-striped table-hover'>
 	    <tr>
 	      <td>ID ENTREGA</td>
@@ -28,8 +29,7 @@
 	      <td>OBSERVACIONES POR PARTE DEL CONSULTOR</td>
 	      <td>ENLACE AL PRODUCTO</td>
 	      <td>RESPONSABLE</td>
-	    </tr>	  
-    @foreach($entregaProducto as $entrega)      
+	    </tr>        
       <tr>
         <center>
         <td>{{$entrega->id_entrega_producto}}</td>
@@ -57,6 +57,7 @@
       <tr><td align="center" colspan="10"><font size ="4" COLOR="006060"><center><strong> Actividades</strong></center></font></td></tr>
       <tr><td align="center" colspan="10"><font size ="3" COLOR="006060"> para esta entrega de producto se realizaron las siguientes actividades:</font></td></tr>
       <tr><td colspan="10"></td></tr>
+      @if($actividades[$contador]!=null)
       <tr>      
       	<td>ID ACTIVIDAD</td>
       	<td colspan="3">DESCRIPCION</td>            
@@ -78,8 +79,13 @@
 	      </tr>
 	    @endforeach	
 	    <!--{{$contador++}}-->
-    @endforeach
-    </table>	    	  
+	    @else
+	    <tr>
+	    	<td colspan="10">para esta entrega de producto nose establecio ninguna actividad</td>
+	    </tr>
+	    @endif
+	  </table>	    	  
 	</div>
 </div>
+    @endforeach
 @stop

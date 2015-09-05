@@ -127,5 +127,33 @@ class GrupoEmpresa extends Model
                             where grupo_empresa=:u and  u.id_usuario=i.usuario AND i.carrera=c.id_carrera",['u'=>$idGrupo]);
      return $consulta;
    }
-
+   public function getEntregaProductos($idG)
+   {
+      $consulta= DB::select(" SELECT descripcion, fecha_inicio, fecha_fin, enlace_producto,pago_establecido, pago_recibido, id_responsable
+                              FROM entrega_producto
+                              WHERE fecha_fin <= CURDATE()
+                              AND grupo_empresa = :grupo",['grupo'=>$idG]);      
+      return $consulta;
+   }
+   public function getInformacionIntegrante($idU)
+   {
+      $consulta=DB::select("SELECT id_usuario,nombre, apellido, telefono, codigo_sis, nombre_carrera, usuario.nombre_usuario, email,habilitado, grupo_empresa 
+                            FROM integrante, usuario, carrera 
+                            WHERE integrante.usuario = :id_usuario AND  usuario.id_usuario=integrante.usuario AND carrera=carrera.id_carrera",["id_usuario"=>$idU]);
+      return  $consulta;
+   }
+   public function getInformacionGrupo($idG)
+   {
+    $consulta = DB::select("SELECT nombre_largo, nombre_corto, abreviatura, nombre,apellido, u.habilitado
+                            FROM grupo_empresa g,sociedad s, usuario u
+                            WHERE g.id_grupo_empresa= :id_grupo_empresa AND g.sociedad=s.id_sociedad AND g.consultor_tis=u.id_usuario",['id_grupo_empresa'=>$idG]);
+    return $consulta;
+   }
+   public function getRolIntegrante($idU)
+   {
+    $consulta = DB::select("SELECT id_rol,nombre
+                            FROM rol_integrante,rol
+                            WHERE rol_integrante.integrante = :id_usuario AND rol_integrante.rol=rol.id_rol",['id_usuario'=>$idU]);
+    return $consulta;    
+   } 
 }

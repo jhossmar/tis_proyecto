@@ -37,7 +37,7 @@
 			@elseif($tipo_usuario==4)
 				@if($datos['num_notificaciones'] > 0)
 					<ul class="dashboard-list">
-						<li>Jefe Grupo Empresa tiene ".$datos['num_notificaciones']." notificacion(es) no le&iacute;da(s). Puede ver sus notificaciones <b><a href='notificaciones.php'>aqu&iacute;</a></b></li>
+						<li>{{"Jefe Grupo Empresa tiene ".$datos['num_notificaciones']." notificacion(es) no le&iacute;da(s). Puede ver sus notificaciones"}}<b><a href='notificaciones.php'>aqu&iacute;</a></b></li>
 					</ul>
 				@else
 					<ul class="dashboard-list">

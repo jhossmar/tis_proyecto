@@ -14,7 +14,7 @@
 <center><h3>Bienvenida Grupo Empresa</h3></center>
 @if($gestion['gestion_valida'])					
 	@if($numIntegrantes < 3)				
-		<div class="row-fluid">
+  		<div class="row-fluid">
 			<div class="box span12 ">
 				<div class="box-header well">
 				  <h2><i class="icon-warning-sign"></i> Importante: Agregar Integrante a la Grupo Empresa</h2>
@@ -23,7 +23,8 @@
 				  @if($datos['actividad']->act_2_espera && $datos['actividad']->activo_2==1)
 						<p><b>Para que su Grupo Empresa quede completamente habilitada debe agregar por lo menos {{3-$numIntegrantes}} integrantes m&aacute;s.</b></p><br>
 						<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" accept-charset="utf-8" action="home_grupo.php">
-							<fieldset>								
+							<fieldset>
+							<input type="hidden" name="_token" value="{{csrf_token()}}"></input>					
 								<div class="control-group">
 								  <label class="control-label" for="name">Nombre de Usuario: </label>
 								  <div class="controls">
@@ -111,7 +112,7 @@
 					@endif
 				</div>
 			</div>
-		</div>			 	
+		</div>	
 	@else
 	<div class="row-fluid">
 		<div class="box span12">
@@ -119,11 +120,12 @@
 				<h2><i class="icon-info-sign"></i> Informacion</h2>
 			</div>
 			<div class="box-content alerts">
-				Bienvenida Grupo Empresa a la <b>Gesti&oacute;n <?php echo $verificarA->nombre_gestion; ?></b>, en este sitio usted podr&aacute; administrar las
-				actividades de su Grupo Empresa,tambi&eacute;n la entrega de los sobres A y B, entregar su producto y adem&aacute;s pod&aacute; participar del <a href="mensajes.php">Espacio de discuci&oacute;n</a>.<br>
+				Bienvenida Grupo Empresa a la <b>Gesti&oacute;n {{$gestion['nombre_gestion']}}</b>, en este sitio usted podr&aacute; administrar las
+				actividades de su Grupo Empresa,tambi&eacute;n la entrega de los sobres A y B, entregar su producto y adem&aacute;s pod&aacute; participar del <a href="mensajes">Espacio de discuci&oacute;n</a>.<br>
 			</div>
-		</div><!--/span-->
-	</div><!-- fin row -->	
+		</div>
+	</div>
+	@endif
 	@if($numIntegrantes<3 && $datos['actividad']->act_2==1 && !$datos['activida']->act_2_espera)
 	<div class="row-fluid">
 		<div class="box span12">
@@ -132,12 +134,11 @@
 			</div>
 		  <div class="box-content alerts">
 		    Si usted desea puede agregar <b>{{3 - $numIntegrantes}} integrante(s) m&aacute;s <a href="agregar_integrante.php">aqu&iacute;.</a> </b>
-		    El registro estar&aacute; habilitado hasta la fecha <b><?php echo $VeriricarG->act_fin_2 ?></b>, favor tomar nota.<br>
+		    El registro estar&aacute; habilitado hasta la fecha <b><{{$datos['act_fin_2']}}</b>, favor tomar nota.<br>
 	    </div>
 	  </div><!--/span-->
 	</div><!-- fin row -->
-	@endif	
-				
+	@endif				
 @else
 <div class="row-fluid">
 	<div class="box span12">
