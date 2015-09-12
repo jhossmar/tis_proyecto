@@ -15,7 +15,7 @@ class GrupoEmpresa extends Model
    {
    	    $consulta = DB::select("select id_entrega_producto, descripcion, fecha_inicio, fecha_fin, fecha_real_entrega, pago_establecido, pago_recibido, observacion, enlace_producto, id_responsable
   	                            from entrega_producto
-  	                            where grupo_empresa = :idEmpresa",['idEmpresa'=>$idGrupo]);
+  	                            where grupo_empresa = :idEmpresa",['idEmpresa'=>$idGrupo]);        
    	    return $consulta;    
    }
    public function getNombreEmpresa($idGrupo)
@@ -110,8 +110,8 @@ class GrupoEmpresa extends Model
    public function setHabilitado($habilitado,$idU)
    {
       DB::update("UPDATE usuario
-                 SET habilitado = :b
-                 WHERE id_usuario = :idU",['b'=>$habilitado,'idU'=>$idU]);      
+                  SET habilitado = :b
+                  WHERE id_usuario = :idU",['b'=>$habilitado,'idU'=>$idU]);
    }
    public function getDatoIntegrantes($id_grupo)
    {
@@ -155,5 +155,37 @@ class GrupoEmpresa extends Model
                             FROM rol_integrante,rol
                             WHERE rol_integrante.integrante = :id_usuario AND rol_integrante.rol=rol.id_rol",['id_usuario'=>$idU]);
     return $consulta;    
-   } 
+   }
+   public function getDatosIntegrantes($idG)
+   {
+     $consulta = DB::select("SELECT *
+                             from integrante i, usuario u, carrera c
+                             where grupo_empresa= :id_ggrupo and  u.id_usuario=i.usuario AND i.carrera=c.id_carrera",['id_ggrupo'=>$idG]);
+     return $consulta;
+   }
+   public function setRolIntegrante($idU,$rol)
+   {
+    DB::update("UPDATE rol_integrante
+                SET rol = :rol
+                WHERE integrante = :idU and rol!=1",['rol'=>$rol,'idU'=>$idU]);
+   }
+   public function getRoles($idM)
+   {
+    $consulta = DB::select("SELECT id_rol ,nombre
+                           FROM rol
+                           WHERE id_metodologia = 0 OR id_metodologia =:id_metodologia",['id_metodologia'=>$idM]);
+    return $consulta;
+   }
+   public function getMetodoGrupo($idG)
+   {
+    $consulta = DB::select("SELECT id_metodologia
+                           FROM  metodologia_grupo_empresa
+                           WHERE id_grupo_empresa = :idGrupo",['idGrupo'=>$idG]);
+    return $consulta;
+   }
+   public function insertarIntegrante($idU,$codS,$carrera,$idG)
+   {
+      DB::insert("INSERT INTO integrante(usuario,codigo_sis,carrera,grupo_empresa)
+                  VALUES ( :id_usuario, :cod_sis, :carrera, :id_grupo)",['id_usuario'=>$idU,'cod_sis'=>$codS,'carrera'=>$carrera,'id_grupo'=>$idG]);
+   }
 }

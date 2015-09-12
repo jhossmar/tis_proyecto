@@ -39,7 +39,9 @@ Route::post('modificar_entrega_producto','JefeConsultorController@modificarEntre
 Route::post('actualizar_entrega_producto','JefeConsultorController@actualizarEntregaProducto');
 Route::get('administrar_grupo','JefeConsultorController@administrarGrupo');
 Route::post('administrar_grupo','JefeConsultorController@validarCambiosGrupo');
+
 Route::get('reporte/{id_grupo}','JefeConsultorController@reporteGrupoEmpresa');
+
 Route::get('habilitar_integrantes/{id_grupo}','JefeConsultorController@habilitarIntegrantes');
 Route::post('validar_habilitar_integrante','JefeConsultorController@validarCambiosIntegrantes');
 Route::get('notificaciones','JefeConsultorController@notificaciones');
@@ -52,7 +54,10 @@ Route::post('insert','JefeConsultorController@insertarMensajes');
 Route::get('home_grupo','GrupoEmpresaController@homeGrupo');
 Route::get('formulario_entrega_producto','GrupoEmpresaController@entregaSubSistema');
 Route::get('info_grupo','GrupoEmpresaController@informacionGrupo');
-
+Route::get('administrar_integrante','GrupoEmpresaController@administrarIntegrantes');
+Route::post('administrar_integrante','GrupoEmpresaController@validarCambiosIntegrantes');
+Route::get('agregar_integrante','GrupoEmpresaController@agregarIntegrantes');
+Route::post('agregar_integrante','GrupoEmpresaController@validarNuevoIntegrante');
 
 Route::get('salir',function(){
   // por ahora para borrar variables de session

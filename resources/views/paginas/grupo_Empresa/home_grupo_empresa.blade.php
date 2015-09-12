@@ -133,7 +133,7 @@
 				<h2><i class="icon-exclamation-sign"></i> Nota</h2>
 			</div>
 		  <div class="box-content alerts">
-		    Si usted desea puede agregar <b>{{3 - $numIntegrantes}} integrante(s) m&aacute;s <a href="agregar_integrante.php">aqu&iacute;.</a> </b>
+		    Si usted desea puede agregar <b>{{3 - $numIntegrantes}} integrante(s) m&aacute;s <a href={{url("agregar_integrante")}}>aqu&iacute;.</a> </b>
 		    El registro estar&aacute; habilitado hasta la fecha <b><{{$datos['act_fin_2']}}</b>, favor tomar nota.<br>
 	    </div>
 	  </div><!--/span-->

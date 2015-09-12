@@ -452,8 +452,7 @@ class JefeConsultorController extends Controller
       $aux=$grupo->getResponsable($entrega->id_responsable);
       $responsables[] = $aux[0]->nombre." ".$aux[0]->apellido;      
       $actividades[] = $grupo->getActividad($entrega->id_entrega_producto);
-    }
-    
+    }      
     return view('/paginas/consultor/evaluacionGrupoEmpresa')->with([
           'titulo' => 'evaluar a la grupo empresa',
           'sesion_valida' => true,
@@ -585,9 +584,34 @@ class JefeConsultorController extends Controller
       }
       return redirect('administrar_grupo');   
   }
-  public function reporteGrupoEmpresa($igGrupo)
+  public function reporteGrupoEmpresa($idGrupo)
   {
-    
+    $user = new Usuario;       
+    $infUser = $user->GetNombreUsuario(Session::get('id'));
+    $nombre = $infUser[0]->nombre." ".$infUser[0]->apellido;
+    $grupo = new GrupoEmpresa;
+    $nombreG=$grupo->getNombreEmpresa($idGrupo);
+    $nombreGrupo = $nombreG[0]->nombre_largo;
+    $entregas=$grupo->getEntregaProducto($idGrupo);
+    $array = array();    
+    foreach ($entregas as $entrega) 
+    {
+      $aux = $grupo->getActividad($entrega->id_entrega_producto);
+      $array[]=$aux;
+    }    
+    $integrantes=$grupo->getDatoIntegrantes($idGrupo);
+    $view =  view('/paginas/consultor/reporte')->with([
+                  'consultor' =>$nombre,
+                  'nombreGrupo'=>$nombreGrupo,
+                  'entregas'=>$entregas,
+                  'actividades'=>$array,
+                  'contador'=>0,
+                  'integrantes'=>$integrantes]);
+    $titulo='reporte Grupo Empresas';
+    $pdf = \App::make('dompdf.wrapper',compact('titulo'));
+    $pdf->loadHTML($view);
+    return $pdf->stream('reporte');
+
   }
   public function notificaciones()
   {
@@ -673,4 +697,3 @@ class JefeConsultorController extends Controller
      return redirect('mensajes');
   }  
 }
-    
