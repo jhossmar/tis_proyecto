@@ -81,6 +81,7 @@ private function controlGestion()
       $nombre_gestion = "no definida";
       $gestion_valida = false;
       $gestion_espera = false;
+    //  $gestion= new Gestion;
       $gestion->SetGestion($id_gestion);             
     }
   }

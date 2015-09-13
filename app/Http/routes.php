@@ -10,11 +10,15 @@ Route::post('iniciar_sesion', 'PrincipalController@verificarUsuario');
 
 
 Route::get('home_admin','adminController@home_admin');
+Route::post('home_admin','adminController@home_admin_nueva_gestion');
+
 Route::get('info_admin','adminController@info_admin');
 Route::get('administrar_consultor','adminController@administrar_consultor');
 Route::post('administrar_consultor','adminController@guardarCambios_consultor');
 Route::get('administrar_grupo_empresa','adminController@administrar_grupo_empresa');
+Route::post('administrar_grupo_empresa','adminController@guardarCambios_grupo_empresa');
 Route::get('bitacoras_usuario','adminController@bitacoras_usuario');
+Route::post('bitacoras_usuario','adminController@filtrar_bitacoras_usuario');
 Route::get('backup','adminController@backup');
 Route::get('administrar_mensajes','adminController@administrar_mensajes');
 Route::get('modificar_registro_admin','adminController@modificar_registro_admin');

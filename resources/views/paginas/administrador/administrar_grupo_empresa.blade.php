@@ -21,8 +21,9 @@
 			</div>
 		  <div class="box-content">
      @if($num_res>0)
-         <form method="post" action="conexion/admin_grupo.php" accept-charset="utf-8">
-				<table class="table table-striped table-bordered  datatable">
+         <form method="post" action="administrar_grupo_empresa" accept-charset="utf-8">
+				 <input type="hidden" name="_token" value="{{csrf_token()}}"></input>
+        <table class="table table-striped table-bordered  datatable">
 				  <thead >
 				    <tr >
 					  <th>Usuario</th>
@@ -42,9 +43,9 @@
                      <td>{{$grupo->nombre_largo}}</td>
                      <td>{{$grupo->descripcion}}</td>
                  @if($grupo->habilitado=="1")
-                        <td class="center"><center> <input type="checkbox" id="" name="" checked="checked"></center></td>
+                        <td class="center"><center> <input type="checkbox" id={{$grupo->id_usuario}} name={{$grupo->id_usuario}} checked="checked"></center></td>
                  @else 
-                        <td class="center"><center> <input type="checkbox" id="" name=""></center></td>
+                        <td class="center"><center> <input type="checkbox" id={{$grupo->id_usuario}} name={{$grupo->id_usuario}}></center></td>
                  @endif
                  </tr>
                @endforeach

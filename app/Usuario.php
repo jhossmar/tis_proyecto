@@ -86,20 +86,20 @@ class Usuario extends Model
            return $consulta_usuario;
      }
   
-    public function getBitacorasSesion(){
+    public function getBitacorasSesion($condicion){
 
          $consulta_usuario = DB::select("SELECT id_bitacora_sesion, fecha_hora, operacion, nombre_usuario,g.gestion,descripcion
                                          FROM bitacora_sesion b, usuario u, gestion_empresa_tis g,tipo_usuario
-                                         WHERE id_usuario=usuario AND u.gestion=g.id_gestion  AND tipo_usuario=id_tipo_usuario");
+                                         WHERE id_usuario=usuario AND u.gestion=g.id_gestion  AND tipo_usuario=id_tipo_usuario ".$condicion);
          return $consulta_usuario;
     }
 
-    public function getBitacorasBD(){
+    public function getBitacorasBD($condicion){
 
          $consulta_usuario = DB::select("SELECT id_bitacora,fecha_hora,u.nombre_usuario,viejo,nuevo,g.gestion, t.descripcion,tabla
                                          FROM bitacora_bd b, usuario u, gestion_empresa_tis g, tipo_usuario t
-                                         WHERE u.id_usuario=b.usuario AND g.id_gestion=u.gestion AND u.tipo_usuario=t.id_tipo_usuario");
-         return $consulta_usuario;
+                                         WHERE u.id_usuario=b.usuario AND g.id_gestion=u.gestion AND u.tipo_usuario=t.id_tipo_usuario ".$condicion);
+         return $consulta_usuario;                                                                                                                                             
     }
   
     public function getListadeGestiones(){
@@ -178,18 +178,24 @@ class Usuario extends Model
 
     } 
        
-    public function habilitarConsultor($id_consultor)
+    public function habilitarUsuario($id_usuario)
     {
         DB::update("UPDATE usuario 
-                  SET  habilitado= 1 WHERE id_usuario =:id",['id'=>$id_consultor]);
+                  SET  habilitado= 1 WHERE id_usuario =:id",['id'=>$id_usuario]);
 
     }
     
-    public function desabilitarConsultor($id_consultor)
+    public function deshabilitarUsuario($id_usuario)
     {
        DB::update("UPDATE usuario 
-                  SET  habilitado= 0 WHERE id_usuario =:id",['id'=>$id_consultor]);
+                  SET  habilitado= 0 WHERE id_usuario =:id",['id'=>$id_usuario]);
     }
 
+   public function iniciarNuevaGestion($gestion,$inicio,$fin,$descripcion){
+     DB::update("INSERT INTO gestion_empresa_tis(gestion,fecha_ini_gestion,fecha_fin_gestion,gestion_activa,descripcion_gestion)
+                        VALUES(:gestion, :inicio, :fin, 1, :descripcion)",['gestion'=>$gestion,'inicio'=>$inicio,'fin'=>$fin,'descripcion'=>$descripcion]);
+
+
+   }
 
 }
