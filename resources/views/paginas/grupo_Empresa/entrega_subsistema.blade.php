@@ -26,7 +26,7 @@
 							<br>							
 							<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" action="formulario_entrega_producto.php" accept-charset="utf-8">
 								<fieldset>
-								  <input type="hidden" name="_token" value="{{csrf_token()}}"></input>                			    
+								  <input type="hidden" name="_token" value="{{csrf_token()}}"></input>
 									<div class="control-group">
 								  	<label class="control-label">Descripci&oacute;n: </label>								  	
 								  	<div class="controls">	

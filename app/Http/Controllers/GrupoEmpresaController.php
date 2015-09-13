@@ -238,6 +238,195 @@ class GrupoEmpresaController extends Controller
       {
         return "ha ingresado mal los datos";
       }
+    }
+    public function documentosGrupo()
+    {
+      $principal = new VerificadorDeSesiones;
+      $grupo = new GrupoEmpresa;
+      $id_grupo = $grupo->getIdGrupo(Session::get('id'))[0]->id_grupo_empresa;  
+      $numIntegrantes = $grupo->getNumeroIntegrantes($id_grupo);       
+      $sobre=$grupo->getSobres($id_grupo)[0];      
+      $documentos=$grupo->getDocumentoCompartido($id_grupo);
 
+      return view('/paginas/grupo_Empresa/documentos_grupo')->with([
+          'titulo' => 'Enviar Documentos Grupo Empresa',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 4,
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
+          'numintegrantes'=>$numIntegrantes,
+          'sobre'=>$sobre,
+          'documentos'=>$documentos,
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
+    }
+    public function validarDocumentos()
+    {      
+      if(isset($_POST['enviar']))
+      {  
+         $sobreA=$_FILES['documentoA'];
+         $sobreB=$_FILES['documentoB'];
+         $usuario=Session::get('nombre_usuario');
+         $errorA=false;  
+         $documentoA="";
+         $tiene_doc=0;
+         $ext_permitidas = array('.pdf','.doc','.docx','.xls','.xlsx','.ppt','.pptx','.zip','.rar');
+  
+        if(!empty($_FILES['documentoA']['name']))
+        {
+          $idUnico = time();
+          $nombre_archivo = $_FILES['documentoA']['name'];
+          $nombre_tmp = $_FILES['documentoA']['tmp_name'];
+          $ext = substr($nombre_archivo, strpos($nombre_archivo, '.'));
+          $tamano = $_FILES['documentoA']['size'];             
+          $limite = 1000 * 1024;
+          if(in_array($ext, $ext_permitidas))
+          {
+            if($tamano <= $limite )
+            {
+              if( $_FILES['documentoA']['error']<= 0)
+              {
+                if( file_exists( 'archivos/'.str_replace(" ", "_", $usuario).'-'.'sobreA'.$ext) )
+                {
+                  $error_docA='El archivo ya existe';
+                  $errorA=true;
+                }
+                else
+                {
+                  $nombre_tmp_A=$nombre_tmp;
+                  $documentoA='archivos/'.$usuario.'-'.'sobreA'.$ext;
+                  $tiene_doc=1;
+                }
+              }
+              else
+              {
+                $error_docA='Error al subir el archivo';
+                $errorA=true;
+              }
+            }
+            else
+            {
+              $error_docA='El archivo debe un tama&ntilde;o menor a 1 Mega Byte';
+              $errorA=true;
+            }
+          }
+          else
+          {
+            $errorA=true;
+            $error_docA='El formato del archivo no esta permitido';
+          }
+        }
+        else
+        {
+          $error_docA='No se subio el sobre A';
+          $errorA=true;
+        }
+        $errorB=false;
+        $documentoB="";
+        $tiene_doc=0;
+        if(!empty($_FILES['documentoB']['name']))
+        {
+          $idUnico = time();
+          $nombre_archivo = $_FILES['documentoB']['name'];
+          $nombre_tmp = $_FILES['documentoB']['tmp_name'];
+          $ext = substr($nombre_archivo, strpos($nombre_archivo, '.'));
+          $tamano = $_FILES['documentoB']['size'];
+          $limite = 1000 * 1024;
+          if(in_array($ext, $ext_permitidas))
+          {
+            if( $tamano <= $limite )
+            {
+              if( $_FILES['documentoB']['error'] <= 0 )
+              {
+                if(file_exists('archivos/'.str_replace(" ", "_", $usuario).'-'.'sobreB'.$ext))
+                {
+                  $error_docB='El archivo ya existe';
+                  $errorB=true;
+                }
+                else
+                {
+                  if(!$errorA)
+                  {
+                    $documentoA = str_replace(" ", "_", $documentoA);
+                    $documentoB='archivos/'.$usuario.'-'.'sobreB'.$ext;
+                    $documentoB = str_replace(" ", "_", $documentoB);
+                    move_uploaded_file($nombre_tmp_A, $documentoA);
+                    move_uploaded_file($nombre_tmp, $documentoB);
+                    $tiene_doc=1;
+                    $grupo = new GrupoEmpresa;
+                    $id_grupo = $grupo->getIdGrupo(Session::get('id'))[0]->id_grupo_empresa;
+                    $grupo->setSobres($id_grupo,$documentoA,$documentoB);
+                    return redirect('subir_grupo_empresa');
+                  }
+                }
+              }
+              else
+              {
+                $error_docB='Error al subir el archivo';
+                $errorB=true;
+              }
+            }
+            else
+            {
+              $error_docB='El archivo debe un tama&ntilde;o menor A 1 Mega Byte';
+              $errorB=true;
+            }
+          }          
+          else
+          {
+            $errorB=true;
+            $error_docB='El formato del archivo no esta permitido';
+          }
+        }
+        else
+        {
+          $error_docB='No se subio el sobre B';
+          $errorB=true;
+        }
+      }
+      if($errorA==true)
+      {
+        $principal = new VerificadorDeSesiones;
+        $grupo = new GrupoEmpresa;
+        $id_grupo = $grupo->getIdGrupo(Session::get('id'))[0]->id_grupo_empresa;  
+        $numIntegrantes = $grupo->getNumeroIntegrantes($id_grupo);       
+        $sobre=$grupo->getSobres($id_grupo)[0];      
+        $documentos=$grupo->getDocumentoCompartido($id_grupo);
+        
+        return view('/paginas/grupo_Empresa/documentos_grupo')->with([
+          'titulo' => 'Enviar Documentos Grupo Empresa',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 4,
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
+          'numintegrantes'=>$numIntegrantes,
+          'sobre'=>$sobre,
+          'error_docA'=>$error_docA,
+          'documentos'=>$documentos,
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
+      }
+      if($errorB==true)
+      {
+        $principal = new VerificadorDeSesiones;
+        $grupo = new GrupoEmpresa;
+        $id_grupo = $grupo->getIdGrupo(Session::get('id'))[0]->id_grupo_empresa;  
+        $numIntegrantes = $grupo->getNumeroIntegrantes($id_grupo);       
+        $sobre=$grupo->getSobres($id_grupo)[0];      
+        $documentos=$grupo->getDocumentoCompartido($id_grupo);
+        
+        return view('/paginas/grupo_Empresa/documentos_grupo')->with([
+          'titulo' => 'Enviar Documentos Grupo Empresa',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 4,
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
+          'numintegrantes'=>$numIntegrantes,
+          'sobre'=>$sobre,
+          'error_docB'=>$error_docB,
+          'documentos'=>$documentos,
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
+      }
     }
 }

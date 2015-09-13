@@ -188,4 +188,24 @@ class GrupoEmpresa extends Model
       DB::insert("INSERT INTO integrante(usuario,codigo_sis,carrera,grupo_empresa)
                   VALUES ( :id_usuario, :cod_sis, :carrera, :id_grupo)",['id_usuario'=>$idU,'cod_sis'=>$codS,'carrera'=>$carrera,'id_grupo'=>$idG]);
    }
+   public function getSobres($idG)
+   {
+    $consulta = DB::select("SELECT sobre_a, sobre_b,observacion,habilitado
+                            FROM grupo_empresa
+                            WHERE id_grupo_empresa = :id_grupo",['id_grupo'=>$idG]);
+    return $consulta;
+   }
+   public function getDocumentoCompartido($idG)
+   {
+     $consulta =DB::select("SELECT g.consultor_tis, nombre_documento,ruta_documento,descripsion_documento,fecha_documento
+                            FROM grupo_empresa g , documento_consultor d
+                            WHERE id_grupo_empresa=:idGrupo AND g.consultor_tis=d.consultor_tis AND d.habilitado=1 AND d.documento_jefe=0",['idGrupo'=>$idG]);
+     return $consulta;
+   }
+   public function setSobres($idG,$docA,$docB)
+   {
+      DB::update("UPDATE grupo_empresa
+                  SET sobre_a = :documentoA, sobre_b = :documentoB,observacion=NULL,habilitado=0
+                  WHERE id_grupo_empresa = :id_grupo",['id_grupo'=>$idG,'documentoA'=>$docA,'documentoB'=>$docB]);
+   }
 }

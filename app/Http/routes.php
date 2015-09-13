@@ -58,7 +58,12 @@ Route::get('administrar_integrante','GrupoEmpresaController@administrarIntegrant
 Route::post('administrar_integrante','GrupoEmpresaController@validarCambiosIntegrantes');
 Route::get('agregar_integrante','GrupoEmpresaController@agregarIntegrantes');
 Route::post('agregar_integrante','GrupoEmpresaController@validarNuevoIntegrante');
+Route::get('subir_grupo_empresa','GrupoEmpresaController@documentosGrupo');
+Route::post('subir_grupo_empresa','GrupoEmpresaController@validarDocumentos');
 
+Route::get('download', function() {
+    return Response::download(Input::get('path'));
+});
 Route::get('salir',function(){
   // por ahora para borrar variables de session
    Session::flush();
