@@ -146,8 +146,9 @@ class PrincipalController extends Controller
       {
         $grupo = new GrupoEmpresa;
         $id_grupo = $grupo->getIdGrupo(Session::get('id'));
-        $numIntegrantes = $grupo->getNumeroIntegrantes((int)$id_grupo[0]->id_grupo_empresa);
-        $roles=$grupo->getMetodologias($id_grupo[0]->id_grupo_empresa);       
+        $numIntegrantes = $grupo->getNumeroIntegrantes($id_grupo[0]->id_grupo_empresa);       
+        $roles=$grupo->getMetodologias($id_grupo[0]->id_grupo_empresa);
+        
         return view('/paginas/grupo_Empresa/home_grupo_empresa')->with([
           'titulo' => 'home del representate de la grupo empresa',
           'sesion_valida' => true,
@@ -155,7 +156,7 @@ class PrincipalController extends Controller
           'gestion'=>$principal->GetGestion(),
           'datos'=>$principal->GetDatos(),
           'idGrupo'=>$id_grupo,
-          'numIntegrantes'=>$numIntegrantes,
+          'numIntegrantes'=>$numIntegrantes[0]->numero,
           'roles'=>$roles,
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario') ]);

@@ -41,6 +41,13 @@ class Usuario extends Model
                                 where nombre_usuario = :nombre AND (gestion=1 OR gestion = :id_gestion)",['nombre'=>$nombre_usuario,'id_gestion'=>$id_gestion]);
         return $sql_user;
     }
+    public function verificarCodSis($codSis,$id_gestion)
+    {
+        $consulta = DB::select("SELECT codigo_sis 
+                                FROM usuario, integrante 
+                                WHERE integrante.usuario=usuario.id_usuario AND codigo_sis=:cod_sis AND (gestion=1 OR gestion=:id_gestion)",['cod_sis'=>$codSis,'id_gestion'=>$id_gestion]);
+        return $consulta;
+    }
     public function actualizarDatos($id_usuario, $nombre_usuario, $nombre, $apellido, $telefono, $email)
     {       
         DB::update("update usuario as u
@@ -164,6 +171,23 @@ class Usuario extends Model
                     VALUES (NOW(),:mensaje,0,:id_usuario,:asunto,1)",['mensaje'=>$mensaje,'id_usuario'=>$id_usuario,'asunto'=>$asunto]);
     }
 
+    public function insertarUsuario($usuario,$clave,$nombre,$apellido,$telefono,$email,$foto,$habilitado,$tipo,$id_gestion)
+    {
+        DB::insert("INSERT INTO usuario (nombre_usuario,clave,nombre,apellido,telefono, email,foto, habilitado, tipo_usuario,gestion)
+                    VALUES (:usuario,:clave,:nombre_rep,:apellido_rep,:telefono_rep,:eMail,:foto,:habilitado,:tipo,:id_gestion)",['usuario'=>$usuario,'clave'=>$clave,'nombre_rep'=>$nombre,'apellido_rep'=>$apellido,'telefono_rep'=>$telefono,'eMail'=>$email,'foto'=>$foto,'habilitado'=>$habilitado,'tipo'=>$tipo,'id_gestion'=>$id_gestion]);
+    }
+    public function getIdUsuario($nombre_usuario,$clave)
+    {
+        $consulta = DB::select("SELECT id_usuario
+                                FROM usuario
+                                WHERE nombre_usuario = :username and clave = :clave",['username'=>$nombre_usuario,'clave'=>$clave]);
+        return $consulta;
+    }
+    public function insertarRol($idU,$idrol)
+    {
+        DB::insert("INSERT INTO rol_integrante (integrante,rol)
+                    VALUES (:id_usuario,:id_rol)",['id_usuario'=>$idU,'id_rol'=>$idrol]);
+    }
     public function cambiarAJefeConsultor($id_consultor)
     {
     DB::update("UPDATE usuario 

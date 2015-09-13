@@ -439,22 +439,20 @@ class JefeConsultorController extends Controller
           'nombre_usuario'=>Session::get('nombre_usuario')]);
   }
   public function actualizarCalificacion($id)
-  {
-    //return redirect('index');
+  {    
     $principal = new VerificadorDeSesiones;
-
     $grupo = new GrupoEmpresa;
     $nombreGrupo = $grupo->getNombreEmpresa($id)[0]->nombre_largo;
     $entregaProducto = $grupo->getEntregaProducto($id);
     $responsables = array();
     $actividades = array();
+    //return $entregaProducto[0]->descripcion;
     foreach ($entregaProducto as $entrega) 
     {
       $aux=$grupo->getResponsable($entrega->id_responsable);
       $responsables[] = $aux[0]->nombre." ".$aux[0]->apellido;      
       $actividades[] = $grupo->getActividad($entrega->id_entrega_producto);
-    }
-    
+    }      
     return view('/paginas/consultor/evaluacionGrupoEmpresa')->with([
           'titulo' => 'evaluar a la grupo empresa',
           'sesion_valida' => true,
@@ -470,7 +468,6 @@ class JefeConsultorController extends Controller
           'aux'=>0,        
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario')]);
-
   }
   public function mostrarTareas($idG,$idActividad)
   {
@@ -587,50 +584,34 @@ class JefeConsultorController extends Controller
       }
       return redirect('administrar_grupo');   
   }
-  public function reporteGrupoEmpresa($igGrupo)
+  public function reporteGrupoEmpresa($idGrupo)
   {
-  }
-  public function habilitarIntegrantes($idGrupo)
-  {
-    $principal = new VerificadorDeSesiones;
+    $user = new Usuario;       
+    $infUser = $user->GetNombreUsuario(Session::get('id'));
+    $nombre = $infUser[0]->nombre." ".$infUser[0]->apellido;
     $grupo = new GrupoEmpresa;
-    $grupos = $grupo->getNombreEmpresa($idGrupo);
-    $nombre_grupo = $grupos[0]->nombre_largo;
-    $integrantes = $grupo->getDatoIntegrantes($idGrupo);
-    $cantidad = count($integrantes);
-    return view('/paginas/consultor/habilitarIntegrantes')->with([
-        'titulo' => 'Habilitar Integrantes',
-        'sesion_valida' => true,
-        'tipo_usuario'=> 2,
-        'gestion'=>$principal->GetGestion(),
-        'datos'=>$principal->GetDatos(),
-        'id_grupo'=>$idGrupo,
-        'cantidad'=>$cantidad,
-        'integrantes'=>$integrantes,
-        'contador'=>0,
-        'nombre_grupo'=>$nombre_grupo,
-        'nombre_foto'=>Session::get('nombre_foto'),
-        'nombre_usuario'=>Session::get('nombre_usuario')]);
-  }
-  public function validarCambiosIntegrantes()
-  {
-    $u=$_POST["grupo"];
-    $grupo = new GrupoEmpresa;
-    $consulta = $grupo->getHabilitado($u);
-    $num=$consulta[0]->numer;
-    $counta=0;
-    while($counta < $num)
-    {    
-      $a=$_POST["a".$counta];
-      $b=0;
-      if(isset($_POST["b".$counta]))
-      {
-        $b=1;
-      }
-      $grupo->setHabilitado($b,$a);                                             
-      $counta++;
-    }
-     return redirect('habilitar_integrantes/'.$u);
+    $nombreG=$grupo->getNombreEmpresa($idGrupo);
+    $nombreGrupo = $nombreG[0]->nombre_largo;
+    $entregas=$grupo->getEntregaProducto($idGrupo);
+    $array = array();    
+    foreach ($entregas as $entrega) 
+    {
+      $aux = $grupo->getActividad($entrega->id_entrega_producto);
+      $array[]=$aux;
+    }    
+    $integrantes=$grupo->getDatoIntegrantes($idGrupo);
+    $view =  view('/paginas/consultor/reporte')->with([
+                  'consultor' =>$nombre,
+                  'nombreGrupo'=>$nombreGrupo,
+                  'entregas'=>$entregas,
+                  'actividades'=>$array,
+                  'contador'=>0,
+                  'integrantes'=>$integrantes]);
+    $titulo='reporte Grupo Empresas';
+    $pdf = \App::make('dompdf.wrapper',compact('titulo'));
+    $pdf->loadHTML($view);
+    return $pdf->stream('reporte');
+
   }
   public function notificaciones()
   {
@@ -714,5 +695,5 @@ class JefeConsultorController extends Controller
       $asunto= NULL;
     }
      return redirect('mensajes');
-  }
+  }  
 }

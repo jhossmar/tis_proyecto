@@ -257,18 +257,18 @@
 			@elseif($tipo_usuario==4)
 				<ul class="nav nav-tabs nav-stacked main-menu">
 					<li class="nav-header box-header"><h5>Men&uacute; </h5></li>
-					<li><a href="home_grupo.php"><i class="icon-home"></i><span class="hidden-tablet"> Home</span></a></li>
-					<li><a href="info_grupo.php"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n de la Grupo Empresa</span></a></li>
-					<li><a href="administrar_integrante.php"><i class="icon-check"></i><span class="hidden-tablet"> Administrar Integrantes</span></a></li>
-					<li><a href="subir_grupo_empresa.php"><i class="icon-list-alt"></i><span class="hidden-tablet"> Documentos</span></a></li>
-                    <li><a href="entrega_prod.php"><i class="icon-calendar"></i><span class="hidden-tablet"> Cronograma de Pagos y de Subsistemas  </span></a></li>
+					<li><a href={{url("home_grupo")}}><i class="icon-home"></i><span class="hidden-tablet"> Home</span></a></li>
+					<li><a href={{url("info_grupo")}}><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n de la Grupo Empresa</span></a></li>
+					<li><a href={{url("administrar_integrante")}}><i class="icon-check"></i><span class="hidden-tablet"> Administrar Integrantes</span></a></li>
+					<li><a href={{url("subir_grupo_empresa")}}><i class="icon-list-alt"></i><span class="hidden-tablet"> Documentos</span></a></li>
+                    <li><a href={{url("entrega_producto")}}><i class="icon-calendar"></i><span class="hidden-tablet"> Cronograma de Pagos y de Subsistemas  </span></a></li>
                     <li><a href="actividades_grupo.php"><i class="icon-edit"></i><span class="hidden-tablet"> Planificar Actividades de Subsistemas</span></a></li>
                     <li><a href="calificacion_grupo.php"><i class="icon-check"></i><span class="hidden-tablet"> Ver las notas de las actividades</span></a></li>
-                    <li><a href="formulario_entrega_producto.php"><i class="icon-star"></i><span class="hidden-tablet"> Entrega de Subsistemas</span></a></li>
+                    <li><a href={{url("formulario_entrega_producto")}}><i class="icon-star"></i><span class="hidden-tablet"> Entrega de Subsistemas</span></a></li>
                     <li><a href="mis_tareas_grupo_integra.php"><i class="icon-briefcase"></i><span class="hidden-tablet"> Gestionar mis Tareas</span></a></li>
                     <li><a href="cronograma_grupo_integra.php"><i class="icon-tasks"></i><span class="hidden-tablet"> Reporte general de la Grupo Empresa </span></a></li>
 					<li><a href="notificaciones.php"><i class="icon-globe"></i><span class="hidden-tablet"> Notificaciones</span></a></li>
-					<li><a href="mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Espacio de Discuci&oacute;n</span></a></li>
+					<li><a href={{url("mensajes")}}><i class="icon-comment"></i><span class="hidden-tablet"> Espacio de Discuci&oacute;n</span></a></li>
 				</ul>
 			</div>
 		</div>
