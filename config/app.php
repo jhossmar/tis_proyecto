@@ -137,14 +137,16 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
-        Barryvdh\DomPDF\ServiceProvider::class,
+        //Barryvdh\DomPDF\ServiceProvider::class, //  lo elimine por  que no se podia instalar (MArcelo dom 13 agosto 19:hrs)
+
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-        JasperPHP\JasperPHPServiceProvider::class,
+        App\Providers\RouteServiceProvider::class, 
+        //JasperPHP\JasperPHPServiceProvider::class, //lo elimine por  que no se podia instalar (MArcelo dom 13 agosto 19:hrs)
+
 
     ],
 
@@ -195,6 +197,8 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Form'      => Illuminate\Html\FormFacade::class,
         'Html'      => Illuminate\Html\HtmlFacade::class,
+
+        
 
 
     ],
