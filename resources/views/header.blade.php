@@ -261,7 +261,7 @@
 					<li><a href={{url("info_grupo")}}><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n de la Grupo Empresa</span></a></li>
 					<li><a href={{url("administrar_integrante")}}><i class="icon-check"></i><span class="hidden-tablet"> Administrar Integrantes</span></a></li>
 					<li><a href={{url("subir_grupo_empresa")}}><i class="icon-list-alt"></i><span class="hidden-tablet"> Documentos</span></a></li>
-                    <li><a href={{url("entrega_prod")}}><i class="icon-calendar"></i><span class="hidden-tablet"> Cronograma de Pagos y de Subsistemas  </span></a></li>
+                    <li><a href={{url("entrega_producto")}}><i class="icon-calendar"></i><span class="hidden-tablet"> Cronograma de Pagos y de Subsistemas  </span></a></li>
                     <li><a href="actividades_grupo.php"><i class="icon-edit"></i><span class="hidden-tablet"> Planificar Actividades de Subsistemas</span></a></li>
                     <li><a href="calificacion_grupo.php"><i class="icon-check"></i><span class="hidden-tablet"> Ver las notas de las actividades</span></a></li>
                     <li><a href={{url("formulario_entrega_producto")}}><i class="icon-star"></i><span class="hidden-tablet"> Entrega de Subsistemas</span></a></li>

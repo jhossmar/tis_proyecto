@@ -60,6 +60,8 @@ Route::get('agregar_integrante','GrupoEmpresaController@agregarIntegrantes');
 Route::post('agregar_integrante','GrupoEmpresaController@validarNuevoIntegrante');
 Route::get('subir_grupo_empresa','GrupoEmpresaController@documentosGrupo');
 Route::post('subir_grupo_empresa','GrupoEmpresaController@validarDocumentos');
+Route::get('entrega_producto','GrupoEmpresaController@planificacionEntrega');
+Route::post('entrega_producto','GrupoEmpresaController@validarEntrega');
 
 Route::get('download', function() {
     return Response::download(Input::get('path'));

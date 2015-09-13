@@ -429,4 +429,150 @@ class GrupoEmpresaController extends Controller
           'nombre_usuario'=>Session::get('nombre_usuario') ]);
       }
     }
+    public function planificacionEntrega()
+    {
+      $principal = new VerificadorDeSesiones;
+      $grupo = new GrupoEmpresa;
+      $id_grupo = $grupo->getIdGrupo(Session::get('id'))[0]->id_grupo_empresa;
+      $numIntegrantes = $grupo->getNumeroIntegrantes($id_grupo);
+      $subsistemas=$grupo->getEntrgaSubsistema($id_grupo);
+      $integrantes = $grupo->getNombreIntegrantes($id_grupo);
+      $errores = array('','');
+      return view('/paginas/grupo_Empresa/entrega_subsistema')->with([
+          'titulo' => 'Cronograma de entrega de subsistemas',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 4,
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
+          'numIntegrantes'=>$numIntegrantes,
+          'subsistemas'=>$subsistemas,
+          'contador'=>0,
+          'errores'=>$errores,
+          'integrantes'=>$integrantes,
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario') ]);
+    }
+    public function validarEntrega()
+    {
+      if (isset($_POST['enviar']))
+      {
+        $error=false;
+        $fecha = date("Y-m-d");
+        $principal = new VerificadorDeSesiones;
+        $gestion=$principal->GetGestion();
+        $inigestion=strftime("%y/%m/%d",$gestion['fecha_ini']);
+        $fingestion=strftime("%y/%m/%d",$gestion['fecha_fin']);
+        $errores = array('','');//0-fin, 1-ini
+        if(isset($_POST['inicio']) && isset($_POST['fin']))
+        {
+          $inicio = $_POST['inicio'];
+          $fin = $_POST['fin'];
+          $ini_dia = substr($inicio, 8);
+          $ini_mes = substr($inicio, 5,2);
+          $ini_year = substr($inicio, 0,4);
+          $fin_dia = substr($fin, 8);
+          $fin_mes = substr($fin, 5,2);
+          $fin_year = substr($fin, 0,4);
+          if(@checkdate($ini_mes, $ini_dia, $ini_year))
+          {
+            if(@checkdate($fin_mes, $fin_dia, $fin_year)) 
+            {
+              if($inicio>=$fecha)
+              {
+                if($fin>$inicio)
+                {
+                  if(strtotime($inicio)>=$gestion['fecha_ini']&&strtotime($inicio)<=$gestion['fecha_fin'])
+                  {
+                    if(strtotime($fin)<=$gestion['fecha_fin'])
+                    {
+                      $descripcion=$_POST['descripcionG'];
+                      $pago=$_POST['pagos'];
+                      $responsable=$_POST['responsable'];
+                      $grupo = new GrupoEmpresa;
+                      $id_grupo = $grupo->getIdGrupo(Session::get('id'))[0]->id_grupo_empresa;
+                      $grupo->setEntregaProducto($descripcion,$inicio,$fin,$pago,$id_grupo,$responsable);                      
+                      return redirect('entrega_producto');
+                    }
+                    else
+                    {
+                      $error = true;
+                      $errores[0] = "La fecha de finalizaci&oacute;n debe encontrarse dentro de la gesti&oacute;n ".$inigestion." al ".$fingestion;
+                    }
+                  }
+                  else
+                  {
+                    $error = true;
+                    $errores[1] = "La fecha de inicio debe encontrarse dentro de la gesti&oacute;n ".$inigestion." al ".$fingestion;
+                  }
+                }
+                else
+                {
+                  $error = true;
+                  $errores[0] = "La fecha de finalizaci&oacute;n no debe ser menor o igual a la fecha de inicio";
+                }
+              }
+              else
+              {
+                $error = true;
+                $errores[1] = "La fecha de inicio no debe ser menor a la fecha presente";
+              }
+            }
+            else
+            {
+              $error = true;
+              $errores[0] = "La fecha de finalizacion no es valida";
+            }
+          }
+          else
+          {
+            $error = true;
+            $errores[1] = "La fecha de inicio no es valida";
+          }
+        }
+        if($error = true)
+        {
+          $principal = new VerificadorDeSesiones;
+          $grupo = new GrupoEmpresa;
+          $id_grupo = $grupo->getIdGrupo(Session::get('id'))[0]->id_grupo_empresa;
+          $numIntegrantes = $grupo->getNumeroIntegrantes($id_grupo);
+          $subsistemas=$grupo->getEntrgaSubsistema($id_grupo);
+          $integrantes = $grupo->getNombreIntegrantes($id_grupo);
+          return view('/paginas/grupo_Empresa/entrega_subsistema')->with([
+              'titulo' => 'Cronograma de entrega de subsistemas',
+              'sesion_valida' => true,
+              'tipo_usuario'=> 4,
+              'gestion'=>$principal->GetGestion(),
+              'datos'=>$principal->GetDatos(),
+              'numIntegrantes'=>$numIntegrantes,
+              'subsistemas'=>$subsistemas,
+              'contador'=>0,
+              'errores'=>$errores,
+              'integrantes'=>$integrantes,
+              'nombre_foto'=>Session::get('nombre_foto'),
+              'nombre_usuario'=>Session::get('nombre_usuario') ]);
+        }
+      }
+      if(isset($_POST['guardar']))
+      {
+        $contCEP=(int) $_POST['CEP'];
+        $ccep=0;
+        $grupo = new GrupoEmpresa;
+        while($ccep<$contCEP)
+        {
+          $ide=(int)$_POST["A0".$ccep];
+          if(isset($_POST["A1".$ccep]))
+          {                         
+            $actividades = $grupo->getIdActividad($ide);
+            foreach ($actividades as $actividad) 
+            {
+              $grupo->eliminarTareas($actividad->id_actividad);
+              $grupo->eliminarActividad($actividad->id_actividad);
+            }                                    
+            $grupo->eliminarEntregaProducto($ide);
+            return redirect('entrega_producto');
+          }
+          $ccep++;
+        }
+      }
+    }    
 }

@@ -208,4 +208,43 @@ class GrupoEmpresa extends Model
                   SET sobre_a = :documentoA, sobre_b = :documentoB,observacion=NULL,habilitado=0
                   WHERE id_grupo_empresa = :id_grupo",['id_grupo'=>$idG,'documentoA'=>$docA,'documentoB'=>$docB]);
    }
+   public function getEntrgaSubsistema($idG)
+   {
+      $consulta = DB::select("SELECT ep.id_entrega_producto,ep.descripcion,ep.fecha_inicio,ep.fecha_fin,ep.pago_establecido,u.nombre,u.apellido
+                              FROM entrega_producto ep, usuario u
+                              WHERE ep.grupo_empresa= :id_grupo AND ep.id_responsable=u.id_usuario",['id_grupo'=>$idG]);
+      return $consulta;
+   }
+   public function getNombreIntegrantes($idG)
+   {
+     $consulta=DB::select("SELECT u.nombre_usuario, u.id_usuario
+                           FROM integrante i, usuario u
+                           WHERE i.grupo_empresa =:id_grupo AND i.usuario =u.id_usuario",['id_grupo'=>$idG]);
+     return $consulta;
+   }
+   public function setEntregaProducto($descripcion,$inicio,$fin,$pago,$id_grupo,$responsable)
+   {
+      DB::insert("INSERT INTO entrega_producto(descripcion,fecha_inicio,fecha_fin,pago_establecido,grupo_empresa,id_responsable)
+                  VALUES(:descripcion,:inicio,:fin,:pago,:id_grupo,:responsable)",['descripcion'=>$descripcion,'inicio'=>$inicio,'fin'=>$fin,'pago'=>$pago,'id_grupo'=>$id_grupo,'responsable'=>$responsable]);
+   }
+   public function getIdActividad($idE)
+   {
+    $consulta = DB::select("SELECT age.id_actividad
+                            FROM actividad_grupo_empresa age
+                            WHERE age.entrega_producto=:id_entrega",['id_entrega'=>$idE]);
+    return $consulta;
+   }
+   public function eliminarTareas($idA)
+   {
+     DB::delete("DELETE FROM tarea  WHERE actividad=:id_actividad",['id_actividad'=>$idA]);
+   }
+   public function eliminarActividad($idA)
+   {
+     DB::delete("DELETE FROM actividad_grupo_empresa  WHERE id_actividad=:id_actividad",['id_actividad'=>$idA]);
+   }
+   public function eliminarEntregaProducto($idE)
+   {
+     DB::delete("DELETE FROM entrega_producto  WHERE id_entrega_producto=:id_entrega",['id_entrega'=>$idE]);
+   }
+
 }
