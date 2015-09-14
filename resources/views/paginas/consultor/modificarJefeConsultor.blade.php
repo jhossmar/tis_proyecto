@@ -21,7 +21,7 @@
 		</div>
 		<div class="box-content" id="formulario">
 			<br>
-     	<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" action="modificar_registro_jefe_consultor" accept-charset="utf-8">
+     	<form name="form-data" class="form-horizontal cmxform" method="POST" id="signupForm" enctype="multipart/form-data" action="modificar_registro_consultor" accept-charset="utf-8">
 			<fieldset>
 			<input type="hidden" name="_token" value="{{csrf_token()}}"></input>
 			<div class="control-group">

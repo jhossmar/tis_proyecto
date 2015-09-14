@@ -35,8 +35,9 @@ class JefeConsultorController extends Controller
   {
     $principal = new VerificadorDeSesiones;
     $user = new Usuario;       
-    $infUser = $user->GetInformacionConsultor(Session::get('id'));   
-    return view('/paginas/consultor/informacionJefeConsultor')->with([
+    $infUser = $user->GetInformacionConsultor(Session::get('id'));
+    if($principal->getTipoDeUsuario()==2){
+   return view('/paginas/consultor/informacionJefeConsultor')->with([
           'titulo' => 'Informacion del Jefe Consultor TIS',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,
@@ -44,13 +45,26 @@ class JefeConsultorController extends Controller
           'datos'=>$principal->getDatos(),
           'infUser'=>$infUser,          
           'nombre_foto'=>Session::get('nombre_foto'),
-          'nombre_usuario'=>Session::get('nombre_usuario')]);     
+          'nombre_usuario'=>Session::get('nombre_usuario')]); 
+    }else{
+        if($principal->getTipoDeUsuario()==3){
+        
+           return redirect('info_consultor');
+        }else{
+
+          return redirect('index');
+        }
+
+
+      }
+        
   }
-  public function modificarJefeConsultor()
+  public function modificarConsultor()
   {
     $principal = new VerificadorDeSesiones;
     $user = new Usuario;       
     $infUser = $user->GetInformacionConsultor(Session::get('id'));
+    if($principal->getTipoDeUsuario()==2){
     return view('/paginas/consultor/modificarJefeConsultor')->with([
           'titulo' => 'Modificar datos Jefe Consultor TIS',
           'sesion_valida' => true,
@@ -60,8 +74,28 @@ class JefeConsultorController extends Controller
           'infUser'=>$infUser,          
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario')]);
+    }else{
+        if($principal->getTipoDeUsuario()==3){
+           return view('/paginas/consultor/modificarJefeConsultor')->with([
+          'titulo' => 'Modificar datos Consultor TIS',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 3,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
+          'infUser'=>$infUser,          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+
+        }else{
+
+          return redirect('index');
+        }
+
+
+      }
+
   }
-  public function validarCambiosJefeConsultor()
+  public function validarCambiosConsultor()
   {
     $username=trim($_POST['username']);    
     $apellido=$_POST['lastname'];
@@ -104,7 +138,7 @@ class JefeConsultorController extends Controller
     }
     else
     {
-      return view('/paginas/consultor/modificarJefeConsultor')->with([
+      return view('/paginas/consultor/modificarConsultor')->with([
           'titulo' => 'Modificar datos Jefe Consultor TIS',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,

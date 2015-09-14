@@ -24,7 +24,7 @@
 			<a href="index">Inicio</a><span class="divider">/</span>
 		</li>
 		<li>
-				<a href='informacion_consultor'> Informaci&oacute;n del usuario </a>
+				<a href='info_consultor'> Informaci&oacute;n del usuario </a>
 		</li>				
 	</ul>
 </div>
@@ -88,7 +88,7 @@
 					</tr>
 					<tr>
 					  <td>Tipo de usuario: </td>
-						<td class="center"> jefe consultor </td>                          
+						<td class="center"> Consultor </td>                          
 					</tr>                                    
 				</tbody>
 			</table>

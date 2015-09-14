@@ -38,5 +38,30 @@ class consultorController extends Controller
 
   }
 
+  public function  info_consultor(){
+    $principal = new VerificadorDeSesiones;
+    
+    if($principal->getTipoDeUsuario()==3){
+       $user = new Usuario;  
+       $infUser = $user->GetInformacionConsultor(Session::get('id')); 
+      return view('/paginas/consultor/info_consultor')->with([
+          'titulo' => 'Informacion Consultor TIS',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 3,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
+          'infUser'=>$infUser,          
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+
+
+    }else{
+
+        return redirect('index');
+     }
+
+
+  }
+
     
 }
