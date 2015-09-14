@@ -28,7 +28,7 @@ class PrincipalController extends Controller
   public function inicio()
   {
     $principal = new VerificadorDeSesiones;        
-    if(Session::get('nombre_usuario')!= null)
+    if($principal->getTipoDeUsuario()!=0)
     {
       return view('index')->with([
           'titulo' => 'inicio ',

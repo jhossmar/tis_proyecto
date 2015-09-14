@@ -55,6 +55,10 @@ Route::get('mensajes','JefeConsultorController@mensajes');
 Route::post('insert','JefeConsultorController@insertarMensajes');
 
 
+Route::get('home_consultor','consultorController@homeConsultor');
+
+
+
 
 Route::get('home_grupo','GrupoEmpresaController@homeGrupo');
 Route::get('formulario_entrega_producto','GrupoEmpresaController@entregaSubSistema');

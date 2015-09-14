@@ -244,13 +244,13 @@
 			@elseif($tipo_usuario==3)		
 			    <ul class="nav nav-tabs nav-stacked main-menu">
 					<li class="nav-header box-header"><h5>Men&uacute; </h5></h5></li>
-					<li><a href="home_consultor.php"><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
-					<li><a href="info_consultor.php"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
-					<li><a href="subir_contrato.php"><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
-					<li><a href="administrar_archivos.php"><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
-					<li><a href="administrar_grupo.php"><i class="icon-check"></i><span class="hidden-tablet"> Administrar mis Grupo Empresas</span></a></li>
-					<li><a href="notificaciones.php"><i class="icon-globe"></i><span class="hidden-tablet"> Notificaciones</span></a></li>
-					<li><a href="mensajes.php"><i class="icon-comment"></i><span class="hidden-tablet"> Espacio de Discuci&oacute;n</span></a></li>
+					<li><a href="home_consultor"><i class="icon-home"></i><span class="hidden-tablet"> Home </span></a></li>
+					<li><a href="info_consultor"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
+					<li><a href="subir_contrato"><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
+					<li><a href="administrar_archivos"><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
+					<li><a href="administrar_grupo"><i class="icon-check"></i><span class="hidden-tablet"> Administrar mis Grupo Empresas</span></a></li>
+					<li><a href="notificaciones"><i class="icon-globe"></i><span class="hidden-tablet"> Notificaciones</span></a></li>
+					<li><a href="mensajes"><i class="icon-comment"></i><span class="hidden-tablet"> Espacio de Discuci&oacute;n</span></a></li>
 				</ul>
 			</div>
 		</div>						

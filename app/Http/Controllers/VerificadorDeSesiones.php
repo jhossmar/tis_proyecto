@@ -132,6 +132,21 @@ private function controlGestion()
   {
     return $this->datos;
   }
+
+/**
+* rRetorna 0 si  no se inicio sesson
+*/
+  public function getTipoDeUsuario(){
+    
+    $tipo= Session::get('tipo');
+    if($tipo!=NULL){
+       return $tipo;
+
+    }else{
+       return 0;
+    }
+    }
+  
 }//fin de la clase
 
 
