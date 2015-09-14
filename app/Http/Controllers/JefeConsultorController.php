@@ -247,7 +247,9 @@ class JefeConsultorController extends Controller
   public function subirContrato()
   {
     $principal = new VerificadorDeSesiones;
-    return view('/paginas/consultor/subirContratoJefeConsultor')->with([
+    if($principal->getTipoDeUsuario()==2)
+    {
+       return view('/paginas/consultor/subirContratoJefeConsultor')->with([
           'titulo' => 'Publicar contrato',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,
@@ -255,7 +257,24 @@ class JefeConsultorController extends Controller
           'datos'=>$principal->GetDatos(),
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario')]);
-  }
+    }else{
+        if($principal->getTipoDeUsuario()==3){
+           return view('/paginas/consultor/subirContratoJefeConsultor')->with([
+          'titulo' => 'Publicar contrato',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 3,
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+
+        }else{
+
+          return redirect('index');
+        }
+     }
+ }
+
   public function validarContrato()
   {
     if(isset($_POST['enviar']))
@@ -334,17 +353,41 @@ class JefeConsultorController extends Controller
       else
       {
         $principal = new VerificadorDeSesiones;
-        return view('/paginas/consultor/subirContratoJefeConsultor')->with([
-            'titulo' => 'Publicar contrato',
-            'sesion_valida' => true,
-            'tipo_usuario'=> 2,
-            'gestion'=>$principal->GetGestion(),
-            'datos'=>$principal->GetDatos(),
-            'errorA'=>$errorA,
-            'error_docA'=>$error_docA,
-            'nombre_foto'=>Session::get('nombre_foto'),
-            'nombre_usuario'=>Session::get('nombre_usuario')]);
-      }
+        if($principal->getTipoDeUsuario()==2)
+         {
+            return view('/paginas/consultor/subirContratoJefeConsultor')->with([
+               'titulo' => 'Publicar contrato',
+               'sesion_valida' => true,
+               'tipo_usuario'=> 2,
+               'gestion'=>$principal->GetGestion(),
+               'datos'=>$principal->GetDatos(),
+               'errorA'=>$errorA,
+               'error_docA'=>$error_docA,
+               'nombre_foto'=>Session::get('nombre_foto'),
+               'nombre_usuario'=>Session::get('nombre_usuario')]);
+          }else{
+             if($principal->getTipoDeUsuario()==3){
+               return view('/paginas/consultor/subirContratoJefeConsultor')->with([
+                  'titulo' => 'Publicar contrato',
+                  'sesion_valida' => true,
+                  'tipo_usuario'=> 3,
+                  'gestion'=>$principal->GetGestion(),
+                  'datos'=>$principal->GetDatos(),
+                  'errorA'=>$errorA,
+                  'error_docA'=>$error_docA,
+                  'nombre_foto'=>Session::get('nombre_foto'),
+                  'nombre_usuario'=>Session::get('nombre_usuario')]);
+
+        }else{
+
+          echo "<script type='text/javascript'>
+             alert('ha ocurrido un error AQUII!!')
+             </script>
+             <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'> ";
+        }
+     }
+
+    }
     }      
   }
   public function administrarArchivos()
