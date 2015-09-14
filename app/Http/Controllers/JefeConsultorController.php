@@ -395,7 +395,10 @@ class JefeConsultorController extends Controller
     $principal = new VerificadorDeSesiones;
     $archivo = new Archivos;
     $archivos = $archivo->getArchivos(Session::get('id'));
-    return view('/paginas/consultor/AdministrarJefeConsultor')->with([
+ 
+    if($principal->getTipoDeUsuario()==2)
+    {
+        return view('/paginas/consultor/AdministrarJefeConsultor')->with([
        'titulo' => 'Administrar archivos',
        'sesion_valida' => true,
        'tipo_usuario'=> 2,
@@ -404,7 +407,26 @@ class JefeConsultorController extends Controller
        'nombre_foto'=>Session::get('nombre_foto'),
        'nombre_usuario'=>Session::get('nombre_usuario'),       
        'identi'=>0,
-       'archivos'=> $archivos]);  
+       'archivos'=> $archivos]); 
+    }else{
+        if($principal->getTipoDeUsuario()==3){
+        return view('/paginas/consultor/AdministrarJefeConsultor')->with([
+       'titulo' => 'Administrar archivos',
+       'sesion_valida' => true,
+       'tipo_usuario'=> 3,
+       'gestion'=>$principal->GetGestion(),
+       'datos'=>$principal->GetDatos(),
+       'nombre_foto'=>Session::get('nombre_foto'),
+       'nombre_usuario'=>Session::get('nombre_usuario'),       
+       'identi'=>0,
+       'archivos'=> $archivos]); 
+
+        }else{
+
+          return redirect('index');
+        }
+     }
+   
   }
   public function validarArchivos()
   {
