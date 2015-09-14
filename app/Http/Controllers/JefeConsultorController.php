@@ -526,7 +526,10 @@ class JefeConsultorController extends Controller
     $principal = new VerificadorDeSesiones;
     $user = new Usuario;
     $grupoEmpresa = $user->getGrupoEmpresas(Session::get('id'));
-    return view('/paginas/consultor/CalificarGrupoEmpresa')->with([
+    
+    if($principal->getTipoDeUsuario()==2)
+    {
+       return view('/paginas/consultor/CalificarGrupoEmpresa')->with([
           'titulo' => 'calificar actividades',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,
@@ -536,6 +539,26 @@ class JefeConsultorController extends Controller
           'aux'=>0,
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario')]);
+    }else{
+        if($principal->getTipoDeUsuario()==3){
+          return view('/paginas/consultor/CalificarGrupoEmpresa')->with([
+          'titulo' => 'calificar actividades',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 3,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
+          'grupoEmpresa'=>$grupoEmpresa,
+          'aux'=>0,
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+
+        }else{
+
+          return redirect('index');
+        }
+     }
+    
+   
   }
   public function actualizarCalificacion($id)
   {    
@@ -548,11 +571,14 @@ class JefeConsultorController extends Controller
     //return $entregaProducto[0]->descripcion;
     foreach ($entregaProducto as $entrega) 
     {
+      $principal = new VerificadorDeSesiones;
       $aux=$grupo->getResponsable($entrega->id_responsable);
       $responsables[] = $aux[0]->nombre." ".$aux[0]->apellido;      
       $actividades[] = $grupo->getActividad($entrega->id_entrega_producto);
-    }      
-    return view('/paginas/consultor/evaluacionGrupoEmpresa')->with([
+    } 
+    if($principal->getTipoDeUsuario()==2)
+    {
+        return view('/paginas/consultor/evaluacionGrupoEmpresa')->with([
           'titulo' => 'evaluar a la grupo empresa',
           'sesion_valida' => true,
           'tipo_usuario'=> 2,
@@ -567,6 +593,30 @@ class JefeConsultorController extends Controller
           'aux'=>0,        
           'nombre_foto'=>Session::get('nombre_foto'),
           'nombre_usuario'=>Session::get('nombre_usuario')]);
+    }else{
+        if($principal->getTipoDeUsuario()==3){
+           return view('/paginas/consultor/evaluacionGrupoEmpresa')->with([
+          'titulo' => 'evaluar a la grupo empresa',
+          'sesion_valida' => true,
+          'tipo_usuario'=> 3,
+          'gestion'=>$principal->getGestion(),
+          'datos'=>$principal->getDatos(),
+          'id_grupo'=>$id,
+          'nombreGrupo'=>$nombreGrupo,
+          'entregaProducto'=>$entregaProducto,          
+          'responsables_entrega'=>$responsables,
+          'contador'=>0,
+          'actividades'=>$actividades,
+          'aux'=>0,        
+          'nombre_foto'=>Session::get('nombre_foto'),
+          'nombre_usuario'=>Session::get('nombre_usuario')]);
+
+        }else{
+
+          return redirect('index');
+        }
+     }     
+   
   }
   public function mostrarTareas($idG,$idActividad)
   {
@@ -577,7 +627,7 @@ class JefeConsultorController extends Controller
     return view('/paginas/consultor/mostrarTareas')->with([
           'titulo' => 'tareas de la actividad'.$idActividad,
           'sesion_valida' => true,
-          'tipo_usuario'=> 2,
+          'tipo_usuario'=> Session::get('tipo'),
           'gestion'=>$principal->getGestion(),
           'datos'=>$principal->getDatos(),
           'id_grupo'=>$idG,
@@ -599,7 +649,7 @@ class JefeConsultorController extends Controller
       return view('/paginas/consultor/modificarEntregaProducto')->with([
           'titulo' => 'actualizar datos de la entrega de producto',
           'sesion_valida' => true,
-          'tipo_usuario'=> 2,
+          'tipo_usuario'=> Session::get('tipo'),
           'gestion'=>$principal->getGestion(),
           'opcion'=>0,
           'establecido'=> $establecido,
@@ -615,7 +665,7 @@ class JefeConsultorController extends Controller
       return view('/paginas/consultor/modificarEntregaProducto')->with([
           'titulo' => 'actualizar datos de la entrega de producto',
           'sesion_valida' => true,
-          'tipo_usuario'=> 2,
+          'tipo_usuario'=> Session::get('tipo'),
           'gestion'=>$principal->getGestion(),
           'opcion'=>1,
           'id_grupo'=>$id_grupo,
@@ -650,6 +700,40 @@ class JefeConsultorController extends Controller
     $principal = new VerificadorDeSesiones;
     $grupo = new GrupoEmpresa;
     $grupos = $grupo->getGrupoEmpresas(session::get('id'),$principal->GetGestion()['id_gestion']);
+    if($principal->getTipoDeUsuario()==2)
+    {
+        return view('/paginas/consultor/administrarGrupoEmpresa')->with([
+        'titulo' => 'Administrar Grupo Empresas',
+        'sesion_valida' => true,
+        'tipo_usuario'=> 2,
+        'gestion'=>$principal->GetGestion(),
+        'datos'=>$principal->GetDatos(),
+        'grupos'=>$grupos,
+        'contador'=>0,
+        'nombre_foto'=>Session::get('nombre_foto'),
+        'nombre_usuario'=>Session::get('nombre_usuario')]); 
+    }else{
+        if($principal->getTipoDeUsuario()==3){
+        return view('/paginas/consultor/administrarGrupoEmpresa')->with([
+        'titulo' => 'Administrar Grupo Empresas',
+        'sesion_valida' => true,
+        'tipo_usuario'=> 3,
+        'gestion'=>$principal->GetGestion(),
+        'datos'=>$principal->GetDatos(),
+        'grupos'=>$grupos,
+        'contador'=>0,
+        'nombre_foto'=>Session::get('nombre_foto'),
+        'nombre_usuario'=>Session::get('nombre_usuario')]);
+
+        }else{
+
+          return redirect('index');
+        }
+     }
+
+
+
+
     return view('/paginas/consultor/administrarGrupoEmpresa')->with([
         'titulo' => 'Administrar Grupo Empresas',
         'sesion_valida' => true,
@@ -733,7 +817,7 @@ class JefeConsultorController extends Controller
    return view('/paginas/consultor/notificacionesJefeConsultor')->with([
           'titulo' => 'Notificaciones del Jefe Consultor TIS',
           'sesion_valida' => true,
-          'tipo_usuario'=> 2,
+          'tipo_usuario'=> Session::get('tipo'),
           'gestion'=>$principal->getGestion(),
           'datos'=>$principal->getDatos(),
           'num'=>$num[0]->numer,
@@ -771,7 +855,7 @@ class JefeConsultorController extends Controller
     return view('/paginas/consultor/mensajes')->with([
         'titulo' => 'Sistema de Apoyo a la Empresa TIS',
         'sesion_valida' => true,
-        'tipo_usuario'=> 2,
+        'tipo_usuario'=> Session::get('tipo'),
         'gestion'=>$principal->GetGestion(),
         'datos'=>$principal->GetDatos(),        
         'nombre_foto'=>Session::get('nombre_foto'),

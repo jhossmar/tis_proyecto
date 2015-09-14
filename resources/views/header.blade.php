@@ -248,6 +248,7 @@
 					<li><a href="info_consultor"><i class="icon-edit"></i><span class="hidden-tablet"> Informaci&oacute;n del usuario</span></a></li>
 					<li><a href="subir_contrato"><i class="icon-list-alt"></i><span class="hidden-tablet"> Publicar Documentos</span></a></li>
 					<li><a href="administrar_archivos"><i class="icon-folder-close"></i><span class="hidden-tablet"> Administrar archivos</span></a></li>
+					<li><a href={{url('calificar_grupo_empresa')}}><i class="icon-edit"></i><span class="hidden-tablet"> calificar actividades</span></a></li>
 					<li><a href="administrar_grupo"><i class="icon-check"></i><span class="hidden-tablet"> Administrar mis Grupo Empresas</span></a></li>
 					<li><a href="notificaciones"><i class="icon-globe"></i><span class="hidden-tablet"> Notificaciones</span></a></li>
 					<li><a href="mensajes"><i class="icon-comment"></i><span class="hidden-tablet"> Espacio de Discuci&oacute;n</span></a></li>

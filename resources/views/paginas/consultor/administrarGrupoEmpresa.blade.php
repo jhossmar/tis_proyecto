@@ -29,11 +29,11 @@
 						  <tr>
 						 	  <th>Nombre Largo</th>
 							  <th>Nombre Corto</th>
-						    <th>Representante Legal</th>
+						      <th>Representante Legal</th>
 							  <th>Nombre de usuario</th>
 							  <th style="text-align:center">Habilitado</th>
 							  <th style="text-align:center">Reporte</th>
-                <th>Habilitar Integrantes</th>
+                              <th>Habilitar Integrantes</th>
 						  </tr>
 						</thead>
 						<tbody>						
