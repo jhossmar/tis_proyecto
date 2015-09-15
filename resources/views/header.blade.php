@@ -179,7 +179,7 @@
                                             <a href="iniciar_sesion" id="link_grupo_ingresar">Ingresar </a>
                                         </li>
                                         <li>
-                                            <a href="registro_grupo.php" id="link_grupo_registro">Registrarse</a>
+                                            <a href="registro_grupo" id="link_grupo_registro">Registrarse</a>
                                         </li>
                                     </ul>
                             </li>
@@ -190,7 +190,7 @@
                                             <a tabindex="-1" href="iniciar_sesion" id="link_consultor_ingresar">Ingresar</a>
                                         </li>
                                         <li>
-                                            <a tabindex="-1" href="registro_consultor.php" id="link_consultor_registro">Registrarse</a>
+                                            <a tabindex="-1" href="registro_consultor" id="link_consultor_registro">Registrarse</a>
                                         </li>
                                     </ul>
                             </li>

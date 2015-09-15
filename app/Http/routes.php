@@ -10,7 +10,8 @@ Route::post('guardar_foto','PrincipalController@guardar_foto');
 Route::get('ayuda','PrincipalController@ayuda');
 Route::get('contrasena','PrincipalController@contrasena');
 Route::post('contrasena','PrincipalController@enviarCorreoDeContrasena');
-
+Route::get('registro_consultor','PrincipalController@registro_consultor');
+Route::post('registro_consultor','PrincipalController@validar_registro_consultor');
 
 Route::get('home_admin','adminController@home_admin');
 Route::post('home_admin','adminController@home_admin_nueva_gestion');

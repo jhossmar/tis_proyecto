@@ -341,9 +341,222 @@ class PrincipalController extends Controller
 
    }
 
+   public function registro_consultor()
+   {
+    $titulo="Registro Consultor TIS";
+    $quien_ingresa="Consultor TIS";
+
+    $usuario=NULL;
+    $apellido=NULL;
+    $nombre=NULL;
+    $telf=NULL;
+    $eMail=NULL;
+
+     $error_user="";
+     $error_email="";
+     $error_curriculum="";
+
+     $principal = new VerificadorDeSesiones;        
+    if($principal->getTipoDeUsuario()!=0)
+    {
+      return view('index')->with([
+          'titulo' => $titulo,
+          'sesion_valida' => true,
+          'tipo_usuario'=> Session::get('tipo'),
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
+          'nombre_foto' => Session::get('nombre_foto'),
+          'nombre_usuario' => Session::get('nombre_usuario')]);
+     }
+     else
+     {
+      return view('registro_consultor')->with([
+          'titulo' => $titulo,
+          'quien_ingresa'=>$quien_ingresa,
+          'usuario'=>$usuario,
+          'apellido'=>$apellido,
+          'nombre'=>$nombre,
+          'telf'=>$telf,
+          'eMail'=>$eMail,
+
+          'error_user'=>$error_user,
+          'error_email'=>$error_email,
+          'error_curriculum'=>$error_curriculum,
+
+          'sesion_valida' => false,
+          'tipo_usuario'=> 0,
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos()]);
+     } 
+
+
+   }
+    
+    public function validar_registro_consultor()
+    {
+     
+     $titulo="Registro Consultor TIS";
+     $quien_ingresa="Consultor TIS";
+     $error_user="";
+     $error_email="";
+     $error_curriculum="";
+
+    if(isset($_POST['enviar'])){
+
+       $usuario=trim($_POST['username']);
+       //$salt="$2x$07$./f4af7kJi1jdaxlswE34$";
+       //$clave=crypt($_POST['password'], $salt);
+       $clave=trim($_POST['password']);
+
+       $apellido=$_POST['lastname'];
+       $nombre=$_POST['firstname'];
+       $telf=trim($_POST['telf']);
+       $eMail=trim($_POST['email']);
+       $foto='img/profiles/default.jpg'; // foto que se ingresa por defecto;
+      
+       $consulta_usuario=$this->verificarNombreUsuarioNuevo($usuario); 
+       $consulta_email=$this->verificarEmailUsuarioNuevo($eMail);
+     
+
+     
+     $error=false;
+     $tiene_curriculum=0;
+     $pdf=NULL;
+    
+    if ($consulta_usuario) { 
+                  $error_user="El usuario ya esta registrado";
+                  $error=true;
+           }   
+    if ($consulta_email) {
+                  $error_email="El correo electr&oacute;nico ya esta registrado";
+                  $error=true;
+          } 
+       
+     $ext_permitidas = array('.pdf','.doc','.docx','.rar','.zip');
+
+     if(!empty($_FILES['pdf']['name'])){
+            $nombre_archivo = $_FILES['pdf']['name'];
+            $nombre_tmp = $_FILES['pdf']['tmp_name'];
+            $ext = substr($nombre_archivo, strpos($nombre_archivo, '.'));
+            $tamano = $_FILES['pdf']['size'];             
+            $limite = 1000 * 1024;
+            if(in_array($ext, $ext_permitidas)){
+              if( $tamano <= $limite ){
+                    if( $_FILES['pdf']['error'] <= 0 ){
+                      if( file_exists( 'curriculum/'.$usuario.'.pdf') ){
+                              $error_curriculum='El archivo ya existe';
+                              $error=true;
+                        }
+                        else{ 
+                           move_uploaded_file($nombre_tmp,'curriculum/'.$usuario.'.pdf');
+                             $pdf='curriculum/'.$usuario.'.pdf';
+                             $tiene_curriculum=1;
+                        }
+                      
+                     }
+                     else{
+                        $error_curriculum='Error al subir el archivo';
+                          $error=true;
+
+                       }
+                    }
+                else{  
+                      $error_curriculum='El archivo debe un tama&ntilde;o menor a 1 Mega Byte';
+                      $error=true;
+                    }
+            }
+            else{
+              $error=true;
+              $error_curriculum='El archivo debe tener formato " pdf "';
+            }
+
+        }
+
+       if(!$error){/*SI NO HAY NINGUN ERROR REGISTRO*/
+          //$bitacora = mysql_query("CALL iniciar_sesion(1)",$conn)
+           //or die("Error no se pudo realizar cambios.");
+          $usuarioObj= new Usuario;
+         $usuarioObj->insertarConsultor($usuario,$clave,$nombre,$apellido,$telf,$eMail,$foto);
+          
+          $id_consultor=$usuarioObj->getIdUsuarioSegunNombre($usuario);
+          
+          $id=$id_consultor[0]->id_usuario;
+          
+         $usuarioObj->insertarCurriculum($id,$pdf);
+
+         echo( "<center><h1>Se ha registrado correctamente.</h1></center><br>
+            <META HTTP-EQUIV='Refresh' CONTENT='1; URL=iniciar_sesion'>");
+           
+         
+        
+     }
+  }
+  else{
+    $usuario=NULL;
+    $apellido=NULL;
+    $nombre=NULL;
+    $telf=NULL;
+    $eMail=NULL;
+  $principal = new VerificadorDeSesiones;
+  return view('registro_consultor')->with([
+          'titulo' => $titulo,
+          'quien_ingresa'=>$quien_ingresa,
+          'usuario'=>$usuario,
+          'apellido'=>$apellido,
+          'nombre'=>$nombre,
+          'telf'=>$telf,
+          'eMail'=>$eMail,
+
+          'error_user'=>$error_user,
+          'error_email'=>$error_email,
+          'error_curriculum'=>$error_curriculum,
+
+          'sesion_valida' => false,
+          'tipo_usuario'=> 0,
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos()]);
 
 
 
-}
+
+
+
+
+  }
+
+  
+
+   }//fin de la clase Validar_registro_consultor
+
+   /**
+   *retorna TRUE si existe el usuario y false cas contrario 
+   */
+  public function  verificarNombreUsuarioNuevo($usuario){
+    $usuario = new Usuario;
+    $id_usuario=$usuario->getIdUsuarioSegunNombre($usuario);
+    if(count($id_usuario)>0){
+         return TRUE;
+    } else{
+          return FALSE;
+    }    
+
+   }
+   
+   /**
+   *retorna TRUE si existe el emal y false cas contrario 
+   */
+  public function verificarEmailUsuarioNuevo($eMail){
+     $usuario = new Usuario;
+     $mail = $usuario->getMailYClave($eMail);
+      if(count($mail)>0){
+          return TRUE;
+        } else{
+          return FALSE;
+        } 
+  }
+
+}//fin clase PricipalController
+
+
 
 

@@ -266,4 +266,33 @@ class Usuario extends Model
 
    }
 
+   public function insertarConsultor($usuario,$clave,$nombre,$apellido,$telf,$eMail,$foto)
+   {
+    DB::update("INSERT INTO usuario (nombre_usuario,clave,nombre,apellido,telefono,email,foto,habilitado,tipo_usuario,gestion)
+                  VALUES (:u,:c, :n , :a, :t, :e,:f ,0,3,1)",['u'=>$usuario,'c'=>$clave,'n'=>$nombre,'a'=>$apellido,'t'=>$telf,'e'=>$eMail,'f'=>$foto]);
+
+   }
+   
+   public function getIdUsuarioSegunNombre($usuario){
+    $consulta_sql = DB::select("SELECT id_usuario
+               FROM usuario
+               WHERE nombre_usuario= :u",['u' =>$usuario]);
+        return $consulta_sql;
+    }
+
+     public function insertarCurriculum($id_usuario,$pdf){
+
+        if (is_null($pdf)) {
+        
+            DB::update("INSERT INTO consultor_tis (usuario, curriculum)
+                  VALUES (:id,NULL)",['id'=>$id_usuario]);
+          }else{
+            DB::update("INSERT INTO consultor_tis (usuario, curriculum)
+                  VALUES (:id, :pdf)",['id'=>$id_usuario,'pdf'=>$pdf]);
+          }
+
+    }
+
 }
+
+
