@@ -251,4 +251,19 @@ class Usuario extends Model
                     
    }
 
+   public function getMailYClave($correo){
+    $consulta = DB::select("SELECT email,clave FROM usuario WHERE email=:m",['m'=>$correo]);
+    return $consulta;
+
+
+   }
+
+   public function getAdministradorSistema(){
+     $consulta = DB::select("SELECT nombre,apellido,telefono,email
+                         FROM usuario
+                         WHERE tipo_usuario=1");
+    return $consulta;
+
+   }
+
 }

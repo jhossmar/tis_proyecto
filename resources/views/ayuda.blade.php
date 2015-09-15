@@ -45,6 +45,46 @@
 </div><!-- fin row -->	
 
 
+<div class="row-fluid">
+			<div class="box span12">
+					<div class="box-header well">
+						<h2><i class="icon-info-sign"></i> Ayuda</h2>
+					</div>
+					<div class="box-content">
+					
+					<div class="alert alert-success">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							Si necesita ayuda, o tiene problemas con el uso del sistema puede contactarse con el <b>Administrador</b>, sus datos se encuentran a continuaci&oacute;n.
+						</div>
+					
+						@if(is_array($resultado) && !empty($resultado))
+						  <table class="table table-bordered">
+								<tbody>
+									<tr>
+									  <td><b>Nombre: </b></td>
+									  <td class="center">{{$resultado[0]->nombre." ".$resultado[0]->apellido}}</td>                                       
+											</tr>
+											<tr>
+												<td><b>Tel&eacute;fono: </b></td>
+												<td class="center">{{$resultado[0]->telefono}}</td>                                     
+											</tr>
+											<tr>
+												<td><b>Correo electr&oacute;nico: </b></td>
+												<td class="center">{{$resultado[0]->email}}</td>                          
+											</tr>
+											                                    
+										  </tbody>
+								 		</table>
+								
+						@else
+						  <h4>No se Encontro ning&uacute;n registro</h4>
+								
+                       @endif
+					</div>
+				</div><!--/span-->
+			</div><!-- fin row -->
+
+
 
 
 

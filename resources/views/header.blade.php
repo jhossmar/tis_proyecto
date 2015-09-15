@@ -199,7 +199,7 @@
                                 <a href="ayuda" id="link_ayuda">Ayuda </a>
                             </li>
                             <li>
-                                <a href="contrasena.php" >Recuperar contrasenia </a>
+                                <a href="contrasena" >Recuperar contrasenia </a>
                             </li>
                         </ul>
                     </div>

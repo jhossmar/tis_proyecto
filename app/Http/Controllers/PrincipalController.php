@@ -226,6 +226,11 @@ class PrincipalController extends Controller
           }else{
             $numpdf=NULL;
       }
+
+      $usuario=new Usuario;
+      $resultado=$usuario->getAdministradorSistema();
+
+
       $principal = new VerificadorDeSesiones;        
        if($principal->getTipoDeUsuario()!=0)
        {
@@ -237,7 +242,8 @@ class PrincipalController extends Controller
           'datos'=>$principal->GetDatos(),
           'nombre_foto' => Session::get('nombre_foto'),
           'nombre_usuario' => Session::get('nombre_usuario'),
-          'numpdf' =>$numpdf ]);
+          'numpdf' =>$numpdf,
+          'resultado'=>$resultado ]);
       }
        else
       {
@@ -247,12 +253,93 @@ class PrincipalController extends Controller
           'tipo_usuario'=> 0,
           'gestion'=>$principal->GetGestion(),
           'datos'=>$principal->GetDatos(),
-          'numpdf'=>$numpdf ]);
+          'numpdf'=>$numpdf,
+          'resultado'=>$resultado  ]);
      }
 
 
       
      }
+
+
+     public function contrasena(){
+       $principal = new VerificadorDeSesiones;        
+       $error_email="";
+       if($principal->getTipoDeUsuario()!=0)
+       {
+         return view('contrasena')->with([
+          'titulo' => 'Recuperar Contrasena Sistema de Apoyo a la Empresa TIS ',
+          'sesion_valida' => true,
+          'tipo_usuario'=> Session::get('tipo'),
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
+          'nombre_foto' => Session::get('nombre_foto'),
+          'nombre_usuario' => Session::get('nombre_usuario'),
+          'error_email'=> $error_email   ]);
+      }
+       else
+      {
+      return view('contrasena')->with([
+          'titulo' => 'Recuperar Contrasena Sistema de Apoyo a la Empresa TIS',
+          'sesion_valida' => false,
+          'tipo_usuario'=> 0,
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
+          'error_email'=> $error_email ]);
+     }
+
+
+
+     }
+      public function enviarCorreoDeContrasena(){
+         $principal = new VerificadorDeSesiones;   
+        $error_email="";
+        if(isset($_POST['direccion']))
+        {
+          $correo=$_POST['direccion'];   
+            if($correo!=""){
+                $usuario = new Usuario;
+                $resultado = $usuario->getMailYClave($correo);
+                if(count($resultado)!=0){
+                 $pass= $resultado[0]->clave;         
+                 
+                 echo "<p>su clave es: ".$pass."</p>";  
+              
+                 $subject = "Email enviado desde la pagina web Sistema TIS"; 
+                 $mensaje = "del Sistema tis su contraseña es: ".$pass;
+      
+                 mail($correo, $subject, $mensaje);
+                 echo "<legend>Tu email ha sido enviado de forma exitosa a $correo!</legend>";   
+                 echo "<script type='text/javascript'>"; 
+                 echo "alert('su contrasena se le envio a su correo electronico. Espere mientras le redireccionamos al inicio por favor');";
+                 echo "</script>";
+                 echo"<META HTTP-EQUIV='Refresh' CONTENT='3; URL=index'> ";
+                }else{
+                  $error_email="el mail ingresado no existe ";
+                  return view('contrasena')->with([
+                    'titulo' => 'Recuperar Contrasena Sistema de Apoyo a la Empresa TIS',
+                    'sesion_valida' => false,
+                    'tipo_usuario'=> 0,
+                    'gestion'=>$principal->GetGestion(),
+                    'datos'=>$principal->GetDatos(),
+                    'error_email'=> $error_email ]); 
+                }
+
+            }else{
+                   $error_email="Ingrese una direccion de correo porfavor";
+                   return view('contrasena')->with([
+                    'titulo' => 'Recuperar Contrasena Sistema de Apoyo a la Empresa TIS',
+                    'sesion_valida' => false,
+                    'tipo_usuario'=> 0,
+                    'gestion'=>$principal->GetGestion(),
+                    'datos'=>$principal->GetDatos(),
+                    'error_email'=> $error_email ]);           
+                  }
+          }else{
+            return redirect('index');
+         }
+
+   }
 
 
 

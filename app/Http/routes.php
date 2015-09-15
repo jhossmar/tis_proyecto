@@ -8,6 +8,8 @@ Route::get('iniciar_sesion','PrincipalController@iniciarSesion');
 Route::post('iniciar_sesion', 'PrincipalController@verificarUsuario');
 Route::post('guardar_foto','PrincipalController@guardar_foto');
 Route::get('ayuda','PrincipalController@ayuda');
+Route::get('contrasena','PrincipalController@contrasena');
+Route::post('contrasena','PrincipalController@enviarCorreoDeContrasena');
 
 
 Route::get('home_admin','adminController@home_admin');
