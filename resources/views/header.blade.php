@@ -304,10 +304,31 @@
 			  </div>
 		  </noscript>                
        	  @yield('contenido')        
-        </div>
+     
+     <!--CAMBIAR FOTO-->
+     <div class="center">
+	     <div id="modal2" class="modalmask">
+		   <div class="modalbox movedown">
+			<a href="#close" title="Close" class="close">X</a>
+            @if($sesion_valida==true)
+            <div>
+                  <img src= {{$nombre_foto}} WIDTH=150 HEIGHT=150><span class="hidden-phone">{{$nombre_usuario}}</span>
+                  
+                  <form action="guardar_foto" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="_token" value="{{csrf_token()}}"></input>
+                     <input type="file" name="foto"/>
+                    <input type="submit" value="Subir Foto" name="btn_upload"/>
+	              </form>
+	          </div> 
+             @endif
+            </div>
+	      </div>
+	 </div>
+    
+     </div>
        <div class="span2">   
-       @include('nav-derecha')       
-       </div>   
+       @include('nav-derecha')  
+      </div>   
    </div>
 </div>
 @include('footer')

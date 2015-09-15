@@ -244,5 +244,11 @@ class Usuario extends Model
                   SET  visible= 0 WHERE id_mensaje =:id",['id'=>$id_mensaje]);
 
    }
+   public function cambiarFoto($id_usuario,$destinio2){
+    DB::update("UPDATE usuario  
+                  SET   foto = :d WHERE id_usuario = :id",['id'=>$id_usuario,'d'=>$destinio2]);
+
+                    
+   }
 
 }

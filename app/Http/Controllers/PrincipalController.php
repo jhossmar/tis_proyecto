@@ -185,6 +185,43 @@ class PrincipalController extends Controller
         'error_sesion'=>$error_sesion]);
 
       }
-    }    
+    } 
+
+
+
+    public function guardar_foto()
+    { 
+      $ruta = "img/profiles/";
+      $formatos = $arrayName = array('.jpg','.png'); 
+    if (isset($_POST['btn_upload'])) {
+       if(!empty($_FILES['foto']['name'])){
+           opendir($ruta);
+            $destino = $ruta.$_FILES['foto']['name'];
+            $ext= substr($destino, strrpos($destino, '.'));
+            if (in_array($ext, $formatos)) {
+              copy($_FILES['foto']['tmp_name'],$ruta.Session::get('id').Session::get('nombre_usuario').$ext); //  Si el archivo ya existe este se remplaza .Recoradar que la carpeta debe tener permisos de escritura. 
+             
+              $id_usuario =Session::get('id');
+              $destinio2 =   'img/profiles/'.Session::get('id').Session::get('nombre_usuario').$ext;
+              
+              $usuario=new Usuario;
+              $usuario->cambiarFoto($id_usuario,$destinio2);
+           return redirect('index');
+     }else
+     {
+       echo( "<center><h1>escoger un archivo del tipo jpg o png solamente</h1></center><br>
+            <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'>");
+  
+      }
+  }else
+    {
+     echo( "<center><h1>selecciona un archivo por favor</h1></center><br>
+            <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'>");
+       
+    }
+  } 
+
+
+    }
 }
 
