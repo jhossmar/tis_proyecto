@@ -204,7 +204,7 @@ class adminController extends Controller
           }
 
   }
-   function guardarCambios_consultor(){
+   public function guardarCambios_consultor(){
      $usuario= new Usuario;
      $lista_consultores=$usuario->getConsultoresTis(); // $consulta
      $hubo_cambios=false;
@@ -592,7 +592,9 @@ elseif(!empty($_POST['fecha_fin_2']))
   }
 
   public function administrar_mensajes(){
-      $num_mensajes=0;
+      $usuario = new Usuario;
+      $listaMensages = $usuario->getMensajes();
+      $num_mensajes=count($listaMensages);
       if( $this->verSesion==true)
       {
         return view('/paginas/administrador/administrar_mensajes')->with([
@@ -603,13 +605,54 @@ elseif(!empty($_POST['fecha_fin_2']))
         'datos'=>$this->verSesion->getDatos(),
         'nombre_foto'=>Session::get('nombre_foto'),
         'nombre_usuario'=>Session::get('nombre_usuario'),
-        'num_mensajes'=>$num_mensajes ]);
+        'num_mensajes'=>$num_mensajes,
+        'listaMensages'=>$listaMensages ]);
       }else
        {
 
            return redirect('index');
         }
   }
+
+  public function guardarCambios_mensajes(){
+      $usuario = new Usuario;
+      $listaMensages = $usuario->getMensajes();
+      $hubo_cambios=false;
+      foreach ( $listaMensages as $mensaje) {
+         $id_mensaje=$mensaje->id_mensaje;
+         
+        
+        /******cambios del la casilla "visible" ******/
+         if(!(empty($_POST['visible'.$id_mensaje]))){
+        
+           if($mensaje->visible==0){
+              $hubo_cambios=true;
+              $usuario->volverVisibleMensaje($id_mensaje);
+           }
+         }else{
+         
+            if($mensaje->visible==1){
+               $hubo_cambios=true;
+             $usuario->volverInvisibleMensaje($id_mensaje);
+            }
+         }
+  
+      }// end foreach
+
+      if($hubo_cambios){
+          echo "<script type='text/javascript'>
+            alert('Tus datos se han modificado de forma exitosa!. ')
+            </script>
+            <META HTTP-EQUIV='Refresh' CONTENT='1; URL=administrar_mensajes'> ";
+
+        }else{
+          echo "<script type='text/javascript'>
+            alert('No has hecho ningun cambio!')
+            </script>
+            <META HTTP-EQUIV='Refresh' CONTENT='1; URL=administrar_mensajes'> ";
+        }
+
+   }
 
   public function modificar_registro_admin()
   {
@@ -722,6 +765,8 @@ function modificar_registro_admin_guardar(){
       
     }
   }
+
+   
    
 
   

@@ -21,6 +21,7 @@ Route::get('bitacoras_usuario','adminController@bitacoras_usuario');
 Route::post('bitacoras_usuario','adminController@filtrar_bitacoras_usuario');
 Route::get('backup','adminController@backup');
 Route::get('administrar_mensajes','adminController@administrar_mensajes');
+route::post('administrar_mensajes','adminController@guardarCambios_mensajes');
 Route::get('modificar_registro_admin','adminController@modificar_registro_admin');
 Route::post('modificar_registro_admin','adminController@modificar_registro_admin_guardar');
 

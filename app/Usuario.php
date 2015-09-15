@@ -222,4 +222,27 @@ class Usuario extends Model
 
    }
 
+   public function getMensajes(){
+
+    $consulta = DB::select("SELECT  id_mensaje, fecha_hora, contenido, leido, de_usuario, asunto, visible, nombre, apellido,descripcion
+                            FROM mensaje, usuario, tipo_usuario
+                            where mensaje.de_usuario=usuario.id_usuario AND usuario.tipo_usuario=tipo_usuario.id_tipo_usuario
+                            ORDER BY fecha_hora DESC");
+    return $consulta;
+
+
+   }
+
+  public function  volverVisibleMensaje($id_mensaje){
+    DB::update("UPDATE mensaje 
+                  SET  visible= 1 WHERE id_mensaje =:id",['id'=>$id_mensaje]);
+
+   }
+
+   public function volverInvisibleMensaje($id_mensaje){
+     DB::update("UPDATE mensaje 
+                  SET  visible= 0 WHERE id_mensaje =:id",['id'=>$id_mensaje]);
+
+   }
+
 }
