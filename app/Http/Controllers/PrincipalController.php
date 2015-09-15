@@ -193,35 +193,70 @@ class PrincipalController extends Controller
     { 
       $ruta = "img/profiles/";
       $formatos = $arrayName = array('.jpg','.png'); 
-    if (isset($_POST['btn_upload'])) {
-       if(!empty($_FILES['foto']['name'])){
-           opendir($ruta);
-            $destino = $ruta.$_FILES['foto']['name'];
-            $ext= substr($destino, strrpos($destino, '.'));
-            if (in_array($ext, $formatos)) {
-              copy($_FILES['foto']['tmp_name'],$ruta.Session::get('id').Session::get('nombre_usuario').$ext); //  Si el archivo ya existe este se remplaza .Recoradar que la carpeta debe tener permisos de escritura. 
-             
-              $id_usuario =Session::get('id');
-              $destinio2 =   'img/profiles/'.Session::get('id').Session::get('nombre_usuario').$ext;
-              
-              $usuario=new Usuario;
-              $usuario->cambiarFoto($id_usuario,$destinio2);
-           return redirect('index');
-     }else
-     {
-       echo( "<center><h1>escoger un archivo del tipo jpg o png solamente</h1></center><br>
+      if (isset($_POST['btn_upload'])) {
+        if(!empty($_FILES['foto']['name'])){
+             opendir($ruta);
+             $destino = $ruta.$_FILES['foto']['name'];
+             $ext= substr($destino, strrpos($destino, '.'));
+             if (in_array($ext, $formatos)) {
+                copy($_FILES['foto']['tmp_name'],$ruta.Session::get('id').Session::get('nombre_usuario').$ext); //  Si el archivo ya existe este se remplaza .Recoradar que la carpeta debe tener permisos de escritura. 
+                $id_usuario =Session::get('id');
+                $destinio2 =   'img/profiles/'.Session::get('id').Session::get('nombre_usuario').$ext;
+                $usuario=new Usuario;
+                $usuario->cambiarFoto($id_usuario,$destinio2);
+                return redirect('index');
+            }else
+               {
+                 echo( "<center><h1>escoger un archivo del tipo jpg o png solamente</h1></center><br>
+                 <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'>");
+               }
+         }else
+          {
+            echo( "<center><h1>selecciona un archivo por favor</h1></center><br>
             <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'>");
-  
+           }
+       } 
+
+     }
+
+     public function ayuda(){
+
+      if(isset($_GET['nom_arch'])){
+      $numpdf =$_GET['nom_arch'];
+          }else{
+            $numpdf=NULL;
       }
-  }else
-    {
-     echo( "<center><h1>selecciona un archivo por favor</h1></center><br>
-            <META HTTP-EQUIV='Refresh' CONTENT='1; URL=index'>");
-       
-    }
-  } 
+      $principal = new VerificadorDeSesiones;        
+       if($principal->getTipoDeUsuario()!=0)
+       {
+         return view('ayuda')->with([
+          'titulo' => 'inicio ',
+          'sesion_valida' => true,
+          'tipo_usuario'=> Session::get('tipo'),
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
+          'nombre_foto' => Session::get('nombre_foto'),
+          'nombre_usuario' => Session::get('nombre_usuario'),
+          'numpdf' =>$numpdf ]);
+      }
+       else
+      {
+      return view('ayuda')->with([
+          'titulo' => 'inicio ',
+          'sesion_valida' => false,
+          'tipo_usuario'=> 0,
+          'gestion'=>$principal->GetGestion(),
+          'datos'=>$principal->GetDatos(),
+          'numpdf'=>$numpdf ]);
+     }
 
 
-    }
+      
+     }
+
+
+
+
 }
+
 

@@ -196,7 +196,7 @@
                             </li>
                             @endif
                             <li class="dropdown">
-                                <a href="ayuda.php" id="link_ayuda">Ayuda </a>
+                                <a href="ayuda" id="link_ayuda">Ayuda </a>
                             </li>
                             <li>
                                 <a href="contrasena.php" >Recuperar contrasenia </a>
